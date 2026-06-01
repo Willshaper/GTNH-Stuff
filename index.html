@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GTNH Useful Info</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:         #07080d;
+    --bg2:        #0e1018;
+    --bg3:        #161822;
+    --border:     #1f2230;
+    --border2:    #2a2d42;
+    --accent:     #e8615a;
+    --accent2:    #f0a04b;
+    --teal:       #4fc4a8;
+    --today:      #3ab8d8;
+    --text:       #d4d6e8;
+    --text-dim:   #6b6f8a;
+    --text-dimmer:#3a3d52;
+    --mono:       'DM Mono', monospace;
+    --sans:       'Noto Sans JP', sans-serif;
+    --display:    'Syne', sans-serif;
+    --h1:         #ffffff;
+    --header-label: #9098b8;
+  }
+
+  [data-theme="light"] {
+    --bg:         #dde0ec;
+    --bg2:        #eceef8;
+    --bg3:        #d4d8ea;
+    --border:     #b8bcd4;
+    --border2:    #9aa0be;
+    --accent:     #c43c36;
+    --accent2:    #9e5e08;
+    --teal:       #1e9070;
+    --today:      #1480a8;
+    --text:       #0e1020;
+    --text-dim:   #3a4060;
+    --text-dimmer:#6870a0;
+    --h1:         #0e1020;
+    --header-label: #3a4060;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(80,100,160,0.08) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .shell {
+    position: relative; z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px 40px;
+  }
+
+  /* ── Header ── */
+  header {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 14px 0 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--h1);
+    line-height: 1;
+    white-space: nowrap;
+  }
+  h1 span { color: var(--accent); }
+
+  .header-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--header-label);
+  }
+
+  /* ── Sections list ── */
+  .sections {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 14px;
+  }
+
+  /* ── Section card ── */
+  .section {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.18s;
+  }
+  .section.open {
+    border-color: var(--border2);
+  }
+
+  /* ── Toggle button ── */
+  .section-btn {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    color: var(--text);
+    font-family: var(--display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-align: left;
+    transition: background 0.12s;
+  }
+  .section-btn:hover { background: rgba(255,255,255,0.03); }
+  .section.open .section-btn { background: rgba(255,255,255,0.02); }
+
+  .section-icon {
+    flex-shrink: 0;
+    width: 18px; height: 18px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.18s, background 0.18s;
+  }
+  .section.open .section-icon {
+    border-color: var(--teal);
+    background: rgba(79,196,168,0.1);
+  }
+  .section-icon svg { transition: transform 0.22s ease; }
+  .section.open .section-icon svg { transform: rotate(90deg); }
+
+  .section-name { flex: 1; }
+  .section-tag {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 3px;
+    padding: 2px 6px;
+  }
+  .section.open .section-tag { color: var(--teal); border-color: rgba(79,196,168,0.3); }
+
+  /* ── Body ── */
+  .section-body {
+    display: none;
+    padding: 0 14px 10px;
+    border-top: 1px solid var(--border);
+  }
+  .section.open .section-body { display: block; }
+
+  /* ── Content rendering helpers ──
+     Inside each section-body, you can use these classes freely.
+     See comments in each section's HTML for guidance. */
+
+  /* Sub-heading within a section */
+  .sub-heading {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin: 10px 0 5px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid rgba(79,196,168,0.2);
+  }
+
+  /* kv-grid: pairs of .kv-k + .kv-v laid out 3 columns across.
+     To add an entry: add a <div class="kv-k">KEY</div><div class="kv-v">Value</div> pair.
+     To switch to single-column: change grid-template-columns to "max-content 1fr". */
+  .kv-grid {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    width: 100%;
+    font-size: 11.5px;
+  }
+  .kv-k, .kv-v {
+    padding: 3px 10px 3px 2px;
+    line-height: 1.35;
+    border-bottom: 1px solid var(--border);
+  }
+  .kv-grid > div:nth-last-child(-n+2) { border-bottom: none; }
+  .kv-k {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent2);
+    white-space: nowrap;
+    padding-right: 10px;
+  }
+  .kv-v {
+    color: var(--text-dim);
+    padding-right: 18px;
+  }
+
+  /* A three-column table (e.g. biomes) */
+  .tri-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.5px;
+  }
+  .tri-table thead tr { border-bottom: 1px solid var(--border2); }
+  .tri-table thead td {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    padding: 4px 8px 4px 2px;
+  }
+  .tri-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  .tri-table tbody tr:last-child { border-bottom: none; }
+  .tri-table tbody tr:hover { background: rgba(255,255,255,0.025); }
+  .tri-table tbody td {
+    padding: 3px 8px 3px 2px;
+    vertical-align: middle;
+    line-height: 1.35;
+    color: var(--text-dim);
+  }
+  .tri-table tbody td:first-child {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--today);
+    white-space: nowrap;
+    width: 1%;
+    padding-right: 14px;
+  }
+  .tri-table tbody td:last-child {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--teal);
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  /* Info row — for Acclimatiser-style lists — displayed as inline pairs */
+  .info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    font-size: 11.5px;
+  }
+  .info-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 3px 8px 3px 2px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-row:hover { background: rgba(255,255,255,0.025); }
+  .info-key {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent2);
+    white-space: nowrap;
+    min-width: 130px;
+  }
+  .info-val { color: var(--text-dim); line-height: 1.35; }
+
+  /* Plain paragraph */
+  .section-body p {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-top: 12px;
+  }
+
+  /* Click-to-copy tip bar */
+  .circuit-tip {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: #8a8faa;
+    padding: 6px 10px;
+    line-height: 1.6;
+    margin-bottom: 6px;
+    background: rgba(58,184,216,0.05);
+    border-left: 2px solid rgba(58,184,216,0.35);
+    border-radius: 0 4px 4px 0;
+  }
+
+
+  /* ── Circuit copy rows ── */
+  /*
+   * .circuit-group  — wraps one machine block (heading + rows)
+   *   data-aliases  — extra search terms for this group's rows. Searching any
+   *                   word in here surfaces all rows in the group even if the
+   *                   word isn't in the row text (e.g. "Reactor" finds LCR rows).
+   * .cg-heading     — machine name heading (e.g. "Large Chemical Reactor")
+   * .cg-note        — small italic note under a heading
+   * .cr             — one copyable row
+   *   data-copy     — the text that gets copied to clipboard (configure this independently of display)
+   *   The visible label text lives inside the <span> child
+   * .cr:hover       — highlights the row
+   * .cr.copied      — flash feedback after copy
+   *
+   * Assembler toggle: two .assembler-block divs with ids "asm-dedicated" and "asm-original".
+   * The toggle link swaps which one is visible.
+   */
+
+  .circuit-section { display: flex; flex-direction: column; gap: 0; }
+
+  .circuit-group { margin-top: 10px; }
+  .circuit-group:first-child { margin-top: 6px; }
+
+  .cg-heading {
+    font-family: var(--display);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    padding: 8px 2px 4px;
+    border-bottom: 1px solid rgba(79,196,168,0.25);
+    margin-bottom: 1px;
+    margin-top: 4px;
+  }
+  .circuit-group:first-child .cg-heading { padding-top: 4px; }
+
+  .cg-note {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: #8a8faa;
+    font-style: normal;
+    padding: 6px 10px;
+    line-height: 1.6;
+    margin: 6px 0 4px;
+    background: rgba(58,184,216,0.05);
+    border-left: 2px solid rgba(58,184,216,0.35);
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* Copyable row */
+  .cr {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 3px 6px 3px 2px;
+    border-radius: 4px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+    user-select: none;
+  }
+  .cr:last-child { border-bottom: none; }
+  .cr:hover { background: rgba(79,196,168,0.06); border-bottom-color: rgba(79,196,168,0.15); }
+  .cr.copied { background: rgba(79,196,168,0.13); }
+
+  .cr-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  /* Machine prefix (LCR, Mixer, ABS, etc.) is split out and colored by JS
+     at load time — see colorizePrefix(). Edit colors here. */
+  .cr-prefix {
+    color: var(--accent2);
+    font-weight: 500;
+  }
+  .cr-suffix {
+    color: var(--text-dim);
+  }
+  .cr-hint {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--teal);
+    white-space: nowrap;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.18s;
+  }
+  .cr.copied .cr-hint { opacity: 1; }
+
+  /* Assembler toggle link */
+  .asm-toggle-link {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--today);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    padding: 4px 2px 2px;
+    transition: color 0.15s;
+  }
+  .asm-toggle-link:hover { color: var(--teal); }
+
+  .assembler-block { display: block; }
+  .assembler-block.hidden { display: none; }
+
+  /* ── Tier / cable color list ── */
+  .tier-list {
+    display: flex;
+    flex-direction: column;
+    padding-top: 4px;
+  }
+
+  .tier-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 2px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  .tier-row:last-child { border-bottom: none; }
+  .tier-row:hover { background: rgba(255,255,255,0.025); }
+
+  .tier-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent2);
+    letter-spacing: 0.06em;
+    width: 36px;
+    flex-shrink: 0;
+  }
+
+  .tier-name {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--text-dim);
+    flex: 1;
+  }
+
+  .tier-swatch {
+    width: 48px;
+    height: 18px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
+  }
+
+  /* ── Tips list ── */
+  .tip-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tip-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 4px 2px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+    line-height: 1.5;
+  }
+  .tip-row:last-child { border-bottom: none; }
+  .tip-row:hover { background: rgba(255,255,255,0.025); }
+
+  .tip-item {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--accent2);
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 160px;
+  }
+
+  .tip-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .tip-desc code {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--teal);
+    background: rgba(79,196,168,0.08);
+    border: 1px solid rgba(79,196,168,0.2);
+    border-radius: 3px;
+    padding: 0 4px;
+  }
+
+  /* ── Drag and drop ── */
+  .sections { cursor: default; }
+
+  .section.dragging {
+    opacity: 0.4;
+    cursor: grabbing;
+  }
+
+  .section.drag-over {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 1px rgba(79,196,168,0.3);
+  }
+
+  .section-drag-handle {
+    display: flex;
+    align-items: center;
+    padding: 0 8px 0 2px;
+    color: var(--text-dimmer);
+    cursor: grab;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .section-btn:hover .section-drag-handle { opacity: 1; }
+  .section-drag-handle:active { cursor: grabbing; }
+
+  /* Hidden sections (no content) */
+  .section.section-hidden { display: none; }
+
+  /* ── Header layout (with controls) ── */
+  header {
+    flex-wrap: wrap;
+  }
+  .header-left {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex: 1;
+    min-width: 220px;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Icon/text buttons in header */
+  .hbtn {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    padding: 0 10px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    white-space: nowrap;
+  }
+  .hbtn:hover { color: var(--text); border-color: var(--teal); }
+  .hbtn svg { flex-shrink: 0; }
+  .hbtn.icon-only { padding: 0; width: 28px; justify-content: center; }
+
+  /* ── Search bar ── */
+  .searchbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 0 12px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    height: 38px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .searchbar:focus-within {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 2px rgba(79,196,168,0.15);
+  }
+  .searchbar svg { flex-shrink: 0; color: var(--text-dimmer); }
+  #search-input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+  }
+  #search-input::placeholder { color: var(--text-dimmer); }
+  .search-clear {
+    background: none;
+    border: none;
+    color: var(--text-dimmer);
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 16px;
+    line-height: 1;
+    padding: 0 2px;
+    display: none;
+  }
+  .search-clear:hover { color: var(--text); }
+  .searchbar.has-text .search-clear { display: block; }
+
+  .search-count {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    color: var(--text-dimmer);
+    white-space: nowrap;
+  }
+
+  /* Search match highlight */
+  mark.search-hit {
+    background: rgba(240,160,75,0.3);
+    color: var(--text);
+    border-radius: 2px;
+    padding: 0 1px;
+  }
+
+  /* Rows/sections hidden by an active search filter */
+  .search-filtered { display: none !important; }
+
+  /* Empty-search message */
+  .no-results {
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dimmer);
+    padding: 30px 0;
+    display: none;
+  }
+  .no-results.visible { display: block; }
+
+  /* ── Back to top button ── */
+  #back-to-top {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 50;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    color: var(--text-dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Always visible; dims slightly when at the very top */
+    opacity: 0.5;
+    pointer-events: auto;
+    transition: opacity 0.2s, color 0.15s, border-color 0.15s, background 0.15s;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  }
+  #back-to-top.scrolled {
+    opacity: 1;
+  }
+  #back-to-top:hover {
+    color: var(--teal);
+    border-color: var(--teal);
+    background: var(--bg2);
+  }
+
+  /* Clickable copy-table rows (e.g. biomes) */
+  .copy-table tbody tr { cursor: pointer; user-select: none; }
+  .copy-table tbody tr:hover { background: rgba(79,196,168,0.06); }
+  .copy-table tbody tr.copied { background: rgba(79,196,168,0.16); }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header>
+    <div class="header-left">
+      <h1>GregTech New Horizons<span>.</span></h1>
+      <span class="header-label">Useful Info</span>
+    </div>
+    <div class="header-right">
+      <button class="hbtn" id="btn-expand" onclick="expandAll()" title="Expand all sections">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M3 4.5l2.5 2.5L8 4.5M3 1h5M3 10h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Expand
+      </button>
+      <button class="hbtn" id="btn-collapse" onclick="collapseAll()" title="Collapse all sections">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M3 6.5L5.5 4 8 6.5M3 1h5M3 10h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Collapse
+      </button>
+      <button class="hbtn icon-only" id="btn-theme" onclick="toggleTheme()" title="Toggle light/dark mode">
+        <svg id="theme-icon" width="13" height="13" viewBox="0 0 13 13" fill="none"></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="searchbar" id="searchbar">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M9.5 9.5L13 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    <input type="text" id="search-input" placeholder="Search all sections…" autocomplete="off" oninput="runSearch(this.value)">
+    <span class="search-count" id="search-count"></span>
+    <button class="search-clear" id="search-clear" onclick="clearSearch()" title="Clear search">×</button>
+  </div>
+
+  <div class="sections">
+
+    <div class="no-results" id="no-results">No matches found.</div>
+
+
+    <!-- ================================================================
+         SECTION 1 — USEFUL TIPS & ITEMS
+         Each .tip-row: edit .tip-item (item/feature name) and .tip-desc (description).
+         ================================================================ -->
+    <div class="section" id="section-1">
+      <button class="section-btn" onclick="toggle('section-1')">
+        <span class="section-drag-handle" title="Drag to reorder">
+          <svg width="10" height="14" viewBox="0 0 10 14" fill="none"><circle cx="3" cy="2.5" r="1.2" fill="currentColor"/><circle cx="7" cy="2.5" r="1.2" fill="currentColor"/><circle cx="3" cy="7" r="1.2" fill="currentColor"/><circle cx="7" cy="7" r="1.2" fill="currentColor"/><circle cx="3" cy="11.5" r="1.2" fill="currentColor"/><circle cx="7" cy="11.5" r="1.2" fill="currentColor"/></svg>
+        </span>
+        <span class="section-icon">
+          <svg width="8" height="10" viewBox="0 0 8 10" fill="none">
+            <path d="M2 1l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="section-name">Useful Tips &amp; Items</span>
+        <span class="section-tag">collapsed</span>
+      </button>
+      <div class="section-body">
+
+        <div class="sub-heading">General / Items</div>
+        <div class="tip-list">
+          <div class="tip-row"><span class="tip-item">Questbook</span><span class="tip-desc">Read. The. Questbook. It has a LOT of information, including many of the below tips.</span></div>
+          <div class="tip-row"><span class="tip-item">Traveller's Belt</span><span class="tip-desc">Gives you access to a 2nd Hotbar via a Hotkey. Useful for Misc GT Tools like Soft Mallet, Crowbar, etc.</span></div>
+          <div class="tip-row"><span class="tip-item">Traveller's Gloves</span><span class="tip-desc">Can be enhanced with Redstone to give permanent Haste bonus to all Breaking actions.</span></div>
+          <div class="tip-row"><span class="tip-item">Item Dislocator</span><span class="tip-desc">Fits in all Bauble Slots, and can be toggled via a Hotkey.</span></div>
+          <div class="tip-row"><span class="tip-item">Adventure Backpack</span><span class="tip-desc">Has 2 Slots for tools that you can switch to via Shift+Scroll Wheel.</span></div>
+          <div class="tip-row"><span class="tip-item">Backpack</span><span class="tip-desc">Has a dedicated slot via the key combo "Shift + Open Backpack". Open via just "Open Backpack" after it's in its slot.</span></div>
+          <div class="tip-row"><span class="tip-item">Tinker's Crossbow Bolts</span><span class="tip-desc">Fit in Bauble Slots and work with Mending.</span></div>
+          <div class="tip-row"><span class="tip-item">Holo Glasses</span><span class="tip-desc">Fit in the Mask Slot on the Diamond Chestplate page.</span></div>
+          <div class="tip-row"><span class="tip-item">Unbreaking</span><span class="tip-desc">Works on GC Oxygen Tanks, making them last longer.</span></div>
+          <div class="tip-row"><span class="tip-item">Healing Axe</span><span class="tip-desc">Fits in the Offhand Slot for permanent hunger regen.</span></div>
+          <div class="tip-row"><span class="tip-item">Fast Block Placing</span><span class="tip-desc">A Hodgepodge mod feature that allows you to place blocks much faster. Activate via its hotkey.</span></div>
+          <div class="tip-row"><span class="tip-item">Night Vision</span><span class="tip-desc">Enchantment can be toggled via the "Night Vision" hotkey in the Dark Steel Armor category.</span></div>
+          <div class="tip-row"><span class="tip-item">Voiding Drop Filter</span><span class="tip-desc">The first proper Inventory Void you get — auto deletes items like Cobblestone when picked up.</span></div>
+          <div class="tip-row"><span class="tip-item">/home naming</span><span class="tip-desc">List too big? Prefix homes for easier navigation, e.g. <code>/home Dim_TF</code> or <code>/home Vein_Silver</code>. Type <code>/home Dim_</code> and press Tab to filter.</span></div>
+        </div>
+
+        <div class="sub-heading">Machines / Automation</div>
+        <div class="tip-list">
+          <div class="tip-row"><span class="tip-item">Wires / Cables</span><span class="tip-desc">Use a dedicated color for each different Voltage cable in your base. Lets you easily see the Tier and avoid accidents.</span></div>
+          <div class="tip-row"><span class="tip-item">RF Consumers</span><span class="tip-desc">EnderIO machines, Forestry, etc. can generally connect directly to any voltage GT cable — auto converts to RF.</span></div>
+          <div class="tip-row"><span class="tip-item">Screwdriver</span><span class="tip-desc">Right-click on a machine to allow item input via its Output side. Useful for automation.</span></div>
+          <div class="tip-row"><span class="tip-item">Soldering Iron</span><span class="tip-desc">With Solder in inventory: allows multiple stacks of the same item to be input via automation (e.g. Buttons). Useful for automation.</span></div>
+          <div class="tip-row"><span class="tip-item">Wire Cutter</span><span class="tip-desc">Can connect wires through a machine via Shift+Right Click on the Highlight Grid.</span></div>
+          <div class="tip-row"><span class="tip-item">Wrench</span><span class="tip-desc">Shift+Right Click on GT Fluid Pipes to lock their flow direction. Prevents backwards flow, lessens lag, and allows faster flow if the pipe is not 100% full.</span></div>
+          <div class="tip-row"><span class="tip-item">Quartz Cutting Knife</span><span class="tip-desc">Allows you to rename all AE2 Blocks. The new name shows in Interface Terminal, WAILA, and Network Tool.</span></div>
+        </div>
+
+      </div>
+    </div><!-- /#section-1 -->
+
+    <div class="section" id="section-2">
+      <button class="section-btn" onclick="toggle('section-2')">
+        <span class="section-drag-handle" title="Drag to reorder">
+          <svg width="10" height="14" viewBox="0 0 10 14" fill="none"><circle cx="3" cy="2.5" r="1.2" fill="currentColor"/><circle cx="7" cy="2.5" r="1.2" fill="currentColor"/><circle cx="3" cy="7" r="1.2" fill="currentColor"/><circle cx="7" cy="7" r="1.2" fill="currentColor"/><circle cx="3" cy="11.5" r="1.2" fill="currentColor"/><circle cx="7" cy="11.5" r="1.2" fill="currentColor"/></svg>
+        </span>
+        <span class="section-icon">
+          <svg width="8" height="10" viewBox="0 0 8 10" fill="none">
+            <path d="M2 1l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="section-name">Bees</span>
+        <span class="section-tag">open</span>
+      </button>
+      <div class="section-body">
+
+        <!-- FLOWERS sub-section -->
+        <!-- kv-grid: pairs of .kv-k + .kv-v. To add an entry, copy a pair and edit the text. -->
+        <div class="sub-heading">Flowers — Required Blocks</div>
+        <div class="kv-grid">
+          <div class="kv-k">SEA</div>              <div class="kv-v">Water</div>
+          <div class="kv-k">BOOKS</div>            <div class="kv-v">Bookshelves</div>
+          <div class="kv-k">DEAD BUSHES</div>      <div class="kv-v">Dead Bushes</div>
+          <div class="kv-k">FRUIT</div>            <div class="kv-v">Forestry / Extra Trees Fruit Trees</div>
+          <div class="kv-k">LEAVES</div>           <div class="kv-v">Leaves</div>
+          <div class="kv-k">MYSTICAL FLOWERS</div> <div class="kv-v">Botania Mystical Flowers</div>
+          <div class="kv-k">REDSTONE</div>         <div class="kv-v">Redstone Torch</div>
+          <div class="kv-k">ROCKS</div>            <div class="kv-v">Cobblestone, Stone, Stone Bricks</div>
+          <div class="kv-k">SAPLINGS</div>         <div class="kv-v">Forestry / Extra Trees Saplings</div>
+          <div class="kv-k">REEDS</div>            <div class="kv-v">Sugarcane</div>
+          <div class="kv-k">LILY PADS</div>        <div class="kv-v">Lilypads</div>
+          <div class="kv-k">WOOD</div>             <div class="kv-v">Wood</div>
+          <div class="kv-k">CACTI</div>            <div class="kv-v">Cacti</div>
+          <div class="kv-k">END</div>              <div class="kv-v">Dragon Egg</div>
+          <div class="kv-k">GOURDS</div>           <div class="kv-v">Pumpkin and Melon Stems</div>
+          <div class="kv-k">JUNGLE</div>           <div class="kv-v">Vines and Ferns</div>
+          <div class="kv-k">MUSHROOM</div>         <div class="kv-v">Red / Brown Mushroom</div>
+          <div class="kv-k">NETHER</div>           <div class="kv-v">Nether Wart</div>
+          <div class="kv-k">SNOW</div>             <div class="kv-v">Any Flower</div>
+          <div class="kv-k">FLOWERS</div>          <div class="kv-v">Any Flower</div>
+          <div class="kv-k">WHEAT</div>            <div class="kv-v">Wheat</div>
+          <div class="kv-k">NODE</div>             <div class="kv-v">Thaumcraft Node — cannot be inside a block such as a Silverwood's Node</div>
+          <div class="kv-k">THAUMIC FLOWERS</div>  <div class="kv-v">Cinderpearl / Shimmerleaf</div>
+        </div>
+
+        <!-- BIOMES sub-section -->
+        <div class="sub-heading">Biomes — Book of Biomes (Extended Edition)</div>
+        <div class="circuit-tip">↓ Click any biome to copy its full description</div>
+        <!-- tri-table rows are click-to-copy. The copied string is built from the
+             three cells by copyBiome() in JS, so just edit the cell text.
+             Format: Temp/Humidity: <climate> - Biome: <biome> - Book of Biomes Page: <page> -->
+        <table class="tri-table copy-table">
+          <thead>
+            <tr>
+              <td>Climate</td>
+              <td>Biome</td>
+              <td style="text-align:right">Page</td>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- To add a row: copy a <tr> block and edit the three <td> values -->
+            <tr onclick="copyBiome(this)"><td>ICY / ARID</td>       <td>Glacier</td>                                   <td>213</td></tr>
+            <tr onclick="copyBiome(this)"><td>ICY / NORMAL</td>     <td>Cold Taiga</td>                                 <td>206</td></tr>
+            <tr onclick="copyBiome(this)"><td>ICY / DAMP</td>       <td>Snowy Forest <span style="color:var(--text-dimmer);font-size:10px">(elevated Y level)</span></td><td>218</td></tr>
+            <tr onclick="copyBiome(this)"><td>COLD / ARID</td>      <td>Thornlands</td>                                 <td>256</td></tr>
+            <tr onclick="copyBiome(this)"><td>COLD / NORMAL</td>    <td>Taiga</td>                                      <td>106</td></tr>
+            <tr onclick="copyBiome(this)"><td>COLD / DAMP</td>      <td>Snowy Forest</td>                               <td>218</td></tr>
+            <tr onclick="copyBiome(this)"><td>NORMAL / ARID</td>    <td>Shrubland</td>                                  <td>153</td></tr>
+            <tr onclick="copyBiome(this)"><td>NORMAL / NORMAL</td>  <td>Plains</td>                                     <td>136</td></tr>
+            <tr onclick="copyBiome(this)"><td>NORMAL / DAMP</td>    <td>Swampland</td>                                  <td>222</td></tr>
+            <tr onclick="copyBiome(this)"><td>WARM / ARID</td>      <td>Oak Savanna</td>                                <td>74</td></tr>
+            <tr onclick="copyBiome(this)"><td>WARM / NORMAL</td>    <td>Jungle Edge</td>                                <td>109</td></tr>
+            <tr onclick="copyBiome(this)"><td>WARM / DAMP</td>      <td>Jungle</td>                                     <td>108</td></tr>
+            <tr onclick="copyBiome(this)"><td>HOT / ARID</td>       <td>Desert</td>                                     <td>178</td></tr>
+            <tr onclick="copyBiome(this)"><td>HOT / NORMAL</td>     <td>Lush Desert</td>                                <td>188</td></tr>
+            <tr onclick="copyBiome(this)"><td>HOT / DAMP</td>       <td>Tropical Rainforest</td>                        <td>xxx</td></tr>
+            <tr onclick="copyBiome(this)"><td>HELLISH / ARID</td>   <td>Visceral Heap</td>                              <td>310</td></tr>
+            <tr onclick="copyBiome(this)"><td>HELLISH / NORMAL</td> <td>Plains with Blazing Electron Tube</td>          <td>309</td></tr>
+            <tr onclick="copyBiome(this)"><td>HELLISH / DAMP</td>   <td>Jungle with Blazing Electron Tube</td>          <td>xxx</td></tr>
+            <tr onclick="copyBiome(this)"><td>SPECIAL</td>          <td>Toxic Everglades</td>                           <td>117</td></tr>
+          </tbody>
+        </table>
+
+        <!-- ACCLIMATISER sub-section -->
+        <div class="sub-heading">Acclimatiser</div>
+        <div class="info-list">
+          <!-- To add: copy an .info-row and change .info-key and .info-val text -->
+          <div class="info-row">
+            <span class="info-key">SNOWBALL / ICE</span>
+            <span class="info-val">Too Cold</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">LAVA / BLAZE</span>
+            <span class="info-val">Too Hot</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">SAND</span>
+            <span class="info-val">Too Dry</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">WATER CAPSULE</span>
+            <span class="info-val">Too Humid</span>
+          </div>
+        </div>
+
+      </div><!-- /.section-body -->
+    </div><!-- /#section-2 -->
+
+
+    <!-- ================================================================
+         SECTION 2 — PROGRAMMABLE CIRCUIT SHARING
+         Circuit rows: each .cr has a data-copy attribute (the text copied to clipboard)
+         and a visible <span class="cr-label"> (what shows on screen).
+         Edit data-copy and the label independently.
+         ================================================================ -->
+    <div class="section" id="section-3">
+      <button class="section-btn" onclick="toggle('section-3')">
+        <span class="section-drag-handle" title="Drag to reorder">
+          <svg width="10" height="14" viewBox="0 0 10 14" fill="none"><circle cx="3" cy="2.5" r="1.2" fill="currentColor"/><circle cx="7" cy="2.5" r="1.2" fill="currentColor"/><circle cx="3" cy="7" r="1.2" fill="currentColor"/><circle cx="7" cy="7" r="1.2" fill="currentColor"/><circle cx="3" cy="11.5" r="1.2" fill="currentColor"/><circle cx="7" cy="11.5" r="1.2" fill="currentColor"/></svg>
+        </span>
+        <span class="section-icon">
+          <svg width="8" height="10" viewBox="0 0 8 10" fill="none">
+            <path d="M2 1l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="section-name">Programmable Circuit Sharing</span>
+        <span class="section-tag">collapsed</span>
+      </button>
+      <div class="section-body">
+        <div class="circuit-tip">↓ Click any row to copy its interface name</div>
+        <div class="circuit-section">
+
+          <!-- ── LARGE CHEMICAL REACTOR ── -->
+          <div class="circuit-group" data-aliases="Large Chemical Reactor LCR">
+            <div class="cg-heading">Large Chemical Reactor</div>
+            <!-- data-copy = text sent to clipboard. Edit independently of the label. -->
+            <div class="cr" data-copy="LCR - C0, C4, C6, C7, C12, C14, C16, C17, C18, C19, C23, Copper Plate, Dragon Heart, Tiny Pile of Infinity Catalyst Dust" onclick="copyRow(this)"><span class="cr-label">LCR - C0, C4, C6, C7, C12, C14, C16, C17, C18, C19, C23, Copper Plate, Dragon Heart, Tiny Pile of Infinity Catalyst Dust</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="LCR - C5, C13" onclick="copyRow(this)"><span class="cr-label">LCR - C5, C13</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="LCR - C3, C8" onclick="copyRow(this)"><span class="cr-label">LCR - C3, C8</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="LCR - C1" onclick="copyRow(this)"><span class="cr-label">LCR - C1</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="LCR - C9, C11, C21" onclick="copyRow(this)"><span class="cr-label">LCR - C9, C11, C21</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="LCR - C10, C24" onclick="copyRow(this)"><span class="cr-label">LCR - C10, C24</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="LCR - C2, C22" onclick="copyRow(this)"><span class="cr-label">LCR - C2, C22</span><span class="cr-hint">COPIED!</span></div>
+          </div>
+
+          <!-- ── MULTIBLOCK MIXER ── -->
+          <div class="circuit-group" data-aliases="Industrial Mixing Machine Mixer Multiblock">
+            <div class="cg-heading">Mixer</div>
+            <div class="cr" data-copy="Mixer - C0, C6, C7, C9, C10, C11, C13, C14, C20, Arcane Spa" onclick="copyRow(this)"><span class="cr-label">Mixer - C0, C6, C7, C9, C10, C11, C13, C14, C20, Arcane Spa</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="Mixer - C1, C8" onclick="copyRow(this)"><span class="cr-label">Mixer - C1, C8</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="Mixer - C4, C17, C18" onclick="copyRow(this)"><span class="cr-label">Mixer - C4, C17, C18</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="Mixer - C16" onclick="copyRow(this)"><span class="cr-label">Mixer - C16</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="Mixer - C2" onclick="copyRow(this)"><span class="cr-label">Mixer - C2</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="Mixer - C3, C5, C12, C15" onclick="copyRow(this)"><span class="cr-label">Mixer - C3, C5, C12, C15</span><span class="cr-hint">COPIED!</span></div>
+          </div>
+
+          <!-- ── ALLOY BLAST SMELTER ── -->
+          <div class="circuit-group" data-aliases="Alloy Blast Smelter ABS">
+            <div class="cg-heading">Alloy Blast Smelter</div>
+            <div class="cr" data-copy="ABS - C0, C2, C3, C8, C12, C14, C15, C17, C20, C21" onclick="copyRow(this)"><span class="cr-label">ABS - C0, C2, C3, C8, C12, C14, C15, C17, C20, C21</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="ABS - C1" onclick="copyRow(this)"><span class="cr-label">ABS - C1</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="ABS - C4, C6, C7, C11" onclick="copyRow(this)"><span class="cr-label">ABS - C4, C6, C7, C11</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="ABS - C5" onclick="copyRow(this)"><span class="cr-label">ABS - C5</span><span class="cr-hint">COPIED!</span></div>
+          </div>
+
+          <!-- ── BLAST FURNACE ── -->
+          <div class="circuit-group" data-aliases="Electric Blast Furnace EBF">
+            <div class="cg-heading">Electric Blast Furnace</div>
+            <div class="cr" data-copy="EBF - C0, C3, C13, C16, C17, C22, C24, Yttrium Oxide Dust" onclick="copyRow(this)"><span class="cr-label">EBF - C0, C3, C13, C16, C17, C22, C24, Yttrium Oxide Dust</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="EBF - C1, C12" onclick="copyRow(this)"><span class="cr-label">EBF - C1, C12</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="EBF - C2" onclick="copyRow(this)"><span class="cr-label">EBF - C2</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="EBF - C11" onclick="copyRow(this)"><span class="cr-label">EBF - C11</span><span class="cr-hint">COPIED!</span></div>
+          </div>
+
+          <!-- ── CHEMICAL PLANT ── -->
+          <div class="circuit-group" data-aliases="ExxonMobil Chemical Plant Exxon">
+            <div class="cg-heading">ExxonMobil Chemical Plant</div>
+            <div class="cr" data-copy="Exxon - C0, C1, C2, C3, C4, C5, C6, C7, C8, C9, C12, C14, C16, C17, C18, C19, C21, C22" onclick="copyRow(this)"><span class="cr-label">Exxon - C0, C1, C2, C3, C4, C5, C6, C7, C8, C9, C12, C14, C16, C17, C18, C19, C21, C22</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="Exxon - C11, C13, C20, C23" onclick="copyRow(this)"><span class="cr-label">Exxon - C11, C13, C20, C23</span><span class="cr-hint">COPIED!</span></div>
+          </div>
+
+          <!-- ── ASSEMBLER (toggleable) ── -->
+          <!-- Toggle: clicking the link swaps which assembler-block is shown -->
+          <div class="circuit-group">
+            <div class="cg-heading">Assembler</div>
+
+            <!-- DEDICATED ASSEMBLERS (shown by default) -->
+            <div class="assembler-block" id="asm-dedicated">
+              <div class="cg-note">Does not include ztones recipes, hint dot recipes and volumetric flask recipes that have many circuit variants.<br>Blocking mode may not work correctly if using anything other than the Circuits, so these have been separated onto dedicated assemblers.</div>
+              <span class="asm-toggle-link" onclick="toggleAsm()">Click here to show the Original setup.</span>
+              <div class="cr" data-copy="Assembler - C0, C15, C17, C18" onclick="copyRow(this)"><span class="cr-label">Assembler - C0, C15, C17, C18</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C1, C23" onclick="copyRow(this)"><span class="cr-label">Assembler - C1, C23</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C6, C11, C16, C22" onclick="copyRow(this)"><span class="cr-label">Assembler - C6, C11, C16, C22</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C5, C24" onclick="copyRow(this)"><span class="cr-label">Assembler - C5, C24</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C4" onclick="copyRow(this)"><span class="cr-label">Assembler - C4</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C9, C19, C20" onclick="copyRow(this)"><span class="cr-label">Assembler - C9, C19, C20</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C3, C14" onclick="copyRow(this)"><span class="cr-label">Assembler - C3, C14</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C8" onclick="copyRow(this)"><span class="cr-label">Assembler - C8</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C2, C10, C13, C21" onclick="copyRow(this)"><span class="cr-label">Assembler - C2, C10, C13, C21</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C7, C12" onclick="copyRow(this)"><span class="cr-label">Assembler - C7, C12</span><span class="cr-hint">COPIED!</span></div>
+              <div class="sub-heading" style="margin-top:8px">Extra</div>
+              <div class="cr" data-copy="Assembler - Mold (Boots), Naga, Lich, Hydra, Ur-ghast, Snow Queen Trophy" onclick="copyRow(this)"><span class="cr-label">Assembler - Mold (Boots), Naga, Lich, Hydra, Ur-ghast, Snow Queen Trophy</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - Mold (Leggings), Blood Orb, Remote Orderer" onclick="copyRow(this)"><span class="cr-label">Assembler - Mold (Leggings), Blood Orb, Remote Orderer</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - Mold (Helmet)" onclick="copyRow(this)"><span class="cr-label">Assembler - Mold (Helmet)</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - Mold (Chestplate)" onclick="copyRow(this)"><span class="cr-label">Assembler - Mold (Chestplate)</span><span class="cr-hint">COPIED!</span></div>
+            </div>
+
+            <!-- ORIGINAL SETUP (hidden by default) -->
+            <div class="assembler-block hidden" id="asm-original">
+              <div class="cg-note">Does not include ztones recipes, hint dot recipes and volumetric flask recipes that have many circuit variants.<br>Blocking mode may not work correctly if using anything other than the Circuits, so these have been separated onto dedicated assemblers.</div>
+              <span class="asm-toggle-link" onclick="toggleAsm()">Click here to show the Custom setup.</span>
+              <div class="cr" data-copy="Assembler - C0, C15, C17, C18, Blood Orb" onclick="copyRow(this)"><span class="cr-label">Assembler - C0, C15, C17, C18, Blood Orb</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C1, C23, Ur-ghast Trophy, Remote Orderer" onclick="copyRow(this)"><span class="cr-label">Assembler - C1, C23, Ur-ghast Trophy, Remote Orderer</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C6, C11, C16, C22, Mold (Boots), Naga Trophy" onclick="copyRow(this)"><span class="cr-label">Assembler - C6, C11, C16, C22, Mold (Boots), Naga Trophy</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C5, C24, Mold (Leggings), Hydra Trophy" onclick="copyRow(this)"><span class="cr-label">Assembler - C5, C24, Mold (Leggings), Hydra Trophy</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C4, Lich Trophy, Mold (Helmet)" onclick="copyRow(this)"><span class="cr-label">Assembler - C4, Lich Trophy, Mold (Helmet)</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C9, C19, C20, Mold (Chestplate), Snow Queen Trophy" onclick="copyRow(this)"><span class="cr-label">Assembler - C9, C19, C20, Mold (Chestplate), Snow Queen Trophy</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C3, C14" onclick="copyRow(this)"><span class="cr-label">Assembler - C3, C14</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C8" onclick="copyRow(this)"><span class="cr-label">Assembler - C8</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C2, C10, C13, C21" onclick="copyRow(this)"><span class="cr-label">Assembler - C2, C10, C13, C21</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="Assembler - C7, C12" onclick="copyRow(this)"><span class="cr-label">Assembler - C7, C12</span><span class="cr-hint">COPIED!</span></div>
+            </div>
+
+          </div><!-- /assembler circuit-group -->
+
+        </div><!-- /.circuit-section -->
+      </div>
+    </div><!-- /#section-3 -->
+
+
+    <!-- ================================================================
+         SECTION 3 — CABLE COLOR CODING
+         tier-row: data-color = exact Minecraft dye hex, tier = voltage tier label,
+         color-name = Minecraft color name displayed in the row.
+         To edit: change the tier, color-name text, or data-color hex.
+         ================================================================ -->
+    <div class="section" id="section-4">
+      <button class="section-btn" onclick="toggle('section-4')">
+        <span class="section-drag-handle" title="Drag to reorder">
+          <svg width="10" height="14" viewBox="0 0 10 14" fill="none"><circle cx="3" cy="2.5" r="1.2" fill="currentColor"/><circle cx="7" cy="2.5" r="1.2" fill="currentColor"/><circle cx="3" cy="7" r="1.2" fill="currentColor"/><circle cx="7" cy="7" r="1.2" fill="currentColor"/><circle cx="3" cy="11.5" r="1.2" fill="currentColor"/><circle cx="7" cy="11.5" r="1.2" fill="currentColor"/></svg>
+        </span>
+        <span class="section-icon">
+          <svg width="8" height="10" viewBox="0 0 8 10" fill="none">
+            <path d="M2 1l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="section-name">Cable Color Coding</span>
+        <span class="section-tag">collapsed</span>
+      </button>
+      <div class="section-body">
+        <div class="tier-list">
+          <!--
+            Each .tier-row:
+              data-color  = Minecraft dye hex (shown in the color swatch)
+              .tier-badge = voltage tier (LV, MV, etc.)
+              .tier-name  = Minecraft color name
+          -->
+          <div class="tier-row"><span class="tier-badge">LV</span><span class="tier-name">Gray</span><span class="tier-swatch" style="background:#4C4C4C"></span></div>
+          <div class="tier-row"><span class="tier-badge">MV</span><span class="tier-name">Light Blue</span><span class="tier-swatch" style="background:#6699D8"></span></div>
+          <div class="tier-row"><span class="tier-badge">HV</span><span class="tier-name">Cyan</span><span class="tier-swatch" style="background:#169C9C"></span></div>
+          <div class="tier-row"><span class="tier-badge">EV</span><span class="tier-name">Magenta</span><span class="tier-swatch" style="background:#C74EBD"></span></div>
+          <div class="tier-row"><span class="tier-badge">IV</span><span class="tier-name">Blue</span><span class="tier-swatch" style="background:#3C44AA"></span></div>
+          <div class="tier-row"><span class="tier-badge">LuV</span><span class="tier-name">Light Gray</span><span class="tier-swatch" style="background:#9D9D97"></span></div>
+          <div class="tier-row"><span class="tier-badge">ZPM</span><span class="tier-name">White</span><span class="tier-swatch" style="background:#F9FFFE"></span></div>
+          <div class="tier-row"><span class="tier-badge">UV</span><span class="tier-name">Pink</span><span class="tier-swatch" style="background:#F38BAA"></span></div>
+          <div class="tier-row"><span class="tier-badge">UHV</span><span class="tier-name">Purple</span><span class="tier-swatch" style="background:#8932B8"></span></div>
+          <div class="tier-row"><span class="tier-badge">UEV</span><span class="tier-name">Green</span><span class="tier-swatch" style="background:#5E7C16"></span></div>
+          <div class="tier-row"><span class="tier-badge">UIV</span><span class="tier-name">Black</span><span class="tier-swatch" style="background:#1D1D21"></span></div>
+          <div class="tier-row"><span class="tier-badge">UMV</span><span class="tier-name">Orange</span><span class="tier-swatch" style="background:#F9801D"></span></div>
+        </div>
+      </div>
+    </div><!-- /#section-4 -->
+
+
+    <!-- ================================================================
+         SECTION 4 — UNUSED
+         ================================================================ -->
+    <div class="section" id="section-5">
+      <button class="section-btn" onclick="toggle('section-5')">
+        <span class="section-drag-handle" title="Drag to reorder">
+          <svg width="10" height="14" viewBox="0 0 10 14" fill="none"><circle cx="3" cy="2.5" r="1.2" fill="currentColor"/><circle cx="7" cy="2.5" r="1.2" fill="currentColor"/><circle cx="3" cy="7" r="1.2" fill="currentColor"/><circle cx="7" cy="7" r="1.2" fill="currentColor"/><circle cx="3" cy="11.5" r="1.2" fill="currentColor"/><circle cx="7" cy="11.5" r="1.2" fill="currentColor"/></svg>
+        </span>
+        <span class="section-icon">
+          <svg width="8" height="10" viewBox="0 0 8 10" fill="none">
+            <path d="M2 1l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="section-name">Unused</span>
+        <span class="section-tag">empty</span>
+      </button>
+      <div class="section-body">
+        <!-- This section is hidden until it has content. Uncomment a template below to populate it.
+             Add a <div class="sub-heading">Title</div> plus any of: .tip-list, .kv-grid, .tri-table, .tier-list, .info-list, .circuit-section -->
+        <!--
+        <div class="sub-heading">Example Heading</div>
+        <div class="tip-list">
+          <div class="tip-row"><span class="tip-item">Item</span><span class="tip-desc">Description here.</span></div>
+        </div>
+        -->
+      </div>
+    </div><!-- /#section-5 -->
+
+
+    <!-- ================================================================
+         SECTION 5 — UNUSED
+         ================================================================ -->
+    <div class="section" id="section-6">
+      <button class="section-btn" onclick="toggle('section-6')">
+        <span class="section-drag-handle" title="Drag to reorder">
+          <svg width="10" height="14" viewBox="0 0 10 14" fill="none"><circle cx="3" cy="2.5" r="1.2" fill="currentColor"/><circle cx="7" cy="2.5" r="1.2" fill="currentColor"/><circle cx="3" cy="7" r="1.2" fill="currentColor"/><circle cx="7" cy="7" r="1.2" fill="currentColor"/><circle cx="3" cy="11.5" r="1.2" fill="currentColor"/><circle cx="7" cy="11.5" r="1.2" fill="currentColor"/></svg>
+        </span>
+        <span class="section-icon">
+          <svg width="8" height="10" viewBox="0 0 8 10" fill="none">
+            <path d="M2 1l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="section-name">Unused</span>
+        <span class="section-tag">empty</span>
+      </button>
+      <div class="section-body">
+        <!-- This section is hidden until it has content. Uncomment a template below to populate it.
+             Add a <div class="sub-heading">Title</div> plus any of: .tip-list, .kv-grid, .tri-table, .tier-list, .info-list, .circuit-section -->
+        <!--
+        <div class="sub-heading">Example Heading</div>
+        <div class="tip-list">
+          <div class="tip-row"><span class="tip-item">Item</span><span class="tip-desc">Description here.</span></div>
+        </div>
+        -->
+      </div>
+    </div><!-- /#section-6 -->
+
+
+    <!-- ================================================================
+         SECTION 6 — UNUSED
+         ================================================================ -->
+    <div class="section" id="section-7">
+      <button class="section-btn" onclick="toggle('section-7')">
+        <span class="section-drag-handle" title="Drag to reorder">
+          <svg width="10" height="14" viewBox="0 0 10 14" fill="none"><circle cx="3" cy="2.5" r="1.2" fill="currentColor"/><circle cx="7" cy="2.5" r="1.2" fill="currentColor"/><circle cx="3" cy="7" r="1.2" fill="currentColor"/><circle cx="7" cy="7" r="1.2" fill="currentColor"/><circle cx="3" cy="11.5" r="1.2" fill="currentColor"/><circle cx="7" cy="11.5" r="1.2" fill="currentColor"/></svg>
+        </span>
+        <span class="section-icon">
+          <svg width="8" height="10" viewBox="0 0 8 10" fill="none">
+            <path d="M2 1l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="section-name">Unused</span>
+        <span class="section-tag">empty</span>
+      </button>
+      <div class="section-body">
+        <!-- This section is hidden until it has content. Uncomment a template below to populate it.
+             Add a <div class="sub-heading">Title</div> plus any of: .tip-list, .kv-grid, .tri-table, .tier-list, .info-list, .circuit-section -->
+        <!--
+        <div class="sub-heading">Example Heading</div>
+        <div class="tip-list">
+          <div class="tip-row"><span class="tip-item">Item</span><span class="tip-desc">Description here.</span></div>
+        </div>
+        -->
+      </div>
+    </div><!-- /#section-7 -->
+
+
+    <!-- ================================================================
+         SECTION 7 — UNUSED
+         ================================================================ -->
+    <div class="section" id="section-8">
+      <button class="section-btn" onclick="toggle('section-8')">
+        <span class="section-drag-handle" title="Drag to reorder">
+          <svg width="10" height="14" viewBox="0 0 10 14" fill="none"><circle cx="3" cy="2.5" r="1.2" fill="currentColor"/><circle cx="7" cy="2.5" r="1.2" fill="currentColor"/><circle cx="3" cy="7" r="1.2" fill="currentColor"/><circle cx="7" cy="7" r="1.2" fill="currentColor"/><circle cx="3" cy="11.5" r="1.2" fill="currentColor"/><circle cx="7" cy="11.5" r="1.2" fill="currentColor"/></svg>
+        </span>
+        <span class="section-icon">
+          <svg width="8" height="10" viewBox="0 0 8 10" fill="none">
+            <path d="M2 1l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="section-name">Unused</span>
+        <span class="section-tag">empty</span>
+      </button>
+      <div class="section-body">
+        <!-- This section is hidden until it has content. Uncomment a template below to populate it.
+             Add a <div class="sub-heading">Title</div> plus any of: .tip-list, .kv-grid, .tri-table, .tier-list, .info-list, .circuit-section -->
+        <!--
+        <div class="sub-heading">Example Heading</div>
+        <div class="tip-list">
+          <div class="tip-row"><span class="tip-item">Item</span><span class="tip-desc">Description here.</span></div>
+        </div>
+        -->
+      </div>
+    </div><!-- /#section-8 -->
+
+
+    <!-- ================================================================
+         SECTION 8 — UNUSED
+         ================================================================ -->
+    <div class="section" id="section-9">
+      <button class="section-btn" onclick="toggle('section-9')">
+        <span class="section-drag-handle" title="Drag to reorder">
+          <svg width="10" height="14" viewBox="0 0 10 14" fill="none"><circle cx="3" cy="2.5" r="1.2" fill="currentColor"/><circle cx="7" cy="2.5" r="1.2" fill="currentColor"/><circle cx="3" cy="7" r="1.2" fill="currentColor"/><circle cx="7" cy="7" r="1.2" fill="currentColor"/><circle cx="3" cy="11.5" r="1.2" fill="currentColor"/><circle cx="7" cy="11.5" r="1.2" fill="currentColor"/></svg>
+        </span>
+        <span class="section-icon">
+          <svg width="8" height="10" viewBox="0 0 8 10" fill="none">
+            <path d="M2 1l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="section-name">Unused</span>
+        <span class="section-tag">empty</span>
+      </button>
+      <div class="section-body">
+        <!-- This section is hidden until it has content. Uncomment a template below to populate it.
+             Add a <div class="sub-heading">Title</div> plus any of: .tip-list, .kv-grid, .tri-table, .tier-list, .info-list, .circuit-section -->
+        <!--
+        <div class="sub-heading">Example Heading</div>
+        <div class="tip-list">
+          <div class="tip-row"><span class="tip-item">Item</span><span class="tip-desc">Description here.</span></div>
+        </div>
+        -->
+      </div>
+    </div><!-- /#section-9 -->
+
+
+    <!-- ================================================================
+         SECTION 9 — UNUSED
+         ================================================================ -->
+    <div class="section" id="section-10">
+      <button class="section-btn" onclick="toggle('section-10')">
+        <span class="section-drag-handle" title="Drag to reorder">
+          <svg width="10" height="14" viewBox="0 0 10 14" fill="none"><circle cx="3" cy="2.5" r="1.2" fill="currentColor"/><circle cx="7" cy="2.5" r="1.2" fill="currentColor"/><circle cx="3" cy="7" r="1.2" fill="currentColor"/><circle cx="7" cy="7" r="1.2" fill="currentColor"/><circle cx="3" cy="11.5" r="1.2" fill="currentColor"/><circle cx="7" cy="11.5" r="1.2" fill="currentColor"/></svg>
+        </span>
+        <span class="section-icon">
+          <svg width="8" height="10" viewBox="0 0 8 10" fill="none">
+            <path d="M2 1l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="section-name">Unused</span>
+        <span class="section-tag">empty</span>
+      </button>
+      <div class="section-body">
+        <!-- This section is hidden until it has content. Uncomment a template below to populate it.
+             Add a <div class="sub-heading">Title</div> plus any of: .tip-list, .kv-grid, .tri-table, .tier-list, .info-list, .circuit-section -->
+        <!--
+        <div class="sub-heading">Example Heading</div>
+        <div class="tip-list">
+          <div class="tip-row"><span class="tip-item">Item</span><span class="tip-desc">Description here.</span></div>
+        </div>
+        -->
+      </div>
+    </div><!-- /#section-10 -->
+
+
+    <!-- ================================================================
+         SECTION 10 — UNUSED
+         ================================================================ -->
+    <div class="section" id="section-11">
+      <button class="section-btn" onclick="toggle('section-11')">
+        <span class="section-drag-handle" title="Drag to reorder">
+          <svg width="10" height="14" viewBox="0 0 10 14" fill="none"><circle cx="3" cy="2.5" r="1.2" fill="currentColor"/><circle cx="7" cy="2.5" r="1.2" fill="currentColor"/><circle cx="3" cy="7" r="1.2" fill="currentColor"/><circle cx="7" cy="7" r="1.2" fill="currentColor"/><circle cx="3" cy="11.5" r="1.2" fill="currentColor"/><circle cx="7" cy="11.5" r="1.2" fill="currentColor"/></svg>
+        </span>
+        <span class="section-icon">
+          <svg width="8" height="10" viewBox="0 0 8 10" fill="none">
+            <path d="M2 1l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="section-name">Unused</span>
+        <span class="section-tag">empty</span>
+      </button>
+      <div class="section-body">
+        <!-- This section is hidden until it has content. Uncomment a template below to populate it.
+             Add a <div class="sub-heading">Title</div> plus any of: .tip-list, .kv-grid, .tri-table, .tier-list, .info-list, .circuit-section -->
+        <!--
+        <div class="sub-heading">Example Heading</div>
+        <div class="tip-list">
+          <div class="tip-row"><span class="tip-item">Item</span><span class="tip-desc">Description here.</span></div>
+        </div>
+        -->
+      </div>
+    </div><!-- /#section-11 -->
+
+
+  </div><!-- /.sections -->
+</div><!-- /.shell -->
+
+<button id="back-to-top" onclick="scrollToTop()" title="Back to top" aria-label="Back to top">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13V4M4 7.5L8 3.5l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<script>
+  // ═══════════════════════════════════════════════════════════════
+  //  CONTENT DETECTION
+  //  A section counts as "empty" (and is hidden) when it contains none
+  //  of these content containers. Add content using any helper class to
+  //  make a hidden section appear automatically.
+  // ═══════════════════════════════════════════════════════════════
+  const CONTENT_SELECTORS = [
+    '.sub-heading', 'table', '.tri-table', '.kv-grid', '.info-list',
+    '.circuit-section', '.tier-list', '.tip-list'
+  ].join(', ');
+
+  function hasContent(sec) {
+    return !!sec.querySelector(CONTENT_SELECTORS);
+  }
+
+  const container = document.querySelector('.sections');
+
+  // ── Slug helper (for deep-linking) ─────────────────────────────
+  // Turns a section name into a URL-friendly slug, e.g. "Cable Color
+  // Coding" -> "cable-color-coding". Derived from the name so renaming
+  // a section updates its link automatically.
+  function slugify(text) {
+    return text.toLowerCase().trim()
+      .replace(/&amp;/g, 'and')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+  function sectionSlug(sec) {
+    const name = sec.querySelector('.section-name');
+    return name ? slugify(name.textContent) : sec.id;
+  }
+
+  // ── Copy row to clipboard ──────────────────────────────────────
+  function copyRow(el) {
+    const text = el.getAttribute('data-copy');
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => flash(el)).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta);
+      flash(el);
+    });
+  }
+  function flash(el) {
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1200);
+  }
+
+  // ── Copy a biome row ───────────────────────────────────────────
+  // Builds the string from the three cells, so the table stays the
+  // single source of truth. Format:
+  //   Temp/Humidity: <climate> - Biome: <biome> - Book of Biomes Page: <page>
+  function copyBiome(tr) {
+    const cells = tr.querySelectorAll('td');
+    if (cells.length < 3) return;
+    // Tidy each cell: collapse whitespace, title-case the climate, normalise " / " to "/"
+    const climate = cells[0].textContent.trim()
+                      .replace(/\s*\/\s*/g, '/')
+                      .toLowerCase()
+                      .replace(/\b\w/g, c => c.toUpperCase());
+    const biome   = cells[1].textContent.replace(/\s+/g, ' ').trim();
+    const page    = cells[2].textContent.trim();
+    const text = `Temp/Humidity: ${climate} - Biome: ${biome} - Book of Biomes Page: ${page}`;
+    navigator.clipboard.writeText(text).then(() => flash(tr)).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta);
+      flash(tr);
+    });
+  }
+
+  // ── Assembler toggle ───────────────────────────────────────────
+  function toggleAsm() {
+    document.getElementById('asm-dedicated').classList.toggle('hidden');
+    document.getElementById('asm-original').classList.toggle('hidden');
+  }
+
+  // ── Section expand/collapse ────────────────────────────────────
+  function setOpen(sec, open) {
+    sec.classList.toggle('open', open);
+    updateTag(sec, open);
+    syncHash();
+  }
+  function toggle(id) {
+    if (suppressClick) return;   // ignore the click that fires right after a drag
+    const el = document.getElementById(id);
+    setOpen(el, !el.classList.contains('open'));
+  }
+  function updateTag(sec, isOpen) {
+    const tag = sec.querySelector('.section-tag');
+    if (!tag) return;
+    tag.textContent = isOpen ? 'open' : (hasContent(sec) ? 'collapsed' : 'empty');
+  }
+
+  // ── Expand / collapse all ──────────────────────────────────────
+  function visibleSections() {
+    return [...container.querySelectorAll(':scope > .section')]
+      .filter(s => !s.classList.contains('section-hidden'));
+  }
+  function expandAll()  { visibleSections().forEach(s => setOpen(s, true));  }
+  function collapseAll(){ visibleSections().forEach(s => setOpen(s, false)); }
+
+  // ── Prefix colorizer (circuit rows) ────────────────────────────
+  function colorizePrefix() {
+    document.querySelectorAll('.cr-label').forEach(el => {
+      const text = el.textContent;
+      const dash = text.indexOf(' - ');
+      if (dash !== -1) {
+        el.innerHTML =
+          '<span class="cr-prefix">' + text.slice(0, dash) + '</span>' +
+          '<span class="cr-suffix">' + text.slice(dash) + '</span>';
+      }
+    });
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  //  SEARCH / FILTER
+  //  Filters rows across all sections. Matching text is highlighted,
+  //  non-matching rows are hidden, and sections with no match are
+  //  hidden. Sections with matches auto-expand while searching.
+  // ═══════════════════════════════════════════════════════════════
+  // Granular units that get individually shown/hidden when filtering.
+  const ROW_SELECTOR = '.tip-row, .kv-k, .info-row, .tier-row, .cr, .tri-table tbody tr';
+  let searchActive = false;
+  let preSearchOpen = null;   // remembers which sections were open before searching
+
+  function clearHighlights(root) {
+    root.querySelectorAll('mark.search-hit').forEach(m => {
+      const parent = m.parentNode;
+      parent.replaceChild(document.createTextNode(m.textContent), m);
+      parent.normalize();
+    });
+  }
+
+  function highlight(el, query) {
+    // Walk text nodes and wrap matches in <mark>
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    const q = query.toLowerCase();
+    nodes.forEach(node => {
+      const txt = node.textContent;
+      const lower = txt.toLowerCase();
+      let idx = lower.indexOf(q);
+      if (idx === -1) return;
+      const frag = document.createDocumentFragment();
+      let last = 0;
+      while (idx !== -1) {
+        if (idx > last) frag.appendChild(document.createTextNode(txt.slice(last, idx)));
+        const mark = document.createElement('mark');
+        mark.className = 'search-hit';
+        mark.textContent = txt.slice(idx, idx + query.length);
+        frag.appendChild(mark);
+        last = idx + query.length;
+        idx = lower.indexOf(q, last);
+      }
+      if (last < txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    });
+  }
+
+  function runSearch(raw) {
+    const query = raw.trim();
+    const bar = document.getElementById('searchbar');
+    const count = document.getElementById('search-count');
+    bar.classList.toggle('has-text', query.length > 0);
+
+    // Always clear previous highlights & filters first
+    clearHighlights(container);
+    container.querySelectorAll('.search-filtered')
+             .forEach(el => el.classList.remove('search-filtered'));
+
+    if (query === '') {
+      // Restore the open/closed state from before the search started
+      if (preSearchOpen) {
+        visibleSections().forEach(s => setOpenSilent(s, preSearchOpen.has(s.id)));
+        preSearchOpen = null;
+      }
+      searchActive = false;
+      count.textContent = '';
+      document.getElementById('no-results').classList.remove('visible');
+      return;
+    }
+
+    // Capture pre-search open state once, at the start of a search session
+    if (!searchActive) {
+      preSearchOpen = new Set(
+        visibleSections().filter(s => s.classList.contains('open')).map(s => s.id)
+      );
+    }
+    searchActive = true;
+    const q = query.toLowerCase();
+    let totalMatches = 0;
+
+    visibleSections().forEach(sec => {
+      const rows = sec.querySelectorAll(ROW_SELECTOR);
+      let sectionMatches = 0;
+
+      if (rows.length === 0) {
+        // Section with non-row content: match against whole body text
+        const body = sec.querySelector('.section-body');
+        if (body && body.textContent.toLowerCase().includes(q)) {
+          sectionMatches = 1;
+          highlight(body, query);
+        }
+      } else {
+        rows.forEach(row => {
+          // For kv-k, also consider its paired kv-v sibling
+          let text = row.textContent;
+          let partner = null;
+          if (row.classList.contains('kv-k')) {
+            partner = row.nextElementSibling;
+            if (partner && partner.classList.contains('kv-v')) text += ' ' + partner.textContent;
+          }
+
+          // Group aliases: a row also matches if its parent .circuit-group
+          // has a data-aliases value containing the query (e.g. "Large
+          // Chemical Reactor" matches LCR rows). Edit the data-aliases
+          // attribute on each .circuit-group to change these.
+          const group = row.closest('.circuit-group');
+          const aliasMatch = group && (group.getAttribute('data-aliases') || '')
+                                        .toLowerCase().includes(q);
+
+          if (text.toLowerCase().includes(q)) {
+            sectionMatches++;
+            highlight(row, query);
+            if (partner) highlight(partner, query);
+          } else if (aliasMatch) {
+            // Alias hit: show the row, and highlight the group heading so it's
+            // clear why these rows matched (the query is in the machine name).
+            sectionMatches++;
+            const heading = group.querySelector('.cg-heading');
+            if (heading && !heading.querySelector('mark.search-hit')) {
+              highlight(heading, query);
+            }
+          } else {
+            row.classList.add('search-filtered');
+            if (partner) partner.classList.add('search-filtered');
+          }
+        });
+      }
+
+      if (sectionMatches > 0) {
+        totalMatches += sectionMatches;
+        sec.classList.remove('search-filtered');
+        setOpenSilent(sec, true);  // auto-expand matches (no hash write)
+      } else {
+        sec.classList.add('search-filtered');
+      }
+    });
+
+    count.textContent = totalMatches === 0 ? '0 results'
+                      : totalMatches + (totalMatches === 1 ? ' result' : ' results');
+    document.getElementById('no-results').classList.toggle('visible', totalMatches === 0);
+  }
+
+  // Expand without touching the URL hash (used during search)
+  function setOpenSilent(sec, open) {
+    sec.classList.toggle('open', open);
+    const tag = sec.querySelector('.section-tag');
+    if (tag) tag.textContent = open ? 'open' : (hasContent(sec) ? 'collapsed' : 'empty');
+  }
+
+  function clearSearch() {
+    const input = document.getElementById('search-input');
+    input.value = '';
+    runSearch('');
+    input.focus();
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  //  DEEP LINKING (URL hash ↔ open section)
+  //  The hash reflects open sections by slug, e.g. #bees or
+  //  #bees,cable-color-coding. On load, matching sections auto-open.
+  // ═══════════════════════════════════════════════════════════════
+  let hashSyncEnabled = true;
+
+  function syncHash() {
+    if (!hashSyncEnabled || searchActive) return;
+    const open = visibleSections()
+      .filter(s => s.classList.contains('open'))
+      .map(sectionSlug);
+    const newHash = open.length ? '#' + open.join(',') : '';
+    // Replace (not push) so we don't spam browser history on every toggle
+    history.replaceState(null, '', location.pathname + location.search + newHash);
+  }
+
+  function applyHash() {
+    const hash = decodeURIComponent(location.hash.replace(/^#/, '')).trim();
+    if (!hash) return;
+    const slugs = hash.split(',').map(s => s.trim()).filter(Boolean);
+    let first = null;
+    visibleSections().forEach(sec => {
+      if (slugs.includes(sectionSlug(sec))) {
+        setOpenSilent(sec, true);
+        if (!first) first = sec;
+      }
+    });
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  //  THEME (light / dark)
+  // ═══════════════════════════════════════════════════════════════
+  const THEME_KEY = 'gtnh_theme';
+  const MOON_SVG = '<circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M6.5 1.5A5 5 0 0 0 6.5 11.5 5 5 0 0 1 6.5 1.5z" fill="currentColor"/>';
+  const SUN_SVG  = '<circle cx="6.5" cy="6.5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M6.5 1v1M6.5 11v1M1 6.5H2M11 6.5h1M2.8 2.8l.7.7M9.5 9.5l.7.7M9.5 3.5l-.7.7M3.5 9.5l-.7.7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>';
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const icon = document.getElementById('theme-icon');
+    if (icon) icon.innerHTML = theme === 'light' ? MOON_SVG : SUN_SVG;
+  }
+  function toggleTheme() {
+    const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    localStorage.setItem(THEME_KEY, next);
+    applyTheme(next);
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  //  DRAG AND DROP + ORDER PERSISTENCE
+  //  Order saved to localStorage key "gtnh_section_order".
+  // ═══════════════════════════════════════════════════════════════
+  const ORDER_KEY = 'gtnh_section_order';
+  let dragSrc = null;
+  let suppressClick = false;
+
+  function getSectionIds() {
+    return [...container.querySelectorAll(':scope > .section')].map(s => s.id);
+  }
+  function saveOrder() {
+    localStorage.setItem(ORDER_KEY, JSON.stringify(getSectionIds()));
+  }
+  function loadOrder() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(ORDER_KEY));
+      if (!Array.isArray(saved) || saved.length === 0) return;
+      saved.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) container.appendChild(el);
+      });
+    } catch (e) { /* ignore corrupt data */ }
+  }
+
+  function initDrag() {
+    container.querySelectorAll(':scope > .section').forEach(sec => {
+      const handle = sec.querySelector('.section-drag-handle');
+      if (!handle) return;
+
+      handle.addEventListener('pointerdown', () => sec.setAttribute('draggable', 'true'));
+      handle.addEventListener('click', e => {
+        e.stopPropagation();
+        sec.setAttribute('draggable', 'false');
+      });
+
+      sec.addEventListener('dragstart', e => {
+        dragSrc = sec;
+        sec.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', sec.id);
+      });
+      sec.addEventListener('dragend', () => {
+        sec.classList.remove('dragging');
+        sec.setAttribute('draggable', 'false');
+        container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+        dragSrc = null;
+        saveOrder();
+        suppressClick = true;
+        setTimeout(() => { suppressClick = false; }, 50);
+      });
+      sec.addEventListener('dragover', e => {
+        e.preventDefault();
+        if (dragSrc && dragSrc !== sec) {
+          container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+          sec.classList.add('drag-over');
+          const rect = sec.getBoundingClientRect();
+          const midY = rect.top + rect.height / 2;
+          if (e.clientY < midY) container.insertBefore(dragSrc, sec);
+          else container.insertBefore(dragSrc, sec.nextSibling);
+        }
+      });
+      sec.addEventListener('dragleave', () => sec.classList.remove('drag-over'));
+      sec.addEventListener('drop', e => { e.preventDefault(); sec.classList.remove('drag-over'); });
+    });
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  //  INIT
+  // ═══════════════════════════════════════════════════════════════
+  // Theme first (before paint) to avoid a flash
+  applyTheme(localStorage.getItem(THEME_KEY) || 'dark');
+
+  // Restore saved order
+  loadOrder();
+
+  // Hide empty sections, set initial tag text
+  document.querySelectorAll('.sections > .section').forEach(sec => {
+    sec.classList.toggle('section-hidden', !hasContent(sec));
+    updateTag(sec, sec.classList.contains('open'));
+  });
+
+  colorizePrefix();
+  initDrag();
+
+  // Apply deep-link hash (auto-open + scroll). Disable hash writes while doing so.
+  hashSyncEnabled = false;
+  applyHash();
+  hashSyncEnabled = true;
+
+  // React to hash changes (e.g. user edits URL or uses back button)
+  window.addEventListener('hashchange', () => {
+    hashSyncEnabled = false;
+    applyHash();
+    hashSyncEnabled = true;
+  });
+
+  // ── Back to top ────────────────────────────────────────────────
+  const backToTop = document.getElementById('back-to-top');
+  function scrollToTop() {
+    // Try every plausible scroll container so it works in sandboxed iframes too.
+    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) { window.scrollTo(0, 0); }
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }
+  function updateBackToTop() {
+    if (!backToTop) return;
+    const y = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    backToTop.classList.toggle('scrolled', y > 120);
+  }
+  // Listen broadly so it works whether window, documentElement, or body scrolls.
+  window.addEventListener('scroll', updateBackToTop, { passive: true });
+  document.addEventListener('scroll', updateBackToTop, { passive: true, capture: true });
+  window.addEventListener('resize', updateBackToTop, { passive: true });
+  updateBackToTop();
+
+  // Keyboard: "/" focuses search, Escape clears it
+  document.addEventListener('keydown', e => {
+    if (e.key === '/' && document.activeElement.id !== 'search-input') {
+      e.preventDefault();
+      document.getElementById('search-input').focus();
+    } else if (e.key === 'Escape' && document.activeElement.id === 'search-input') {
+      clearSearch();
+    }
+  });
+</script>
+</body></html>
