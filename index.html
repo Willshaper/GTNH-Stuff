@@ -834,6 +834,18 @@
     color: var(--teal);
     text-align: right;
   }
+  .calc-table td.dim {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dimmer);
+  }
+  .calc-table tbody tr.row-selected {
+    background: var(--tint-teal);
+  }
+  .calc-table tbody tr.row-selected td:first-child {
+    color: var(--teal);
+    font-weight: 500;
+  }
 
   /* Fuel reference tables */
   .fueltable-group { margin-top: 8px; }
@@ -869,6 +881,45 @@
     padding: 2px 18px 2px 2px;
     border-bottom: 1px solid var(--border);
     text-align: right;
+  }
+
+
+  /* Calculator checkbox toggle */
+  .calc-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .calc-checkbox input[type="checkbox"] {
+    appearance: none;
+    width: 16px; height: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    background: var(--bg);
+    cursor: pointer;
+    position: relative;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .calc-checkbox input[type="checkbox"]:checked {
+    background: var(--teal);
+    border-color: var(--teal);
+  }
+  .calc-checkbox input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px; top: 2px;
+    width: 4px; height: 8px;
+    border: solid var(--bg);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
   }
 
   /* Calculator show/hide toggle button */
@@ -1269,17 +1320,22 @@
 
           <!-- ── FUEL PRODUCTION INPUTS ── -->
           <div class="sub-heading">Fuel Production</div>
-          <div class="calc-tip">Enter what your fuel line produces. Output is the gross EU/t the fuel is worth; profit is what's left after the processing cost of making it.</div>
+          <div class="calc-tip">Enter your fuel line's output and the EU/t cost of running it. <b>Gross Fuel Output</b> is the total raw fuel energy produced. <b>Net Fuel</b> is what remains after subtracting the fuel used to supply the processing cost.</div>
+
+          <label class="calc-checkbox">
+            <input type="checkbox" id="calc-showall" onchange="onShowAllChange()">
+            <span>Show all fuels <span class="calc-sublabel">— when unchecked, only commonly used fuels appear in the dropdown. All fuels remain visible in the Fuel Value Reference below.</span></span>
+          </label>
 
           <div class="calc-grid">
             <!-- Row 1: Generator Type | Fuel -->
             <label class="calc-field">
-              <span class="calc-label">Generator Type</span>
+              <span class="calc-label">Generator Type <span class="calc-sublabel">— the generator your fuel line uses</span></span>
               <select id="calc-gentype" class="calc-input" onchange="onGenTypeChange()"></select>
             </label>
             <label class="calc-field">
               <span class="calc-label">Fuel</span>
-              <select id="calc-fuel" class="calc-input" onchange="onFuelChange()"></select>
+              <select id="calc-fuel" class="calc-input" onchange="onFuelSelected()"></select>
             </label>
 
             <!-- Custom EU/L (only shows when Fuel = Custom) -->
@@ -1300,7 +1356,7 @@
 
             <!-- Row 3: Generator Tier (full width) — efficiency of the generator powering production -->
             <label class="calc-field calc-span2">
-              <span class="calc-label">Generator Tier <span class="calc-sublabel">— used in the fuel production step (sets its efficiency)</span></span>
+              <span class="calc-label">Generator Tier <span class="calc-sublabel">— the tier of generator used for your fuel production setup.</span></span>
               <select id="calc-gentier" class="calc-input" onchange="onGenChange()"></select>
             </label>
             <label class="calc-field calc-span2" id="calc-eff-custom-wrap" style="display:none">
@@ -1309,43 +1365,44 @@
             </label>
           </div>
 
-          <!-- ── PRODUCTION RESULT ── -->
+          <!-- ── PRODUCTION RESULT (fuel-denominated) ── -->
           <div class="calc-result">
-            <div class="cr-stat"><span class="cr-stat-label">Gross Output</span><span class="cr-stat-val" id="out-gross">—</span><span class="cr-stat-unit">EU/t</span></div>
-            <div class="cr-stat"><span class="cr-stat-label">Profit (Net)</span><span class="cr-stat-val accent" id="out-net">—</span><span class="cr-stat-unit">EU/t</span></div>
-            <div class="cr-stat"><span class="cr-stat-label">Processing Cost</span><span class="cr-stat-val" id="out-cost">—</span><span class="cr-stat-unit">of output</span></div>
+            <div class="cr-stat"><span class="cr-stat-label">Gross Fuel Output</span><span class="cr-stat-val" id="out-gross">—</span><span class="cr-stat-unit">EU/t of fuel</span></div>
+            <div class="cr-stat"><span class="cr-stat-label">Net Fuel (Surplus)</span><span class="cr-stat-val accent" id="out-net">—</span><span class="cr-stat-unit">EU/t of fuel</span></div>
+            <div class="cr-stat"><span class="cr-stat-label">Fuel Used On Production</span><span class="cr-stat-val" id="out-cost">—</span><span class="cr-stat-unit">of gross fuel</span></div>
           </div>
 
-          <!-- ── POWER GEN FROM PROFIT ── -->
-          <div class="sub-heading">Power Generation From Profit</div>
-          <div class="calc-tip">How many generators of each tier your <b>net</b> EU/t could run. Pick a generator below to see a single highlighted figure, or read the full table.</div>
+          <!-- ── POWER GEN FROM SURPLUS FUEL ── -->
+          <div class="sub-heading">Power Generation From Surplus Fuel</div>
+          <div class="calc-tip">Your <b>net surplus fuel</b> is used in the same generator type as your production setup (<span id="out-gentype-name">—</span>). Select a tier below to see how much EU/t you can generate and how many generators of that tier you could run simultaneously.</div>
 
-          <label class="calc-field calc-field-inline">
-            <span class="calc-label">Show for</span>
-            <select id="calc-showgen" class="calc-input" onchange="recalc()">
-              <option value="lv">LV — 32 EU/t</option>
-              <option value="mv">MV — 128 EU/t</option>
-              <option value="hv" selected>HV — 512 EU/t</option>
-              <option value="ev">EV — 2048 EU/t</option>
-              <option value="iv">IV — 8192 EU/t</option>
-            </select>
-          </label>
+          <div class="calc-grid">
+            <label class="calc-field calc-span2">
+              <span class="calc-label">Generator Tier</span>
+              <select id="calc-out-gentier" class="calc-input" onchange="onOutGenChange()"></select>
+            </label>
+            <label class="calc-field calc-span2" id="calc-out-eff-custom-wrap" style="display:none">
+              <span class="calc-label">Custom Efficiency (%)</span>
+              <input id="calc-out-eff-custom" class="calc-input" type="number" min="0" step="any" value="100" oninput="recalc()">
+            </label>
+          </div>
 
+          <div class="calc-bigstat">
+            <span class="calc-bigstat-num" id="out-genpower">—</span>
+            <span class="calc-bigstat-label" id="out-genpower-label">EU/t generated</span>
+          </div>
           <div class="calc-bigstat">
             <span class="calc-bigstat-num" id="out-gencount">—</span>
             <span class="calc-bigstat-label" id="out-genlabel">generators</span>
           </div>
 
+          <!-- Full breakdown: surplus fuel used in every tier of the chosen type -->
           <table class="tri-table calc-table">
             <thead>
-              <tr><td>Tier</td><td>EU/t each</td><td style="text-align:right"># You Can Run</td></tr>
+              <tr><td>Tier</td><td>Efficiency</td><td>EU/t Generated</td><td style="text-align:right"># You Can Run</td></tr>
             </thead>
-            <tbody>
-              <tr><td>LV</td>   <td>32</td>   <td id="cnt-lv" class="num">—</td></tr>
-              <tr><td>MV</td>   <td>128</td>  <td id="cnt-mv" class="num">—</td></tr>
-              <tr><td>HV</td>   <td>512</td>  <td id="cnt-hv" class="num">—</td></tr>
-              <tr><td>EV</td>   <td>2048</td> <td id="cnt-ev" class="num">—</td></tr>
-              <tr><td>IV</td>   <td>8192</td> <td id="cnt-iv" class="num">—</td></tr>
+            <tbody id="calc-out-table-body">
+              <!-- rows injected by JS -->
             </tbody>
           </table>
 
@@ -1954,20 +2011,21 @@
 
   // ═══════════════════════════════════════════════════════════════
   //  EARLY GAME POWER CALCULATOR
-  //  Model (from the reference sheet):
-  //    grossEUt = (fuelPerMin / 1000) * (EUperL * 1000) * efficiency / 60 / 20
-  //             = fuelPerMin * EUperL * efficiency / 1200
-  //    netEUt   = grossEUt - processingCost
-  //    procPct  = -processingCost / grossEUt   (share of gross eaten by cost)
-  //  Generator counts = floor(netEUt / tierCapacity)
-  //    Tier capacities (EU/t): LV 32, MV 128, HV 512, EV 2048, IV 8192
+  //  Fuel-denominated model:
+  //    grossFuel = perMin * EU/L / 1200          (raw fuel energy, EU/t)
+  //    fuelUsed  = processingCost / effProd      (fuel used to power production)
+  //    netFuel   = grossFuel - fuelUsed          (surplus fuel)
+  //  Burning surplus in a generator of efficiency e at tier capacity cap:
+  //    elec = netFuel * e ;  generators = elec / cap
+  //  Tier capacities (EU/t): LV 32, MV 128, HV 512, EV 2048, IV 8192
   //
+  //  A fuel may exist in several FUEL_TABLES (e.g. Creosote Oil burns in
+  //  both Combustion and Semifluid), possibly at different EU/L. The bottom
+  //  generator-type selector lists every type whose table contains the fuel.
   //  To edit fuels or efficiencies, change the data objects below.
   // ═══════════════════════════════════════════════════════════════
 
-  // Fuel reference tables — EU/L. Add/edit entries freely.
-  // The KEY is also the generator type used to burn the fuel, so the
-  // fuel dropdown is filtered to match the selected Generator Type.
+  // Fuel reference tables — EU/L per generator type. Add/edit entries freely.
   const FUEL_TABLES = {
     'Turbine': {   // Gas Turbine fuels
       'Natural Gas':20,'Hydrogen':20,'Carbon Monoxide':24,'Wood Gas':24,'Sulfuric Gas':25,
@@ -1983,7 +2041,7 @@
       'Diesel':480,'Ether':537,'Gasoline':576,'Cetane-Boosted Diesel':1000,'Ethanol Gasoline':1100,
       'Jet Fuel No.3':1824,'Jet Fuel A':2248,'High Octane Gasoline':2500
     },
-    'Semifluid': {   // Large Semifluid Burner fuels
+    'Semifluid': {   // Semifluid Generator fuels
       'Fish Oil':4,'Seed Oil':4,'Raw Animal Waste':12,'Coal Tar':16,'Biomass':16,'Manure Slurry':24,
       'Coal Tar Oil':32,'Fertile Manure Slurry':32,'Light Oil':40,'Oil':40,'Creosote Oil':48,
       'Heavy Oil':60,'Raw Oil':60,'Sulfuric Coal Tar Oil':64,'Sulfuric Heavy Fuel':80,
@@ -1991,11 +2049,38 @@
     }
   };
 
+  // Fuels hidden from the Fuel dropdown when "Show all Fuel Types" is ON (the
+  // default). These are the rarely-used early-game fuels; they still appear in
+  // the Fuel Value Reference. Listed per generator type.
+  const HIDDEN_FUELS = {
+    'Turbine': ['Natural Gas','Hydrogen','Carbon Monoxide','Wood Gas','Sulfuric Gas','Biogas',
+      'Sulfuric Naphtha','Cyclopentadiene','Coal Gas','Methane','Ethylene','Refinery Gas','Ethane',
+      'Propene','Butadiene','Naphtha','Propane','Butene','Phenol','Butane','LPG','Toluene','Ether',
+      'Naquadah Gas','Nefarious Gas'],
+    'Combustion': ['Fish Oil','Short Mead','Biomass','Creosote Oil','Oil','Sulfuric Light Fuel',
+      'Octane','Methanol','Ethanol','Bio Diesel','Butanol','Ether','Ethanol Gasoline',
+      'Jet Fuel No.3','Jet Fuel A'],
+    'Semifluid': ['Fish Oil','Seed Oil','Raw Animal Waste','Coal Tar','Biomass','Manure Slurry',
+      'Coal Tar Oil','Fertile Manure Slurry','Light Oil','Oil','Heavy Oil','Raw Oil',
+      'Sulfuric Coal Tar Oil','Sulfuric Heavy Fuel','Very Heavy Oil','Naphthenic Acid','Glycerol',
+      'Nefarious Oil']
+  };
+
+  // Returns the list of generator types whose table contains `fuel`.
+  function typesForFuel(fuel) {
+    return Object.keys(FUEL_TABLES).filter(t => fuel in FUEL_TABLES[t]);
+  }
+  // Is a fuel hidden (for a given type) when the "hide" toggle is on?
+  function isHidden(type, fuel) {
+    return (HIDDEN_FUELS[type] || []).includes(fuel);
+  }
+
+
   // Friendly display names for each generator type (for the reference tables).
   const GEN_DISPLAY = {
     'Turbine': 'Gas Turbine',
     'Combustion': 'Combustion Engine',
-    'Semifluid': 'Large Semifluid Burner'
+    'Semifluid': 'Semifluid Generator'
   };
 
   // Fuels pinned to the top of the dropdown, per generator type.
@@ -2031,6 +2116,7 @@
     if (calcRestoring) return;
     const $ = id => document.getElementById(id);
     const state = {
+      showall:   $('calc-showall').checked,
       gentype:   $('calc-gentype').value,
       gentier:   $('calc-gentier').value,
       fuel:      $('calc-fuel').value,
@@ -2038,7 +2124,8 @@
       permin:    $('calc-permin').value,
       cost:      $('calc-cost').value,
       effcustom: $('calc-eff-custom').value,
-      showgen:   $('calc-showgen').value,
+      outtier:   $('calc-out-gentier').value,
+      outeff:    $('calc-out-eff-custom').value,
       refopen:   $('calc-ref-wrap').style.display !== 'none'
     };
     lsSet(CALC_KEY, JSON.stringify(state));
@@ -2051,38 +2138,43 @@
     const $ = id => document.getElementById(id);
     calcRestoring = true;
 
-    // Order matters: type first (rebuilds tier + fuel dropdowns), then the rest.
+    // 1. Show-all toggle.
+    if (state.showall != null) $('calc-showall').checked = !!state.showall;
+
+    // 2. Production generator type (primary) → rebuild its tiers, fuel list, output tiers.
     if (state.gentype && GEN_EFF[state.gentype]) {
       $('calc-gentype').value = state.gentype;
-      onGenTypeRefreshTiers();
-      refreshFuelDropdown();
     }
-    // Fuel (option must exist in the rebuilt list)
-    if (state.fuel) {
-      const fuelSel = $('calc-fuel');
-      if ([...fuelSel.options].some(o => o.value === state.fuel)) {
-        fuelSel.value = state.fuel;
-      }
+    onGenTypeRefreshTiers();
+    refreshFuelDropdown();
+    onOutGenTypeRefreshTiers();
+
+    // 3. Fuel (must exist in the rebuilt, type-filtered list).
+    if (state.fuel && [...$('calc-fuel').options].some(o => o.value === state.fuel)) {
+      $('calc-fuel').value = state.fuel;
     }
-    // Generator tier
-    if (state.gentier) {
-      const tierSel = $('calc-gentier');
-      if ([...tierSel.options].some(o => o.value === state.gentier)) {
-        tierSel.value = state.gentier;
-      }
+
+    // 4. Tiers.
+    if (state.gentier && [...$('calc-gentier').options].some(o => o.value === state.gentier)) {
+      $('calc-gentier').value = state.gentier;
     }
-    // Numeric inputs
+    if (state.outtier && [...$('calc-out-gentier').options].some(o => o.value === state.outtier)) {
+      $('calc-out-gentier').value = state.outtier;
+    }
+
+    // 5. Numeric inputs.
     if (state.eul       != null) $('calc-eul').value = state.eul;
     if (state.permin    != null) $('calc-permin').value = state.permin;
     if (state.cost      != null) $('calc-cost').value = state.cost;
     if (state.effcustom != null) $('calc-eff-custom').value = state.effcustom;
-    if (state.showgen)           $('calc-showgen').value = state.showgen;
+    if (state.outeff    != null) $('calc-out-eff-custom').value = state.outeff;
 
-    // Reapply conditional UI (custom EU/L field, custom efficiency field, fuel value)
+    // 6. Reapply conditional UI (custom EU/L field, custom efficiency fields).
     onFuelChange();
     onGenChange();
+    onOutGenChange();
 
-    // Restore the fuel-reference open/closed state
+    // 7. Fuel-reference open/closed state.
     if (state.refopen) {
       $('calc-ref-wrap').style.display = 'block';
       $('calc-ref-toggle-label').textContent = 'Hide fuel values';
@@ -2096,19 +2188,21 @@
     const typeSel = document.getElementById('calc-gentype');
     if (!typeSel) return; // calculator not present
 
-    // Suppress saving for the whole setup phase. Building the dropdowns fires
-    // change handlers (onFuelChange -> recalc -> saveCalc) that would otherwise
-    // overwrite the user's stored state with defaults BEFORE we restore it.
+    // Suppress saving during setup; building dropdowns fires change handlers
+    // (-> recalc -> saveCalc) that would otherwise overwrite stored state
+    // before we restore it.
     calcRestoring = true;
 
-    // Generator type dropdown
+    // Generator Type is primary: it always lists all 3 generators and filters
+    // the fuel list. Build it, its tier list, the fuel list, and the output
+    // tier list (the bottom section reuses the production generator type).
     typeSel.innerHTML = Object.keys(GEN_EFF)
       .map(t => `<option value="${t}">${GEN_DISPLAY[t]}</option>`).join('');
+    onGenTypeRefreshTiers();
+    refreshFuelDropdown();
+    onOutGenTypeRefreshTiers();
 
-    onGenTypeRefreshTiers();   // tier dropdown for default type
-    refreshFuelDropdown();     // fuel dropdown for default type
-
-    // Build fuel reference tables (all three, for browsing)
+    // Build fuel reference tables (all three tables, for browsing)
     const ref = document.getElementById('calc-fueltables');
     ref.innerHTML = Object.entries(FUEL_TABLES).map(([type, fuels]) => {
       const rows = Object.entries(fuels).map(([name, eul]) =>
@@ -2122,31 +2216,39 @@
     recalc();
   }
 
-  // Populate the Fuel dropdown with only the fuels for the selected
-  // generator type, common fuels pinned to the top, plus a Custom option.
+  // Populate the Fuel dropdown with the fuels the SELECTED production generator
+  // type can burn, respecting the "Show all Fuel Types" toggle (unchecked =
+  // hide the rarely-used fuels). Common fuels are pinned to the top. Keeps the
+  // current fuel selected if it's still valid, else falls back sensibly.
   function refreshFuelDropdown() {
-    const type = document.getElementById('calc-gentype').value;
-    const fuels = FUEL_TABLES[type] || {};
+    const type    = document.getElementById('calc-gentype').value;
     const fuelSel = document.getElementById('calc-fuel');
+    const prev    = fuelSel.value;
+    const showAll = document.getElementById('calc-showall').checked;
+    const fuels   = FUEL_TABLES[type] || {};
 
-    const common = (COMMON_FUELS[type] || []).filter(n => n in fuels);
-    const rest = Object.keys(fuels).filter(n => !common.includes(n));
+    // Names for this generator type, minus hidden ones unless "show all".
+    const names = Object.keys(fuels).filter(n => showAll || !isHidden(type, n));
+
+    const common = (COMMON_FUELS[type] || []).filter(n => names.includes(n));
+    const rest   = names.filter(n => !common.includes(n)).sort();
 
     let opts = '<option value="custom">Custom (enter EU/L)</option>';
     if (common.length) {
       opts += '<optgroup label="Common">';
-      opts += common.map(n => `<option value="${n}" data-eul="${fuels[n]}">${n} (${fuels[n]} EU/L)</option>`).join('');
+      opts += common.map(n => `<option value="${n}">${n} (${fuels[n]} EU/L)</option>`).join('');
       opts += '</optgroup>';
     }
     opts += `<optgroup label="${GEN_DISPLAY[type]}">`;
-    opts += rest.map(n => `<option value="${n}" data-eul="${fuels[n]}">${n} (${fuels[n]} EU/L)</option>`).join('');
+    opts += rest.map(n => `<option value="${n}">${n} (${fuels[n]} EU/L)</option>`).join('');
     opts += '</optgroup>';
     fuelSel.innerHTML = opts;
 
-    // Default selection: first common fuel if any, else first fuel, else custom
-    if (common.length) fuelSel.value = common[0];
-    else if (rest.length) fuelSel.value = rest[0];
-    else fuelSel.value = 'custom';
+    // Keep previous fuel if still valid for this type, else first common/rest.
+    if (prev && [...fuelSel.options].some(o => o.value === prev)) fuelSel.value = prev;
+    else if (common.length) fuelSel.value = common[0];
+    else if (rest.length)   fuelSel.value = rest[0];
+    else                    fuelSel.value = 'custom';
 
     onFuelChange();
   }
@@ -2154,13 +2256,14 @@
   function onGenTypeRefreshTiers() {
     const type = document.getElementById('calc-gentype').value;
     const tierSel = document.getElementById('calc-gentier');
-    const tiers = GEN_EFF[type];
+    const tiers = GEN_EFF[type] || {};
     let html = '<option value="custom">Custom (%)</option>';
     for (const [tier, eff] of Object.entries(tiers)) {
       html += `<option value="${tier}">${tier} — ${eff}%</option>`;
     }
+    const prev = tierSel.value;
     tierSel.innerHTML = html;
-    tierSel.value = 'HV';
+    tierSel.value = (prev && [...tierSel.options].some(o => o.value === prev)) ? prev : 'HV';
   }
 
   function onGenChange() {
@@ -2170,40 +2273,86 @@
     recalc();
   }
 
-  // Generator TYPE change: rebuild tiers AND fuel list, then recalc
+  // Production generator TYPE change (primary control): rebuild its tier list,
+  // refilter the fuel list to this generator's fuels (keeping the current fuel
+  // if valid), rebuild the output tier list (bottom uses this same type), recalc.
   function onGenTypeChange() {
     onGenTypeRefreshTiers();
     refreshFuelDropdown();
+    onOutGenTypeRefreshTiers();
     onGenChange();
   }
 
-  function onFuelChange() {
-    const sel = document.getElementById('calc-fuel');
-    const val = sel.value;
-    const eulWrap = document.getElementById('calc-eul-wrap');
-    const eulInput = document.getElementById('calc-eul');
-    if (val === 'custom') {
-      eulWrap.style.display = 'flex';       // show input only for custom
-    } else {
-      eulWrap.style.display = 'none';        // hide; value taken from selection
-      const opt = sel.options[sel.selectedIndex];
-      const eul = opt && opt.getAttribute('data-eul');
-      if (eul != null) eulInput.value = eul;
+  // "Show all Fuel Types" checkbox toggled → rebuild fuel list for current type.
+  function onShowAllChange() {
+    refreshFuelDropdown();
+  }
+
+  // ── Output (bottom) tier selector ──
+  // The bottom section has no generator-type dropdown; it always uses the
+  // production generator type. This just (re)builds the tier options for it.
+  function onOutGenTypeRefreshTiers() {
+    const type = document.getElementById('calc-gentype').value;   // production type
+    const tierSel = document.getElementById('calc-out-gentier');
+    const tiers = GEN_EFF[type] || {};
+    let html = '<option value="custom">Custom (%)</option>';
+    for (const [tier, eff] of Object.entries(tiers)) {
+      html += `<option value="${tier}">${tier} — ${eff}%</option>`;
     }
+    const prev = tierSel.value;
+    tierSel.innerHTML = html;
+    tierSel.value = (prev && [...tierSel.options].some(o => o.value === prev)) ? prev : 'HV';
+  }
+  function onOutGenChange() {
+    const tier = document.getElementById('calc-out-gentier').value;
+    document.getElementById('calc-out-eff-custom-wrap').style.display =
+      (tier === 'custom') ? 'flex' : 'none';
     recalc();
   }
 
-  // Clicking a fuel in the reference tables: switch generator type if needed,
-  // then select that fuel.
-  function pickFuel(type, name, eul) {
-    const typeSel = document.getElementById('calc-gentype');
-    if (typeSel.value !== type) {
-      typeSel.value = type;
-      onGenTypeRefreshTiers();
-      refreshFuelDropdown();
+  // Called when the user picks a fuel from the dropdown. If the current
+  // production generator can't run it, switch to a generator type that can.
+  function onFuelSelected() {
+    const fuel = document.getElementById('calc-fuel').value;
+    if (fuel !== 'custom') {
+      const type = document.getElementById('calc-gentype').value;
+      const valid = typesForFuel(fuel);
+      if (valid.length && !valid.includes(type)) {
+        // Switch production generator type to the first that can burn this fuel,
+        // then rebuild its tiers + fuel list (which keeps this fuel selected).
+        const sel = document.getElementById('calc-gentype');
+        sel.value = valid[0];
+        onGenTypeRefreshTiers();
+        onOutGenTypeRefreshTiers();
+        // Re-filter fuels for the new type but preserve this fuel choice.
+        refreshFuelDropdown();
+        document.getElementById('calc-fuel').value = fuel; // ensure kept
+      }
     }
+    onFuelChange();
+  }
+
+  // Lightweight: toggles the custom EU/L field and recalculates.
+  function onFuelChange() {
+    const sel = document.getElementById('calc-fuel');
+    const eulWrap = document.getElementById('calc-eul-wrap');
+    eulWrap.style.display = (sel.value === 'custom') ? 'flex' : 'none';
+    recalc();
+  }
+
+  // Clicking a fuel in the reference tables: switch the production generator to
+  // the clicked table's type, reveal the fuel if hidden, then select it.
+  function pickFuel(type, name, eul) {
+    // If hidden under the current toggle, flip "show all" on so it's selectable.
+    if (!document.getElementById('calc-showall').checked && isHidden(type, name)) {
+      document.getElementById('calc-showall').checked = true;
+    }
+    document.getElementById('calc-gentype').value = type;
+    onGenTypeRefreshTiers();
+    onOutGenTypeRefreshTiers();
+    refreshFuelDropdown();
     const fuelSel = document.getElementById('calc-fuel');
-    fuelSel.value = name;
+    if ([...fuelSel.options].some(o => o.value === name)) fuelSel.value = name;
     onFuelChange();
   }
 
@@ -2217,14 +2366,18 @@
     saveCalc();
   }
 
-  // Returns the EU/L currently in effect (from selection or custom input).
+  // Returns the EU/L currently in effect. For a named fuel the value comes from
+  // the SELECTED production generator type's table (a fuel can have different
+  // EU/L per generator); falls back to any table that contains it.
   function currentEUL() {
-    const sel = document.getElementById('calc-fuel');
-    if (sel.value === 'custom') {
+    const fuel = document.getElementById('calc-fuel').value;
+    if (fuel === 'custom') {
       return parseFloat(document.getElementById('calc-eul').value) || 0;
     }
-    const opt = sel.options[sel.selectedIndex];
-    return opt ? (parseFloat(opt.getAttribute('data-eul')) || 0) : 0;
+    const type = document.getElementById('calc-gentype').value;
+    if (FUEL_TABLES[type] && fuel in FUEL_TABLES[type]) return FUEL_TABLES[type][fuel];
+    const t = typesForFuel(fuel)[0];
+    return t ? FUEL_TABLES[t][fuel] : 0;
   }
 
   function currentEfficiency() {
@@ -2240,36 +2393,82 @@
     const eul     = currentEUL();
     const perMin  = parseFloat(document.getElementById('calc-permin').value) || 0;
     const cost    = parseFloat(document.getElementById('calc-cost').value) || 0;
-    const eff     = currentEfficiency();
+    const effProd = currentEfficiency();   // efficiency of the generator powering production
 
-    const gross = perMin * eul * eff / 1200;   // EU/t
-    const net   = gross - cost;
-    const procPct = gross > 0 ? -(cost / gross) : 0;
+    // Fuel-denominated production model:
+    //   grossFuel = raw fuel energy produced per tick (no efficiency applied)
+    //   fuelUsed  = raw fuel used to supply `cost` electricity at effProd
+    //   netFuel   = surplus raw fuel energy available to burn elsewhere
+    const grossFuel = perMin * eul / 1200;            // EU/t of fuel
+    const fuelUsed  = effProd > 0 ? cost / effProd : Infinity;
+    const netFuel   = grossFuel - fuelUsed;
+    const costPct   = grossFuel > 0 ? (fuelUsed / grossFuel) : 0;
 
-    document.getElementById('out-gross').textContent = fmtNum(gross);
-    document.getElementById('out-net').textContent   = fmtNum(net);
+    document.getElementById('out-gross').textContent = fmtNum(grossFuel);
+    document.getElementById('out-net').textContent   = fmtNum(netFuel);
     const costEl = document.getElementById('out-cost');
-    costEl.textContent = gross > 0 ? (procPct * 100).toFixed(2) + '%' : '—';
-    // Color: green-ish if cost is a small share, amber/red if large
-    costEl.style.color = procPct > -0.5 ? 'var(--teal)' : (procPct > -0.9 ? 'var(--accent2)' : 'var(--accent)');
+    costEl.textContent = (grossFuel > 0 && isFinite(costPct)) ? (costPct * 100).toFixed(2) + '%' : '—';
+    // Color: teal if cost is a small share, amber mid, red if it eats most of the fuel
+    costEl.style.color = costPct < 0.5 ? 'var(--teal)' : (costPct < 0.9 ? 'var(--accent2)' : 'var(--accent)');
 
-    // Generator counts (only positive net produces usable generators)
-    const usable = Math.max(0, net);
-    for (const tier of Object.keys(TIER_CAP)) {
-      const count = usable / TIER_CAP[tier];
-      const cell = document.getElementById('cnt-' + tier);
-      if (cell) cell.textContent = net > 0 ? fmtNum(count) : '0';
+    // ── Bottom: burn the surplus fuel in the chosen output generator ──
+    const outType = document.getElementById('calc-gentype').value;   // production type drives output
+    const outTier = document.getElementById('calc-out-gentier').value;
+    const usableFuel = Math.max(0, netFuel);
+
+    // Reflect the production generator type in the section description.
+    const gtName = document.getElementById('out-gentype-name');
+    if (gtName) gtName.textContent = GEN_DISPLAY[outType] || outType;
+
+    // Efficiency of the chosen output generator
+    let outEff;
+    if (outTier === 'custom') {
+      outEff = (parseFloat(document.getElementById('calc-out-eff-custom').value) || 0) / 100;
+    } else {
+      outEff = (GEN_EFF[outType] && GEN_EFF[outType][outTier] || 0) / 100;
     }
 
-    // Big highlighted stat for the chosen generator
-    const showTier = document.getElementById('calc-showgen').value;
-    const bigNum = document.getElementById('out-gencount');
-    const bigLabel = document.getElementById('out-genlabel');
-    const cnt = usable / TIER_CAP[showTier];
-    bigNum.textContent = net > 0 ? fmtNum(cnt) : '0';
-    bigLabel.textContent = `× ${TIER_NAME[showTier]} generators (${TIER_CAP[showTier]} EU/t each)` +
-                           (net <= 0 ? ' — net is negative!' : '');
-    bigNum.style.color = net > 0 ? 'var(--teal)' : 'var(--accent)';
+    // Build the full per-tier breakdown table for the chosen type
+    const tbody = document.getElementById('calc-out-table-body');
+    const tiers = GEN_EFF[outType] || {};
+    tbody.innerHTML = Object.entries(tiers).map(([tier, effPct]) => {
+      const cap  = TIER_CAP[tier.toLowerCase()];
+      const elec = usableFuel * (effPct / 100);
+      const n    = netFuel > 0 ? elec / cap : 0;
+      const isSel = (tier === outTier);
+      return `<tr${isSel ? ' class="row-selected"' : ''}>` +
+             `<td>${tier}</td>` +
+             `<td class="dim">${effPct}%</td>` +
+             `<td class="num">${netFuel > 0 ? fmtNum(elec) : '0'}</td>` +
+             `<td class="num">${netFuel > 0 ? fmtNum(n) : '0'}</td></tr>`;
+    }).join('');
+
+    // Big highlighted stats for the chosen tier
+    const tierCap = (outTier === 'custom')
+      ? null
+      : TIER_CAP[outTier.toLowerCase()];
+    const genElec = usableFuel * outEff;
+
+    const powerNum = document.getElementById('out-genpower');
+    const powerLbl = document.getElementById('out-genpower-label');
+    powerNum.textContent = netFuel > 0 ? fmtNum(genElec) : '0';
+    powerNum.style.color = netFuel > 0 ? 'var(--teal)' : 'var(--accent)';
+    const tierLabel = (outTier === 'custom') ? `Custom (${(outEff*100).toFixed(0)}%)` : `${outTier} (${(outEff*100).toFixed(0)}%)`;
+    powerLbl.textContent = `EU/t generated — ${GEN_DISPLAY[outType] || outType}, ${tierLabel}` +
+                           (netFuel <= 0 ? ' — no surplus fuel!' : '');
+
+    const cntNum = document.getElementById('out-gencount');
+    const cntLbl = document.getElementById('out-genlabel');
+    if (tierCap) {
+      const n = netFuel > 0 ? genElec / tierCap : 0;
+      cntNum.textContent = fmtNum(n);
+      cntLbl.textContent = `× ${outTier} generators (${tierCap} EU/t output each)`;
+    } else {
+      // Custom efficiency has no fixed voltage tier, so we can't count units
+      cntNum.textContent = '—';
+      cntLbl.textContent = 'pick a tier (not Custom) to count generators';
+    }
+    cntNum.style.color = netFuel > 0 ? 'var(--teal)' : 'var(--accent)';
 
     saveCalc();
   }
