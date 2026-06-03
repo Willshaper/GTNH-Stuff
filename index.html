@@ -2096,6 +2096,11 @@
     const typeSel = document.getElementById('calc-gentype');
     if (!typeSel) return; // calculator not present
 
+    // Suppress saving for the whole setup phase. Building the dropdowns fires
+    // change handlers (onFuelChange -> recalc -> saveCalc) that would otherwise
+    // overwrite the user's stored state with defaults BEFORE we restore it.
+    calcRestoring = true;
+
     // Generator type dropdown
     typeSel.innerHTML = Object.keys(GEN_EFF)
       .map(t => `<option value="${t}">${GEN_DISPLAY[t]}</option>`).join('');
@@ -2112,6 +2117,7 @@
       return `<div class="fueltable-group"><div class="fueltable-title">${GEN_DISPLAY[type]} — EU/L</div><div class="fueltable">${rows}</div></div>`;
     }).join('');
 
+    calcRestoring = false;     // loadCalc manages the flag itself
     loadCalc();   // restore saved inputs (if any) before the first calculation
     recalc();
   }
