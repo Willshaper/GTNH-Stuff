@@ -18,30 +18,44 @@
     --teal:       #4fc4a8;
     --today:      #3ab8d8;
     --text:       #d4d6e8;
-    --text-dim:   #6b6f8a;
-    --text-dimmer:#3a3d52;
+    --text-dim:   #8e92ad;
+    --text-dimmer:#5a5e78;
     --mono:       'DM Mono', monospace;
     --sans:       'Noto Sans JP', sans-serif;
     --display:    'Syne', sans-serif;
     --h1:         #ffffff;
     --header-label: #9098b8;
+    --note-text:  #a4abce;
+    --note-bg:    rgba(58,184,216,0.05);
+    --note-border:rgba(58,184,216,0.35);
+    --row-hover:  rgba(255,255,255,0.03);
+    --tint-teal:  rgba(79,196,168,0.07);
+    --tint-teal-border: rgba(79,196,168,0.25);
+    --hl: rgba(240,160,75,0.32);
   }
 
   [data-theme="light"] {
-    --bg:         #dde0ec;
-    --bg2:        #eceef8;
-    --bg3:        #d4d8ea;
-    --border:     #b8bcd4;
-    --border2:    #9aa0be;
-    --accent:     #c43c36;
-    --accent2:    #9e5e08;
-    --teal:       #1e9070;
-    --today:      #1480a8;
-    --text:       #0e1020;
-    --text-dim:   #3a4060;
-    --text-dimmer:#6870a0;
-    --h1:         #0e1020;
-    --header-label: #3a4060;
+    --bg:         #e4e7f0;
+    --bg2:        #f4f6fc;
+    --bg3:        #dadeec;
+    --border:     #c2c7da;
+    --border2:    #a6abc4;
+    --accent:     #b32a24;
+    --accent2:    #8a5004;
+    --teal:       #137a5c;
+    --today:      #0e6e94;
+    --text:       #0b0d1a;
+    --text-dim:   #2e3450;
+    --text-dimmer:#565c7e;
+    --h1:         #0b0d1a;
+    --header-label: #2e3450;
+    --note-text:  #2e3450;
+    --note-bg:    rgba(14,110,148,0.10);
+    --note-border:rgba(14,110,148,0.5);
+    --row-hover:  rgba(11,13,26,0.05);
+    --tint-teal:  rgba(19,122,92,0.12);
+    --tint-teal-border: rgba(19,122,92,0.45);
+    --hl: rgba(240,160,75,0.6);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -132,7 +146,7 @@
     text-align: left;
     transition: background 0.12s;
   }
-  .section-btn:hover { background: rgba(255,255,255,0.03); }
+  .section-btn:hover { background: var(--row-hover); }
   .section.open .section-btn { background: rgba(255,255,255,0.02); }
 
   .section-icon {
@@ -236,7 +250,7 @@
     transition: background 0.1s;
   }
   .tri-table tbody tr:last-child { border-bottom: none; }
-  .tri-table tbody tr:hover { background: rgba(255,255,255,0.025); }
+  .tri-table tbody tr:hover { background: var(--row-hover); }
   .tri-table tbody td {
     padding: 3px 8px 3px 2px;
     vertical-align: middle;
@@ -275,7 +289,7 @@
     transition: background 0.1s;
   }
   .info-row:last-child { border-bottom: none; }
-  .info-row:hover { background: rgba(255,255,255,0.025); }
+  .info-row:hover { background: var(--row-hover); }
   .info-key {
     font-family: var(--mono);
     font-size: 10px;
@@ -297,12 +311,12 @@
   .circuit-tip {
     font-family: var(--mono);
     font-size: 10px;
-    color: #8a8faa;
+    color: var(--note-text);
     padding: 6px 10px;
     line-height: 1.6;
     margin-bottom: 6px;
-    background: rgba(58,184,216,0.05);
-    border-left: 2px solid rgba(58,184,216,0.35);
+    background: var(--note-bg);
+    border-left: 2px solid var(--note-border);
     border-radius: 0 4px 4px 0;
   }
 
@@ -338,7 +352,7 @@
     text-transform: uppercase;
     color: var(--teal);
     padding: 8px 2px 4px;
-    border-bottom: 1px solid rgba(79,196,168,0.25);
+    border-bottom: 1px solid var(--tint-teal-border);
     margin-bottom: 1px;
     margin-top: 4px;
   }
@@ -347,13 +361,13 @@
   .cg-note {
     font-family: var(--mono);
     font-size: 10px;
-    color: #8a8faa;
+    color: var(--note-text);
     font-style: normal;
     padding: 6px 10px;
     line-height: 1.6;
     margin: 6px 0 4px;
-    background: rgba(58,184,216,0.05);
-    border-left: 2px solid rgba(58,184,216,0.35);
+    background: var(--note-bg);
+    border-left: 2px solid var(--note-border);
     border-radius: 0 4px 4px 0;
   }
 
@@ -371,7 +385,7 @@
     user-select: none;
   }
   .cr:last-child { border-bottom: none; }
-  .cr:hover { background: rgba(79,196,168,0.06); border-bottom-color: rgba(79,196,168,0.15); }
+  .cr:hover { background: var(--tint-teal); border-bottom-color: var(--tint-teal-border); }
   .cr.copied { background: rgba(79,196,168,0.13); }
 
   .cr-label {
@@ -434,7 +448,7 @@
     transition: background 0.1s;
   }
   .tier-row:last-child { border-bottom: none; }
-  .tier-row:hover { background: rgba(255,255,255,0.025); }
+  .tier-row:hover { background: var(--row-hover); }
 
   .tier-badge {
     font-family: var(--mono);
@@ -478,7 +492,7 @@
     line-height: 1.5;
   }
   .tip-row:last-child { border-bottom: none; }
-  .tip-row:hover { background: rgba(255,255,255,0.025); }
+  .tip-row:hover { background: var(--row-hover); }
 
   .tip-item {
     font-family: var(--mono);
@@ -624,7 +638,7 @@
 
   /* Search match highlight */
   mark.search-hit {
-    background: rgba(240,160,75,0.3);
+    background: var(--hl);
     color: var(--text);
     border-radius: 2px;
     padding: 0 1px;
@@ -677,8 +691,202 @@
 
   /* Clickable copy-table rows (e.g. biomes) */
   .copy-table tbody tr { cursor: pointer; user-select: none; }
-  .copy-table tbody tr:hover { background: rgba(79,196,168,0.06); }
+  .copy-table tbody tr:hover { background: var(--tint-teal); }
   .copy-table tbody tr.copied { background: rgba(79,196,168,0.16); }
+
+  /* ── Power Calculator ── */
+  .calc { display: flex; flex-direction: column; }
+
+  .calc-tip {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--note-text);
+    padding: 6px 10px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    background: var(--note-bg);
+    border-left: 2px solid var(--note-border);
+    border-radius: 0 4px 4px 0;
+  }
+  .calc-tip b { color: var(--text); font-weight: 500; }
+
+  .calc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px 14px;
+    margin-bottom: 12px;
+  }
+  @media (max-width: 560px) { .calc-grid { grid-template-columns: 1fr; } }
+
+  .calc-field { display: flex; flex-direction: column; gap: 4px; }
+  .calc-field-inline {
+    flex-direction: row; align-items: center; gap: 10px;
+    margin-bottom: 10px; max-width: 320px;
+  }
+  .calc-field-inline .calc-label { white-space: nowrap; }
+  .calc-field-inline .calc-input { flex: 1; }
+
+  .calc-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--today);
+  }
+  .calc-sublabel {
+    color: var(--text-dim);
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-size: 8.5px;
+  }
+  /* Full-width grid items */
+  .calc-span2 { grid-column: 1 / -1; }
+  @media (max-width: 560px) { .calc-span2 { grid-column: auto; } }
+
+  .calc-input {
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 7px 9px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    width: 100%;
+  }
+  .calc-input:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 2px rgba(79,196,168,0.15);
+  }
+  select.calc-input { cursor: pointer; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='8' height='5' viewBox='0 0 8 5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l3 3 3-3' stroke='%236b6f8a' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 10px center; padding-right: 26px;
+  }
+
+  /* Production result strip */
+  .calc-result {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 4px 0 8px;
+  }
+  @media (max-width: 560px) { .calc-result { grid-template-columns: 1fr; } }
+
+  .cr-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 12px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .cr-stat-label {
+    font-family: var(--mono);
+    font-size: 8.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+  }
+  .cr-stat-val {
+    font-family: var(--display);
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.1;
+  }
+  .cr-stat-val.accent { color: var(--teal); }
+  .cr-stat-unit {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-dim);
+  }
+
+  /* Big highlighted generator count */
+  .calc-bigstat {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 14px 16px;
+    background: var(--tint-teal);
+    border: 1px solid var(--tint-teal-border);
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .calc-bigstat-num {
+    font-family: var(--mono);
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--teal);
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .calc-bigstat-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text);
+  }
+
+  .calc-table td.num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--teal);
+    text-align: right;
+  }
+
+  /* Fuel reference tables */
+  .fueltable-group { margin-top: 8px; }
+  .fueltable-title {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    padding: 6px 2px 3px;
+    border-bottom: 1px solid var(--border2);
+  }
+  .fueltable {
+    display: grid;
+    grid-template-columns: repeat(2, max-content 1fr);
+    gap: 0;
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+  @media (max-width: 560px) { .fueltable { grid-template-columns: max-content 1fr; } }
+  .ft-name {
+    font-family: var(--sans);
+    color: var(--text);
+    padding: 2px 14px 2px 2px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: color 0.1s;
+  }
+  .ft-name:hover { color: var(--teal); }
+  .ft-val {
+    font-family: var(--mono);
+    color: var(--today);
+    padding: 2px 18px 2px 2px;
+    border-bottom: 1px solid var(--border);
+    text-align: right;
+  }
+
+  /* Calculator show/hide toggle button */
+  .calc-toggle-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    color: var(--today);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    padding: 7px 12px;
+    margin-bottom: 8px;
+    align-self: flex-start;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+  }
+  .calc-toggle-btn:hover { color: var(--teal); border-color: var(--teal); background: var(--bg2); }
 </style>
 </head>
 <body>
@@ -1053,18 +1261,105 @@
             <path d="M2 1l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </span>
-        <span class="section-name">Unused</span>
-        <span class="section-tag">empty</span>
+        <span class="section-name">Early Game Power Calculator</span>
+        <span class="section-tag">collapsed</span>
       </button>
       <div class="section-body">
-        <!-- This section is hidden until it has content. Uncomment a template below to populate it.
-             Add a <div class="sub-heading">Title</div> plus any of: .tip-list, .kv-grid, .tri-table, .tier-list, .info-list, .circuit-section -->
-        <!--
-        <div class="sub-heading">Example Heading</div>
-        <div class="tip-list">
-          <div class="tip-row"><span class="tip-item">Item</span><span class="tip-desc">Description here.</span></div>
+        <div class="calc">
+
+          <!-- ── FUEL PRODUCTION INPUTS ── -->
+          <div class="sub-heading">Fuel Production</div>
+          <div class="calc-tip">Enter what your fuel line produces. Output is the gross EU/t the fuel is worth; profit is what's left after the processing cost of making it.</div>
+
+          <div class="calc-grid">
+            <!-- Row 1: Generator Type | Fuel -->
+            <label class="calc-field">
+              <span class="calc-label">Generator Type</span>
+              <select id="calc-gentype" class="calc-input" onchange="onGenTypeChange()"></select>
+            </label>
+            <label class="calc-field">
+              <span class="calc-label">Fuel</span>
+              <select id="calc-fuel" class="calc-input" onchange="onFuelChange()"></select>
+            </label>
+
+            <!-- Custom EU/L (only shows when Fuel = Custom) -->
+            <label class="calc-field calc-span2" id="calc-eul-wrap" style="display:none">
+              <span class="calc-label">Fuel Value (EU/L)</span>
+              <input id="calc-eul" class="calc-input" type="number" min="0" step="any" value="0" oninput="recalc()">
+            </label>
+
+            <!-- Row 2: Fuel Per Min | Processing Cost -->
+            <label class="calc-field">
+              <span class="calc-label">Fuel Per Min (L)</span>
+              <input id="calc-permin" class="calc-input" type="number" min="0" step="any" value="0" oninput="recalc()">
+            </label>
+            <label class="calc-field">
+              <span class="calc-label">Processing Cost (EU/t)</span>
+              <input id="calc-cost" class="calc-input" type="number" min="0" step="any" value="0" oninput="recalc()">
+            </label>
+
+            <!-- Row 3: Generator Tier (full width) — efficiency of the generator powering production -->
+            <label class="calc-field calc-span2">
+              <span class="calc-label">Generator Tier <span class="calc-sublabel">— used in the fuel production step (sets its efficiency)</span></span>
+              <select id="calc-gentier" class="calc-input" onchange="onGenChange()"></select>
+            </label>
+            <label class="calc-field calc-span2" id="calc-eff-custom-wrap" style="display:none">
+              <span class="calc-label">Custom Efficiency (%)</span>
+              <input id="calc-eff-custom" class="calc-input" type="number" min="0" step="any" value="100" oninput="recalc()">
+            </label>
+          </div>
+
+          <!-- ── PRODUCTION RESULT ── -->
+          <div class="calc-result">
+            <div class="cr-stat"><span class="cr-stat-label">Gross Output</span><span class="cr-stat-val" id="out-gross">—</span><span class="cr-stat-unit">EU/t</span></div>
+            <div class="cr-stat"><span class="cr-stat-label">Profit (Net)</span><span class="cr-stat-val accent" id="out-net">—</span><span class="cr-stat-unit">EU/t</span></div>
+            <div class="cr-stat"><span class="cr-stat-label">Processing Cost</span><span class="cr-stat-val" id="out-cost">—</span><span class="cr-stat-unit">of output</span></div>
+          </div>
+
+          <!-- ── POWER GEN FROM PROFIT ── -->
+          <div class="sub-heading">Power Generation From Profit</div>
+          <div class="calc-tip">How many generators of each tier your <b>net</b> EU/t could run. Pick a generator below to see a single highlighted figure, or read the full table.</div>
+
+          <label class="calc-field calc-field-inline">
+            <span class="calc-label">Show for</span>
+            <select id="calc-showgen" class="calc-input" onchange="recalc()">
+              <option value="lv">LV — 32 EU/t</option>
+              <option value="mv">MV — 128 EU/t</option>
+              <option value="hv" selected>HV — 512 EU/t</option>
+              <option value="ev">EV — 2048 EU/t</option>
+              <option value="iv">IV — 8192 EU/t</option>
+            </select>
+          </label>
+
+          <div class="calc-bigstat">
+            <span class="calc-bigstat-num" id="out-gencount">—</span>
+            <span class="calc-bigstat-label" id="out-genlabel">generators</span>
+          </div>
+
+          <table class="tri-table calc-table">
+            <thead>
+              <tr><td>Tier</td><td>EU/t each</td><td style="text-align:right"># You Can Run</td></tr>
+            </thead>
+            <tbody>
+              <tr><td>LV</td>   <td>32</td>   <td id="cnt-lv" class="num">—</td></tr>
+              <tr><td>MV</td>   <td>128</td>  <td id="cnt-mv" class="num">—</td></tr>
+              <tr><td>HV</td>   <td>512</td>  <td id="cnt-hv" class="num">—</td></tr>
+              <tr><td>EV</td>   <td>2048</td> <td id="cnt-ev" class="num">—</td></tr>
+              <tr><td>IV</td>   <td>8192</td> <td id="cnt-iv" class="num">—</td></tr>
+            </tbody>
+          </table>
+
+          <!-- ── FUEL VALUE REFERENCE (hidden behind a toggle) ── -->
+          <div class="sub-heading">Fuel Value Reference</div>
+          <button class="calc-toggle-btn" id="calc-ref-toggle" onclick="toggleFuelRef()">
+            <span id="calc-ref-toggle-label">Show fuel values</span>
+          </button>
+          <div id="calc-ref-wrap" style="display:none">
+            <div class="calc-tip">EU/L per fuel. Selecting a fuel above auto-fills its value. 1 Bucket / Cell = 1000 L.</div>
+            <div id="calc-fueltables"></div>
+          </div>
+
         </div>
-        -->
       </div>
     </div><!-- /#section-5 -->
 
@@ -1559,6 +1854,19 @@
   }
 
   // ═══════════════════════════════════════════════════════════════
+  //  SAFE STORAGE
+  //  localStorage can throw (sandboxed iframes, opaque origins, privacy
+  //  modes). These wrappers never throw, so a storage failure can't abort
+  //  page init or break any feature — persistence just silently no-ops.
+  // ═══════════════════════════════════════════════════════════════
+  function lsGet(key) {
+    try { return localStorage.getItem(key); } catch (e) { return null; }
+  }
+  function lsSet(key, val) {
+    try { localStorage.setItem(key, val); } catch (e) { /* ignore */ }
+  }
+
+  // ═══════════════════════════════════════════════════════════════
   //  THEME (light / dark)
   // ═══════════════════════════════════════════════════════════════
   const THEME_KEY = 'gtnh_theme';
@@ -1572,7 +1880,7 @@
   }
   function toggleTheme() {
     const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-    localStorage.setItem(THEME_KEY, next);
+    lsSet(THEME_KEY, next);
     applyTheme(next);
   }
 
@@ -1588,11 +1896,11 @@
     return [...container.querySelectorAll(':scope > .section')].map(s => s.id);
   }
   function saveOrder() {
-    localStorage.setItem(ORDER_KEY, JSON.stringify(getSectionIds()));
+    lsSet(ORDER_KEY, JSON.stringify(getSectionIds()));
   }
   function loadOrder() {
     try {
-      const saved = JSON.parse(localStorage.getItem(ORDER_KEY));
+      const saved = JSON.parse(lsGet(ORDER_KEY));
       if (!Array.isArray(saved) || saved.length === 0) return;
       saved.forEach(id => {
         const el = document.getElementById(id);
@@ -1643,11 +1951,328 @@
     });
   }
 
+
+  // ═══════════════════════════════════════════════════════════════
+  //  EARLY GAME POWER CALCULATOR
+  //  Model (from the reference sheet):
+  //    grossEUt = (fuelPerMin / 1000) * (EUperL * 1000) * efficiency / 60 / 20
+  //             = fuelPerMin * EUperL * efficiency / 1200
+  //    netEUt   = grossEUt - processingCost
+  //    procPct  = -processingCost / grossEUt   (share of gross eaten by cost)
+  //  Generator counts = floor(netEUt / tierCapacity)
+  //    Tier capacities (EU/t): LV 32, MV 128, HV 512, EV 2048, IV 8192
+  //
+  //  To edit fuels or efficiencies, change the data objects below.
+  // ═══════════════════════════════════════════════════════════════
+
+  // Fuel reference tables — EU/L. Add/edit entries freely.
+  // The KEY is also the generator type used to burn the fuel, so the
+  // fuel dropdown is filtered to match the selected Generator Type.
+  const FUEL_TABLES = {
+    'Turbine': {   // Gas Turbine fuels
+      'Natural Gas':20,'Hydrogen':20,'Carbon Monoxide':24,'Wood Gas':24,'Sulfuric Gas':25,
+      'Biogas':40,'Sulfuric Naphtha':40,'Cyclopentadiene':70,'Coal Gas':96,'Methane':104,
+      'Ethylene':128,'Refinery Gas':160,'Ethane':168,'Propene':192,'Butadiene':206,
+      'Naphtha':220,'Propane':232,'Butene':256,'Phenol':288,'Butane':296,'LPG':320,
+      'Toluene':328,'Benzene':360,'Ether':537,'Naquadah Gas':1024,'Nefarious Gas':1200,
+      'Nitrobenzene':1600
+    },
+    'Combustion': {   // Combustion Engine fuels
+      'Fish Oil':2,'Short Mead':4,'Biomass':8,'Creosote Oil':8,'Oil':16,'Sulfuric Light Fuel':40,
+      'Octane':80,'Methanol':84,'Ethanol':192,'Light Fuel':305,'Bio Diesel':320,'Butanol':400,
+      'Diesel':480,'Ether':537,'Gasoline':576,'Cetane-Boosted Diesel':1000,'Ethanol Gasoline':1100,
+      'Jet Fuel No.3':1824,'Jet Fuel A':2248,'High Octane Gasoline':2500
+    },
+    'Semifluid': {   // Large Semifluid Burner fuels
+      'Fish Oil':4,'Seed Oil':4,'Raw Animal Waste':12,'Coal Tar':16,'Biomass':16,'Manure Slurry':24,
+      'Coal Tar Oil':32,'Fertile Manure Slurry':32,'Light Oil':40,'Oil':40,'Creosote Oil':48,
+      'Heavy Oil':60,'Raw Oil':60,'Sulfuric Coal Tar Oil':64,'Sulfuric Heavy Fuel':80,
+      'Very Heavy Oil':90,'Naphthenic Acid':160,'Glycerol':328,'Heavy Fuel':360,'Nefarious Oil':572
+    }
+  };
+
+  // Friendly display names for each generator type (for the reference tables).
+  const GEN_DISPLAY = {
+    'Turbine': 'Gas Turbine',
+    'Combustion': 'Combustion Engine',
+    'Semifluid': 'Large Semifluid Burner'
+  };
+
+  // Fuels pinned to the top of the dropdown, per generator type.
+  // A fuel only appears in the "Common" group for the types listed here.
+  const COMMON_FUELS = {
+    'Turbine':    ['Benzene','Nitrobenzene'],
+    'Combustion': ['Light Fuel','Diesel','Cetane-Boosted Diesel','High Octane Gasoline'],
+    'Semifluid':  ['Creosote Oil']
+  };
+
+  // Generator efficiency by type + tier (percent). "Custom" = user input.
+  const GEN_EFF = {
+    'Turbine':    { LV:95, MV:90, HV:85, EV:60, IV:50 },
+    'Combustion': { LV:95, MV:90, HV:85, EV:65, IV:50 },
+    'Semifluid':  { LV:95, MV:90, HV:85, EV:80, IV:75 }
+  };
+
+  // Turbine/generator tier output capacity (EU/t).
+  const TIER_CAP = { lv:32, mv:128, hv:512, ev:2048, iv:8192 };
+  const TIER_NAME = { lv:'LV', mv:'MV', hv:'HV', ev:'EV', iv:'IV' };
+
+  function fmtNum(n) {
+    if (!isFinite(n)) return '—';
+    return n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  }
+
+  // ── Calculator state persistence ───────────────────────────────
+  // All inputs are saved to localStorage so the page restores them on reload.
+  const CALC_KEY = 'gtnh_calc_state';
+  let calcRestoring = false;   // suppresses saving while we restore
+
+  function saveCalc() {
+    if (calcRestoring) return;
+    const $ = id => document.getElementById(id);
+    const state = {
+      gentype:   $('calc-gentype').value,
+      gentier:   $('calc-gentier').value,
+      fuel:      $('calc-fuel').value,
+      eul:       $('calc-eul').value,
+      permin:    $('calc-permin').value,
+      cost:      $('calc-cost').value,
+      effcustom: $('calc-eff-custom').value,
+      showgen:   $('calc-showgen').value,
+      refopen:   $('calc-ref-wrap').style.display !== 'none'
+    };
+    lsSet(CALC_KEY, JSON.stringify(state));
+  }
+
+  function loadCalc() {
+    let state;
+    try { state = JSON.parse(lsGet(CALC_KEY)); } catch (e) { return; }
+    if (!state) return;
+    const $ = id => document.getElementById(id);
+    calcRestoring = true;
+
+    // Order matters: type first (rebuilds tier + fuel dropdowns), then the rest.
+    if (state.gentype && GEN_EFF[state.gentype]) {
+      $('calc-gentype').value = state.gentype;
+      onGenTypeRefreshTiers();
+      refreshFuelDropdown();
+    }
+    // Fuel (option must exist in the rebuilt list)
+    if (state.fuel) {
+      const fuelSel = $('calc-fuel');
+      if ([...fuelSel.options].some(o => o.value === state.fuel)) {
+        fuelSel.value = state.fuel;
+      }
+    }
+    // Generator tier
+    if (state.gentier) {
+      const tierSel = $('calc-gentier');
+      if ([...tierSel.options].some(o => o.value === state.gentier)) {
+        tierSel.value = state.gentier;
+      }
+    }
+    // Numeric inputs
+    if (state.eul       != null) $('calc-eul').value = state.eul;
+    if (state.permin    != null) $('calc-permin').value = state.permin;
+    if (state.cost      != null) $('calc-cost').value = state.cost;
+    if (state.effcustom != null) $('calc-eff-custom').value = state.effcustom;
+    if (state.showgen)           $('calc-showgen').value = state.showgen;
+
+    // Reapply conditional UI (custom EU/L field, custom efficiency field, fuel value)
+    onFuelChange();
+    onGenChange();
+
+    // Restore the fuel-reference open/closed state
+    if (state.refopen) {
+      $('calc-ref-wrap').style.display = 'block';
+      $('calc-ref-toggle-label').textContent = 'Hide fuel values';
+    }
+
+    calcRestoring = false;
+  }
+
+  // ── Build dropdowns + reference tables, then restore saved state ──
+  function initCalc() {
+    const typeSel = document.getElementById('calc-gentype');
+    if (!typeSel) return; // calculator not present
+
+    // Generator type dropdown
+    typeSel.innerHTML = Object.keys(GEN_EFF)
+      .map(t => `<option value="${t}">${GEN_DISPLAY[t]}</option>`).join('');
+
+    onGenTypeRefreshTiers();   // tier dropdown for default type
+    refreshFuelDropdown();     // fuel dropdown for default type
+
+    // Build fuel reference tables (all three, for browsing)
+    const ref = document.getElementById('calc-fueltables');
+    ref.innerHTML = Object.entries(FUEL_TABLES).map(([type, fuels]) => {
+      const rows = Object.entries(fuels).map(([name, eul]) =>
+        `<div class="ft-name" onclick="pickFuel('${type}','${name.replace(/'/g, "\\'")}',${eul})">${name}</div><div class="ft-val">${eul}</div>`
+      ).join('');
+      return `<div class="fueltable-group"><div class="fueltable-title">${GEN_DISPLAY[type]} — EU/L</div><div class="fueltable">${rows}</div></div>`;
+    }).join('');
+
+    loadCalc();   // restore saved inputs (if any) before the first calculation
+    recalc();
+  }
+
+  // Populate the Fuel dropdown with only the fuels for the selected
+  // generator type, common fuels pinned to the top, plus a Custom option.
+  function refreshFuelDropdown() {
+    const type = document.getElementById('calc-gentype').value;
+    const fuels = FUEL_TABLES[type] || {};
+    const fuelSel = document.getElementById('calc-fuel');
+
+    const common = (COMMON_FUELS[type] || []).filter(n => n in fuels);
+    const rest = Object.keys(fuels).filter(n => !common.includes(n));
+
+    let opts = '<option value="custom">Custom (enter EU/L)</option>';
+    if (common.length) {
+      opts += '<optgroup label="Common">';
+      opts += common.map(n => `<option value="${n}" data-eul="${fuels[n]}">${n} (${fuels[n]} EU/L)</option>`).join('');
+      opts += '</optgroup>';
+    }
+    opts += `<optgroup label="${GEN_DISPLAY[type]}">`;
+    opts += rest.map(n => `<option value="${n}" data-eul="${fuels[n]}">${n} (${fuels[n]} EU/L)</option>`).join('');
+    opts += '</optgroup>';
+    fuelSel.innerHTML = opts;
+
+    // Default selection: first common fuel if any, else first fuel, else custom
+    if (common.length) fuelSel.value = common[0];
+    else if (rest.length) fuelSel.value = rest[0];
+    else fuelSel.value = 'custom';
+
+    onFuelChange();
+  }
+
+  function onGenTypeRefreshTiers() {
+    const type = document.getElementById('calc-gentype').value;
+    const tierSel = document.getElementById('calc-gentier');
+    const tiers = GEN_EFF[type];
+    let html = '<option value="custom">Custom (%)</option>';
+    for (const [tier, eff] of Object.entries(tiers)) {
+      html += `<option value="${tier}">${tier} — ${eff}%</option>`;
+    }
+    tierSel.innerHTML = html;
+    tierSel.value = 'HV';
+  }
+
+  function onGenChange() {
+    const tier = document.getElementById('calc-gentier').value;
+    document.getElementById('calc-eff-custom-wrap').style.display =
+      (tier === 'custom') ? 'flex' : 'none';
+    recalc();
+  }
+
+  // Generator TYPE change: rebuild tiers AND fuel list, then recalc
+  function onGenTypeChange() {
+    onGenTypeRefreshTiers();
+    refreshFuelDropdown();
+    onGenChange();
+  }
+
+  function onFuelChange() {
+    const sel = document.getElementById('calc-fuel');
+    const val = sel.value;
+    const eulWrap = document.getElementById('calc-eul-wrap');
+    const eulInput = document.getElementById('calc-eul');
+    if (val === 'custom') {
+      eulWrap.style.display = 'flex';       // show input only for custom
+    } else {
+      eulWrap.style.display = 'none';        // hide; value taken from selection
+      const opt = sel.options[sel.selectedIndex];
+      const eul = opt && opt.getAttribute('data-eul');
+      if (eul != null) eulInput.value = eul;
+    }
+    recalc();
+  }
+
+  // Clicking a fuel in the reference tables: switch generator type if needed,
+  // then select that fuel.
+  function pickFuel(type, name, eul) {
+    const typeSel = document.getElementById('calc-gentype');
+    if (typeSel.value !== type) {
+      typeSel.value = type;
+      onGenTypeRefreshTiers();
+      refreshFuelDropdown();
+    }
+    const fuelSel = document.getElementById('calc-fuel');
+    fuelSel.value = name;
+    onFuelChange();
+  }
+
+  // Show/hide the fuel value reference tables.
+  function toggleFuelRef() {
+    const wrap = document.getElementById('calc-ref-wrap');
+    const label = document.getElementById('calc-ref-toggle-label');
+    const showing = wrap.style.display !== 'none';
+    wrap.style.display = showing ? 'none' : 'block';
+    label.textContent = showing ? 'Show fuel values' : 'Hide fuel values';
+    saveCalc();
+  }
+
+  // Returns the EU/L currently in effect (from selection or custom input).
+  function currentEUL() {
+    const sel = document.getElementById('calc-fuel');
+    if (sel.value === 'custom') {
+      return parseFloat(document.getElementById('calc-eul').value) || 0;
+    }
+    const opt = sel.options[sel.selectedIndex];
+    return opt ? (parseFloat(opt.getAttribute('data-eul')) || 0) : 0;
+  }
+
+  function currentEfficiency() {
+    const type = document.getElementById('calc-gentype').value;
+    const tier = document.getElementById('calc-gentier').value;
+    if (tier === 'custom') {
+      return (parseFloat(document.getElementById('calc-eff-custom').value) || 0) / 100;
+    }
+    return (GEN_EFF[type][tier] || 0) / 100;
+  }
+
+  function recalc() {
+    const eul     = currentEUL();
+    const perMin  = parseFloat(document.getElementById('calc-permin').value) || 0;
+    const cost    = parseFloat(document.getElementById('calc-cost').value) || 0;
+    const eff     = currentEfficiency();
+
+    const gross = perMin * eul * eff / 1200;   // EU/t
+    const net   = gross - cost;
+    const procPct = gross > 0 ? -(cost / gross) : 0;
+
+    document.getElementById('out-gross').textContent = fmtNum(gross);
+    document.getElementById('out-net').textContent   = fmtNum(net);
+    const costEl = document.getElementById('out-cost');
+    costEl.textContent = gross > 0 ? (procPct * 100).toFixed(2) + '%' : '—';
+    // Color: green-ish if cost is a small share, amber/red if large
+    costEl.style.color = procPct > -0.5 ? 'var(--teal)' : (procPct > -0.9 ? 'var(--accent2)' : 'var(--accent)');
+
+    // Generator counts (only positive net produces usable generators)
+    const usable = Math.max(0, net);
+    for (const tier of Object.keys(TIER_CAP)) {
+      const count = usable / TIER_CAP[tier];
+      const cell = document.getElementById('cnt-' + tier);
+      if (cell) cell.textContent = net > 0 ? fmtNum(count) : '0';
+    }
+
+    // Big highlighted stat for the chosen generator
+    const showTier = document.getElementById('calc-showgen').value;
+    const bigNum = document.getElementById('out-gencount');
+    const bigLabel = document.getElementById('out-genlabel');
+    const cnt = usable / TIER_CAP[showTier];
+    bigNum.textContent = net > 0 ? fmtNum(cnt) : '0';
+    bigLabel.textContent = `× ${TIER_NAME[showTier]} generators (${TIER_CAP[showTier]} EU/t each)` +
+                           (net <= 0 ? ' — net is negative!' : '');
+    bigNum.style.color = net > 0 ? 'var(--teal)' : 'var(--accent)';
+
+    saveCalc();
+  }
+
   // ═══════════════════════════════════════════════════════════════
   //  INIT
   // ═══════════════════════════════════════════════════════════════
   // Theme first (before paint) to avoid a flash
-  applyTheme(localStorage.getItem(THEME_KEY) || 'dark');
+  applyTheme(lsGet(THEME_KEY) || 'dark');
 
   // Restore saved order
   loadOrder();
@@ -1659,6 +2284,7 @@
   });
 
   colorizePrefix();
+  initCalc();
   initDrag();
 
   // Apply deep-link hash (auto-open + scroll). Disable hash writes while doing so.
