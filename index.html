@@ -938,6 +938,156 @@
     transition: border-color 0.15s, color 0.15s, background 0.15s;
   }
   .calc-toggle-btn:hover { color: var(--teal); border-color: var(--teal); background: var(--bg2); }
+
+  /* ── AE2 Storage Cell tables ── */
+  .ae2-scroll {
+    overflow-x: auto;
+    margin-bottom: 4px;
+  }
+
+  .ae2-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.5px;
+    table-layout: fixed;   /* fixed layout so column widths are honoured */
+  }
+
+  .ae2-table thead tr { border-bottom: 1px solid var(--border2); }
+
+  .ae2-table thead th {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--today);
+    padding: 5px 8px 5px 2px;
+    font-weight: 500;
+    text-align: right;           /* all columns right-aligned */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  /* Only the first column (Cell size) stays left-aligned */
+  .ae2-table thead th:first-child { text-align: left; }
+  .ae2-table thead th.ae2-dim { color: var(--text-dimmer); }
+
+  /* Column widths — tune here if content doesn't fit.
+     .ae2-table-fluid gets wider number columns for the larger fluid values. */
+  .ae2-table colgroup .col-cell  { width: 80px;  }
+  .ae2-table colgroup .col-bpt   { width: 72px;  }
+  .ae2-table colgroup .col-main  { width: 19%;   }
+  .ae2-table colgroup .col-total { width: 19%;   }
+  .ae2-table colgroup .col-avg   { width: 16%;   }
+
+  .ae2-table-fluid colgroup .col-main  { width: 22%;  }
+  .ae2-table-fluid colgroup .col-total { width: 22%;  }
+  .ae2-table-fluid colgroup .col-avg   { width: 18%;  }
+  .ae2-table-fluid { font-size: 10.5px; }
+
+  .ae2-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  .ae2-table tbody tr:last-child { border-bottom: none; }
+  .ae2-table tbody tr:hover { background: var(--row-hover); }
+
+  /* All cells: mono, right-aligned, no wrap */
+  .ae2-table td {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 8px 4px 2px;
+    vertical-align: middle;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.35;
+  }
+  /* First column stays left-aligned */
+  .ae2-table td:first-child { text-align: left; }
+
+  td.ae2-kB  { color: var(--accent2); font-weight: 500; }
+  td.ae2-bpt { color: var(--text-dimmer); }
+  td.ae2-num { color: var(--teal); cursor: default; }
+  td.ae2-num[title]:hover { color: var(--today); }
+  td.ae2-dim { color: var(--text-dimmer); cursor: default; }
+  td.ae2-dim[title]:hover { color: var(--text-dim); }
+
+  /* Special row styles */
+  .ae2-table tbody tr.ae2-special { border-top: 1px solid var(--border2); }
+  .ae2-table tbody tr.ae2-special td.ae2-kB[title] { cursor: help; text-decoration: underline dotted; text-underline-offset: 3px; }
+  .ae2-table tbody tr.ae2-special td.ae2-kB { color: var(--today); }
+  .ae2-table tbody tr.ae2-special td.ae2-note {
+    font-size: 10px;
+    color: var(--text-dimmer);
+    text-align: left;
+    padding-left: 4px;
+  }
+
+  /* Tier row with optional Boosted checkbox */
+  .calc-tier-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .calc-tier-row .calc-input { flex: 1; }
+
+  .calc-boost-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--today);
+    cursor: pointer;
+    padding: 7px 10px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .calc-boost-label:has(input:checked) {
+    border-color: var(--teal);
+    background: rgba(79,196,168,0.08);
+    color: var(--teal);
+  }
+  .calc-boost-label input[type="checkbox"] {
+    appearance: none;
+    width: 14px; height: 14px;
+    border: 1px solid var(--border2);
+    border-radius: 3px;
+    background: var(--bg);
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .calc-boost-label input[type="checkbox"]:checked {
+    background: var(--teal);
+    border-color: var(--teal);
+  }
+  .calc-boost-label input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px; top: 1px;
+    width: 4px; height: 8px;
+    border: solid var(--bg);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  .calc-bigstat-dim {
+    background: var(--bg3);
+    border-color: var(--border2);
+  }
+  .calc-bigstat-dim-num {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-dimmer);
+    line-height: 1;
+  }
 </style>
 </head>
 <body>
@@ -1320,7 +1470,7 @@
 
           <!-- ── FUEL PRODUCTION INPUTS ── -->
           <div class="sub-heading">Fuel Production</div>
-          <div class="calc-tip">Enter your fuel line's output and the EU/t cost of running it. <b>Gross Fuel Output</b> is the total raw fuel energy produced. <b>Net Fuel</b> is what remains after subtracting the fuel used to supply the processing cost.</div>
+          <div class="calc-tip">Enter your fuel line's output and the EU/t cost of running it. <b>Gross Fuel Output</b> is the total raw fuel energy produced. <b>Net Fuel</b> is what remains after subtracting the fuel burned to supply the processing cost.</div>
 
           <label class="calc-checkbox">
             <input type="checkbox" id="calc-showall" onchange="onShowAllChange()">
@@ -1356,8 +1506,14 @@
 
             <!-- Row 3: Generator Tier (full width) — efficiency of the generator powering production -->
             <label class="calc-field calc-span2">
-              <span class="calc-label">Generator Tier <span class="calc-sublabel">— the tier of generator used for your fuel production setup.</span></span>
-              <select id="calc-gentier" class="calc-input" onchange="onGenChange()"></select>
+              <span class="calc-label">Generator Tier <span class="calc-sublabel">— the tier of generator used in your fuel production setup. A lower-efficiency tier burns more raw fuel to supply the same processing cost, leaving less net surplus.</span></span>
+              <div class="calc-tier-row">
+                <select id="calc-gentier" class="calc-input" onchange="onGenChange()"></select>
+                <label class="calc-boost-label" id="calc-boost-wrap" style="display:none">
+                  <input type="checkbox" id="calc-boosted" onchange="recalc()">
+                  <span>Boosted <span class="calc-sublabel">×1.5 efficiency</span></span>
+                </label>
+              </div>
             </label>
             <label class="calc-field calc-span2" id="calc-eff-custom-wrap" style="display:none">
               <span class="calc-label">Custom Efficiency (%)</span>
@@ -1374,7 +1530,7 @@
 
           <!-- ── POWER GEN FROM SURPLUS FUEL ── -->
           <div class="sub-heading">Power Generation From Surplus Fuel</div>
-          <div class="calc-tip">Your <b>net surplus fuel</b> is used in the same generator type as your production setup (<span id="out-gentype-name">—</span>). Select a tier below to see how much EU/t you can generate and how many generators of that tier you could run simultaneously.</div>
+          <div class="calc-tip">Your <b>net surplus fuel</b> is burned in the same generator type as your production setup (<span id="out-gentype-name">—</span>). Select a tier below to see how much EU/t you can generate and how many generators of that tier you could run simultaneously.</div>
 
           <div class="calc-grid">
             <label class="calc-field calc-span2">
@@ -1395,8 +1551,13 @@
             <span class="calc-bigstat-num" id="out-gencount">—</span>
             <span class="calc-bigstat-label" id="out-genlabel">generators</span>
           </div>
+          <!-- Unused fuel: shown only for LCE/ECE (multiblock with fixed max EU/t) -->
+          <div class="calc-bigstat calc-bigstat-dim" id="out-unused-wrap" style="display:none">
+            <span class="calc-bigstat-num calc-bigstat-dim-num" id="out-unused">—</span>
+            <span class="calc-bigstat-label" id="out-unused-label">EU/t of fuel left over (not enough to run another full machine)</span>
+          </div>
 
-          <!-- Full breakdown: surplus fuel used in every tier of the chosen type -->
+          <!-- Full breakdown: surplus fuel burned in every tier of the chosen type -->
           <table class="tri-table calc-table">
             <thead>
               <tr><td>Tier</td><td>Efficiency</td><td>EU/t Generated</td><td style="text-align:right"># You Can Run</td></tr>
@@ -1434,18 +1595,85 @@
             <path d="M2 1l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </span>
-        <span class="section-name">Unused</span>
-        <span class="section-tag">empty</span>
+        <span class="section-name">AE2 Storage Cell Capacity</span>
+        <span class="section-tag">collapsed</span>
       </button>
       <div class="section-body">
-        <!-- This section is hidden until it has content. Uncomment a template below to populate it.
-             Add a <div class="sub-heading">Title</div> plus any of: .tip-list, .kv-grid, .tri-table, .tier-list, .info-list, .circuit-section -->
-        <!--
-        <div class="sub-heading">Example Heading</div>
-        <div class="tip-list">
-          <div class="tip-row"><span class="tip-item">Item</span><span class="tip-desc">Description here.</span></div>
+        <div class="sub-heading">How Storage Cells Work</div>
+        <div class="cg-note">Every new <b>item type</b> reserves a fixed number of bytes (shown as "Bytes/type" below). The remaining bytes hold 8 items each. Every new <b>fluid type</b> also reserves bytes, with the remainder holding 2048 L (mB) each. This means a cell dedicated to one type holds far more than one split across many types. Cell sizes use in-game notation (1k = 1,024 bytes). Hover any number for the exact value.</div>
+
+        <div class="sub-heading">Item Storage Cells</div>
+        <!-- To edit: change the cell data in the <tbody>. Abbreviated numbers show the exact value on hover. -->
+        <div class="ae2-scroll">
+        <table class="ae2-table">
+          <colgroup>
+            <col class="col-cell">
+            <col class="col-bpt">
+            <col class="col-main">
+            <col class="col-total">
+            <col class="col-avg">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Cell</th>
+              <th>Bytes / type</th>
+              <th>1 type (items)</th>
+              <th>63 types (total)</th>
+              <th class="ae2-dim">63 types (avg)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="ae2-kB">1k</td>      <td class="ae2-bpt">8</td>       <td class="ae2-num" title="8,128">8,128</td>           <td class="ae2-num" title="4,160">4,160</td>           <td class="ae2-dim">66</td></tr>
+            <tr><td class="ae2-kB">4k</td>      <td class="ae2-bpt">32</td>      <td class="ae2-num" title="32,512">32,512</td>          <td class="ae2-num" title="16,640">16,640</td>          <td class="ae2-dim">264</td></tr>
+            <tr><td class="ae2-kB">16k</td>     <td class="ae2-bpt">128</td>     <td class="ae2-num" title="130,048">130,048</td>         <td class="ae2-num" title="66,560">66,560</td>          <td class="ae2-dim">1,057</td></tr>
+            <tr><td class="ae2-kB">64k</td>     <td class="ae2-bpt">512</td>     <td class="ae2-num" title="520,192">520,192</td>         <td class="ae2-num" title="266,240">266,240</td>         <td class="ae2-dim">4,226</td></tr>
+            <tr><td class="ae2-kB">256k</td>    <td class="ae2-bpt">2,048</td>   <td class="ae2-num" title="2,080,768">2,080,768</td>      <td class="ae2-num" title="1,064,960">1,064,960</td>     <td class="ae2-dim">16,904</td></tr>
+            <tr><td class="ae2-kB">1024k</td>  <td class="ae2-bpt">8,192</td>   <td class="ae2-num" title="8,323,072">8,323,072</td>      <td class="ae2-num" title="4,259,840">4,259,840</td>     <td class="ae2-dim">67,617</td></tr>
+            <tr><td class="ae2-kB">4096k</td>  <td class="ae2-bpt">32,768</td>  <td class="ae2-num" title="33,292,288">33,292,288</td>     <td class="ae2-num" title="17,039,360">17,039,360</td>    <td class="ae2-dim">270,466</td></tr>
+            <tr><td class="ae2-kB">16384k</td> <td class="ae2-bpt">131,072</td> <td class="ae2-num" title="133,169,152">133,169,152</td>    <td class="ae2-num" title="68,157,440">68,157,440</td>    <td class="ae2-dim">1,081,864</td></tr>
+            <!-- Block Container ME Storage Cell — 1 type only, 65536 bytes (= 64 kB), bpt 512 -->
+            <tr class="ae2-special">
+              <td class="ae2-kB" title="1 type only. Cheaper early-game option for bulk single-item storage. Same capacity as a 64 kB cell with 1 type.">Block Container ME Cell ★</td>
+              <td class="ae2-bpt">512</td>
+              <td class="ae2-num" title="520,192">520,192</td>
+              <td class="ae2-dim">N/A</td>
+              <td class="ae2-dim">N/A</td>
+            </tr>
+          </tbody>
+        </table>
         </div>
-        -->
+
+        <div class="sub-heading">Fluid Storage Cells</div>
+        <div class="ae2-scroll">
+        <table class="ae2-table ae2-table-fluid">
+          <colgroup>
+            <col class="col-cell">
+            <col class="col-bpt">
+            <col class="col-main">
+            <col class="col-total">
+            <col class="col-avg">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Cell</th>
+              <th>Bytes / type</th>
+              <th>1 fluid (L)</th>
+              <th>5 fluids (total L)</th>
+              <th class="ae2-dim">5 fluids (avg L)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="ae2-kB">1k</td>      <td class="ae2-bpt">8</td>       <td class="ae2-num" title="2,080,768">2,080,768</td>      <td class="ae2-num" title="2,015,232">2,015,232</td>     <td class="ae2-dim">403,046</td></tr>
+            <tr><td class="ae2-kB">4k</td>      <td class="ae2-bpt">32</td>      <td class="ae2-num" title="8,323,072">8,323,072</td>       <td class="ae2-num" title="8,060,928">8,060,928</td>      <td class="ae2-dim">1,612,186</td></tr>
+            <tr><td class="ae2-kB">16k</td>     <td class="ae2-bpt">128</td>     <td class="ae2-num" title="33,292,288">33,292,288</td>      <td class="ae2-num" title="32,243,712">32,243,712</td>    <td class="ae2-dim">6,448,742</td></tr>
+            <tr><td class="ae2-kB">64k</td>     <td class="ae2-bpt">512</td>     <td class="ae2-num" title="133,169,152">133,169,152</td>     <td class="ae2-num" title="128,974,848">128,974,848</td>  <td class="ae2-dim">25,794,970</td></tr>
+            <tr><td class="ae2-kB">256k</td>    <td class="ae2-bpt">2,048</td>   <td class="ae2-num" title="532,676,608">532,676,608</td>     <td class="ae2-num" title="515,899,392">515,899,392</td>  <td class="ae2-dim">103,179,878</td></tr>
+            <tr><td class="ae2-kB">1024k</td>  <td class="ae2-bpt">8,192</td>   <td class="ae2-num" title="2,130,706,432">2,130,706,432</td>  <td class="ae2-num" title="2,063,597,568">2,063,597,568</td> <td class="ae2-dim">412,719,514</td></tr>
+            <tr><td class="ae2-kB">4096k</td>  <td class="ae2-bpt">32,768</td>  <td class="ae2-num" title="8,522,825,728">8,522,825,728</td>  <td class="ae2-num" title="8,254,390,272">8,254,390,272</td> <td class="ae2-dim">1,650,878,054</td></tr>
+            <tr><td class="ae2-kB">16384k</td> <td class="ae2-bpt">131,072</td> <td class="ae2-num" title="34,091,302,912">34,091,302,912</td> <td class="ae2-num" title="33,017,561,088">33,017,561,088</td> <td class="ae2-dim">6,603,512,218</td></tr>
+          </tbody>
+        </table>
+        </div>
       </div>
     </div><!-- /#section-6 -->
 
@@ -1610,7 +1838,7 @@
   //  make a hidden section appear automatically.
   // ═══════════════════════════════════════════════════════════════
   const CONTENT_SELECTORS = [
-    '.sub-heading', 'table', '.tri-table', '.kv-grid', '.info-list',
+    '.sub-heading', 'table', '.tri-table', '.ae2-table', '.kv-grid', '.info-list',
     '.circuit-section', '.tier-list', '.tip-list'
   ].join(', ');
 
@@ -2013,7 +2241,7 @@
   //  EARLY GAME POWER CALCULATOR
   //  Fuel-denominated model:
   //    grossFuel = perMin * EU/L / 1200          (raw fuel energy, EU/t)
-  //    fuelUsed  = processingCost / effProd      (fuel used to power production)
+  //    fuelUsed  = processingCost / effProd      (fuel burned to power production)
   //    netFuel   = grossFuel - fuelUsed          (surplus fuel)
   //  Burning surplus in a generator of efficiency e at tier capacity cap:
   //    elec = netFuel * e ;  generators = elec / cap
@@ -2049,9 +2277,10 @@
     }
   };
 
-  // Fuels hidden from the Fuel dropdown when "Show all Fuel Types" is ON (the
-  // default). These are the rarely-used early-game fuels; they still appear in
-  // the Fuel Value Reference. Listed per generator type.
+  // Fuels hidden from the Fuel dropdown when "Show all Fuel Types" is UNCHECKED
+  // (the default state). Checking the toggle reveals all fuels.
+  // These are rarely-used early-game fuels; they still appear in the Fuel
+  // Value Reference regardless. Listed per generator type.
   const HIDDEN_FUELS = {
     'Turbine': ['Natural Gas','Hydrogen','Carbon Monoxide','Wood Gas','Sulfuric Gas','Biogas',
       'Sulfuric Naphtha','Cyclopentadiene','Coal Gas','Methane','Ethylene','Refinery Gas','Ethane',
@@ -2094,13 +2323,36 @@
   // Generator efficiency by type + tier (percent). "Custom" = user input.
   const GEN_EFF = {
     'Turbine':    { LV:95, MV:90, HV:85, EV:60, IV:50 },
-    'Combustion': { LV:95, MV:90, HV:85, EV:65, IV:50 },
+    'Combustion': { LV:95, MV:90, HV:85, EV:65, IV:50, LCE:100, ECE:100 },
     'Semifluid':  { LV:95, MV:90, HV:85, EV:80, IV:75 }
   };
 
-  // Turbine/generator tier output capacity (EU/t).
+  // Singleblock generator output capacity per tier (EU/t = 1A at voltage).
   const TIER_CAP = { lv:32, mv:128, hv:512, ev:2048, iv:8192 };
   const TIER_NAME = { lv:'LV', mv:'MV', hv:'HV', ev:'EV', iv:'IV' };
+
+  // Multiblock machine max EU/t caps [default, boosted].
+  // The boosted cap is 3× default; boosted efficiency is 1.5×.
+  // fuelPerMachine = cap / efficiency  (raw fuel EU/t each machine needs to run at full cap)
+  const TIER_MACHINE_CAP = {
+    LCE: { default: 2048,  boosted: 6144  },
+    ECE: { default: 10900, boosted: 32700 }
+  };
+
+  // Tiers that restrict which fuels are valid. If a tier isn't listed here,
+  // all fuels for its generator type are valid.
+  // To edit: add/remove fuel names from the arrays below.
+  const TIER_FUEL_FILTER = {
+    'LCE': ['Fish Oil','Short Mead','Biomass','Creosote Oil','Oil','Sulfuric Light Fuel',
+            'Octane','Methanol','Ethanol','Light Fuel','Bio Diesel','Butanol','Diesel',
+            'Ether','Gasoline','Cetane-Boosted Diesel','Ethanol Gasoline','Jet Fuel No.3',
+            'Jet Fuel A','High Octane Gasoline'],
+    'ECE': ['Jet Fuel No.3','Jet Fuel A','High Octane Gasoline']
+  };
+
+  // Tiers that support a boosted mode (multiplies efficiency).
+  // Value is the boost multiplier (1.5 = 150% of base).
+  const TIER_BOOST = { LCE: 1.5, ECE: 1.5 };
 
   function fmtNum(n) {
     if (!isFinite(n)) return '—';
@@ -2119,6 +2371,7 @@
       showall:   $('calc-showall').checked,
       gentype:   $('calc-gentype').value,
       gentier:   $('calc-gentier').value,
+      boosted:   $('calc-boosted').checked,
       fuel:      $('calc-fuel').value,
       eul:       $('calc-eul').value,
       permin:    $('calc-permin').value,
@@ -2158,8 +2411,17 @@
     if (state.gentier && [...$('calc-gentier').options].some(o => o.value === state.gentier)) {
       $('calc-gentier').value = state.gentier;
     }
+    if (state.boosted != null) $('calc-boosted').checked = !!state.boosted;
     if (state.outtier && [...$('calc-out-gentier').options].some(o => o.value === state.outtier)) {
       $('calc-out-gentier').value = state.outtier;
+    }
+
+    // 4b. Now that the tier is restored, rebuild the fuel dropdown with the correct
+    //     tier-fuel filter (e.g. ECE limits to 3 fuels), then re-apply the saved fuel.
+    updateTierUI();
+    refreshFuelDropdown();
+    if (state.fuel && [...$('calc-fuel').options].some(o => o.value === state.fuel)) {
+      $('calc-fuel').value = state.fuel;
     }
 
     // 5. Numeric inputs.
@@ -2218,20 +2480,30 @@
 
   // Populate the Fuel dropdown with the fuels the SELECTED production generator
   // type can burn, respecting the "Show all Fuel Types" toggle (unchecked =
-  // hide the rarely-used fuels). Common fuels are pinned to the top. Keeps the
-  // current fuel selected if it's still valid, else falls back sensibly.
+  // hide the rarely-used fuels) and any tier-specific fuel restriction
+  // (e.g. ECE only accepts a few high-tier fuels). Common fuels pinned to top.
   function refreshFuelDropdown() {
     const type    = document.getElementById('calc-gentype').value;
+    const tier    = document.getElementById('calc-gentier').value;
     const fuelSel = document.getElementById('calc-fuel');
     const prev    = fuelSel.value;
     const showAll = document.getElementById('calc-showall').checked;
     const fuels   = FUEL_TABLES[type] || {};
 
-    // Names for this generator type, minus hidden ones unless "show all".
-    const names = Object.keys(fuels).filter(n => showAll || !isHidden(type, n));
+    // Apply tier-specific fuel restriction if one exists for the selected tier.
+    const tierFilter = TIER_FUEL_FILTER[tier];   // array or undefined
+
+    // Names for this generator type, minus hidden ones unless "show all",
+    // and filtered by the tier's allowed fuel list if applicable.
+    const names = Object.keys(fuels).filter(n => {
+      if (tierFilter && !tierFilter.includes(n)) return false;
+      return showAll || !isHidden(type, n);
+    });
 
     const common = (COMMON_FUELS[type] || []).filter(n => names.includes(n));
     const rest   = names.filter(n => !common.includes(n)).sort();
+
+    const groupLabel = tierFilter ? `${tier} — Valid Fuels` : GEN_DISPLAY[type];
 
     let opts = '<option value="custom">Custom (enter EU/L)</option>';
     if (common.length) {
@@ -2239,12 +2511,12 @@
       opts += common.map(n => `<option value="${n}">${n} (${fuels[n]} EU/L)</option>`).join('');
       opts += '</optgroup>';
     }
-    opts += `<optgroup label="${GEN_DISPLAY[type]}">`;
+    opts += `<optgroup label="${groupLabel}">`;
     opts += rest.map(n => `<option value="${n}">${n} (${fuels[n]} EU/L)</option>`).join('');
     opts += '</optgroup>';
     fuelSel.innerHTML = opts;
 
-    // Keep previous fuel if still valid for this type, else first common/rest.
+    // Keep previous fuel if still valid, else first common/rest.
     if (prev && [...fuelSel.options].some(o => o.value === prev)) fuelSel.value = prev;
     else if (common.length) fuelSel.value = common[0];
     else if (rest.length)   fuelSel.value = rest[0];
@@ -2266,21 +2538,35 @@
     tierSel.value = (prev && [...tierSel.options].some(o => o.value === prev)) ? prev : 'HV';
   }
 
-  function onGenChange() {
+  // updateTierUI: updates conditional UI elements that depend on the production tier
+  // (boost checkbox visibility, custom efficiency field). Does NOT rebuild the fuel
+  // dropdown — call refreshFuelDropdown() separately when needed.
+  function updateTierUI() {
     const tier = document.getElementById('calc-gentier').value;
     document.getElementById('calc-eff-custom-wrap').style.display =
       (tier === 'custom') ? 'flex' : 'none';
-    recalc();
+    const boostWrap = document.getElementById('calc-boost-wrap');
+    if (tier in TIER_BOOST) {
+      boostWrap.style.display = 'flex';
+    } else {
+      boostWrap.style.display = 'none';
+      document.getElementById('calc-boosted').checked = false;
+    }
   }
 
-  // Production generator TYPE change (primary control): rebuild its tier list,
-  // refilter the fuel list to this generator's fuels (keeping the current fuel
-  // if valid), rebuild the output tier list (bottom uses this same type), recalc.
+  function onGenChange() {
+    updateTierUI();
+    // Re-filter the fuel list: tier change may restrict valid fuels (e.g. ECE).
+    refreshFuelDropdown();
+  }
+
+  // Production generator TYPE change (primary control): rebuild tier lists,
+  // refilter the fuel list, update tier UI. Calls refreshFuelDropdown once.
   function onGenTypeChange() {
     onGenTypeRefreshTiers();
-    refreshFuelDropdown();
     onOutGenTypeRefreshTiers();
-    onGenChange();
+    updateTierUI();      // update boost/custom UI for the (now reset) tier
+    refreshFuelDropdown(); // single fuel rebuild — also calls recalc via onFuelChange
   }
 
   // "Show all Fuel Types" checkbox toggled → rebuild fuel list for current type.
@@ -2383,10 +2669,17 @@
   function currentEfficiency() {
     const type = document.getElementById('calc-gentype').value;
     const tier = document.getElementById('calc-gentier').value;
+    let eff;
     if (tier === 'custom') {
-      return (parseFloat(document.getElementById('calc-eff-custom').value) || 0) / 100;
+      eff = (parseFloat(document.getElementById('calc-eff-custom').value) || 0) / 100;
+    } else {
+      eff = (GEN_EFF[type] && GEN_EFF[type][tier] || 0) / 100;
+      // Apply boost if the tier supports it and the checkbox is checked.
+      if ((tier in TIER_BOOST) && document.getElementById('calc-boosted').checked) {
+        eff *= TIER_BOOST[tier];
+      }
     }
-    return (GEN_EFF[type][tier] || 0) / 100;
+    return eff;
   }
 
   function recalc() {
@@ -2397,7 +2690,7 @@
 
     // Fuel-denominated production model:
     //   grossFuel = raw fuel energy produced per tick (no efficiency applied)
-    //   fuelUsed  = raw fuel used to supply `cost` electricity at effProd
+    //   fuelUsed  = raw fuel burned to supply `cost` electricity at effProd
     //   netFuel   = surplus raw fuel energy available to burn elsewhere
     const grossFuel = perMin * eul / 1200;            // EU/t of fuel
     const fuelUsed  = effProd > 0 ? cost / effProd : Infinity;
@@ -2412,63 +2705,129 @@
     costEl.style.color = costPct < 0.5 ? 'var(--teal)' : (costPct < 0.9 ? 'var(--accent2)' : 'var(--accent)');
 
     // ── Bottom: burn the surplus fuel in the chosen output generator ──
-    const outType = document.getElementById('calc-gentype').value;   // production type drives output
+    const outType = document.getElementById('calc-gentype').value;
     const outTier = document.getElementById('calc-out-gentier').value;
     const usableFuel = Math.max(0, netFuel);
+    // Boost is only active when the production tier is also a boost-capable multiblock
+    // (the checkbox is only visible/meaningful when prodTier is LCE/ECE).
+    // This prevents a hidden-but-stale checkbox from silently affecting output.
+    const prodTier = document.getElementById('calc-gentier').value;
+    const boostChecked = document.getElementById('calc-boosted').checked;
+    const boosted = (outTier in TIER_BOOST) && (prodTier === outTier) && boostChecked;
 
     // Reflect the production generator type in the section description.
     const gtName = document.getElementById('out-gentype-name');
     if (gtName) gtName.textContent = GEN_DISPLAY[outType] || outType;
 
-    // Efficiency of the chosen output generator
-    let outEff;
-    if (outTier === 'custom') {
-      outEff = (parseFloat(document.getElementById('calc-out-eff-custom').value) || 0) / 100;
+    const powerNum  = document.getElementById('out-genpower');
+    const powerLbl  = document.getElementById('out-genpower-label');
+    const cntNum    = document.getElementById('out-gencount');
+    const cntLbl    = document.getElementById('out-genlabel');
+    const unusedWrap= document.getElementById('out-unused-wrap');
+    const unusedNum = document.getElementById('out-unused');
+    const unusedLbl = document.getElementById('out-unused-label');
+
+    const isMachine = outTier in TIER_MACHINE_CAP;   // LCE or ECE
+
+    if (isMachine) {
+      // ── Multiblock machine mode (LCE / ECE) ──
+      // Each machine runs at its cap EU/t, consuming fuelPerMachine raw fuel EU/t.
+      // Number of full machines = floor(netFuel / fuelPerMachine)
+      // Unused fuel = netFuel - floor(machines) * fuelPerMachine
+      const caps       = TIER_MACHINE_CAP[outTier];
+      const machineCap = boosted ? caps.boosted : caps.default;
+      const machineEff = boosted ? GEN_EFF[outType][outTier] * TIER_BOOST[outTier] / 100
+                                  : GEN_EFF[outType][outTier] / 100;
+      const fuelPerMachine = machineCap / machineEff;   // raw fuel EU/t each machine needs
+      const numFull   = netFuel > 0 ? Math.floor(usableFuel / fuelPerMachine) : 0;
+      const usedFuel  = numFull * fuelPerMachine;
+      const leftover  = usableFuel - usedFuel;
+      const totalElec = numFull * machineCap;
+      const modeLabel = boosted ? 'Boosted' : 'Default';
+
+      powerNum.textContent = netFuel > 0 ? fmtNum(totalElec) : '0';
+      powerNum.style.color = netFuel > 0 ? 'var(--teal)' : 'var(--accent)';
+      powerLbl.textContent = `EU/t — ${numFull} × ${outTier} at ${machineCap} EU/t each (${modeLabel}, ${(machineEff*100).toFixed(0)}% eff)` +
+                             (netFuel <= 0 ? ' — no surplus fuel!' : '');
+
+      cntNum.textContent = netFuel > 0 ? String(numFull) : '0';
+      cntNum.style.color = netFuel > 0 ? 'var(--teal)' : 'var(--accent)';
+      cntLbl.textContent = `× ${outTier} machines (${fmtNum(fuelPerMachine)} EU/t fuel each, ${modeLabel})`;
+
+      unusedWrap.style.display = 'flex';
+      unusedNum.textContent = fmtNum(leftover);
+      unusedLbl.textContent = `EU/t of raw fuel left over — not enough for another ${outTier} ` +
+                              `(needs ${fmtNum(fuelPerMachine)})`;
+
+      // Build breakdown table: one row per machine count (Default + Boosted for this tier)
+      const tbody = document.getElementById('calc-out-table-body');
+      tbody.innerHTML = Object.entries(TIER_MACHINE_CAP).map(([t, caps]) => {
+        const tiers = GEN_EFF[outType] || {};
+        const rows = Object.entries(caps).map(([mode, cap]) => {
+          const eff = mode === 'boosted'
+            ? (tiers[t] || 0) * TIER_BOOST[t] / 100
+            : (tiers[t] || 0) / 100;
+          const fpM = eff > 0 ? cap / eff : Infinity;
+          const n   = (netFuel > 0 && isFinite(fpM)) ? Math.floor(usableFuel / fpM) : 0;
+          const isSel = (t === outTier && ((mode === 'boosted') === boosted));
+          return `<tr${isSel ? ' class="row-selected"' : ''}>` +
+            `<td>${t} ${mode === 'boosted' ? '⚡' : ''}</td>` +
+            `<td class="dim">${(eff*100).toFixed(0)}%</td>` +
+            `<td class="num">${cap.toLocaleString()} max</td>` +
+            `<td class="num">${netFuel > 0 ? fmtNum(n) + ' machines' : '0'}</td></tr>`;
+        }).join('');
+        return rows;
+      }).join('');
+
     } else {
-      outEff = (GEN_EFF[outType] && GEN_EFF[outType][outTier] || 0) / 100;
+      // ── Singleblock mode ──
+      // EU/t = netFuel × efficiency; count = EU/t ÷ tier voltage
+      unusedWrap.style.display = 'none';
+
+      let outEff;
+      if (outTier === 'custom') {
+        outEff = (parseFloat(document.getElementById('calc-out-eff-custom').value) || 0) / 100;
+      } else {
+        outEff = (GEN_EFF[outType] && GEN_EFF[outType][outTier] || 0) / 100;
+      }
+
+      // Breakdown table: one row per tier
+      const tbody = document.getElementById('calc-out-table-body');
+      const tiers = GEN_EFF[outType] || {};
+      tbody.innerHTML = Object.entries(tiers)
+        .filter(([tier]) => !(tier in TIER_MACHINE_CAP))   // skip LCE/ECE in singleblock table
+        .map(([tier, effPct]) => {
+          const cap  = TIER_CAP[tier.toLowerCase()];
+          if (!cap) return '';
+          const elec = usableFuel * (effPct / 100);
+          const n    = netFuel > 0 ? elec / cap : 0;
+          const isSel = (tier === outTier);
+          return `<tr${isSel ? ' class="row-selected"' : ''}>` +
+                 `<td>${tier}</td>` +
+                 `<td class="dim">${effPct}%</td>` +
+                 `<td class="num">${netFuel > 0 ? fmtNum(elec) : '0'}</td>` +
+                 `<td class="num">${netFuel > 0 ? fmtNum(n) : '0'}</td></tr>`;
+        }).join('');
+
+      const tierCap = (outTier === 'custom') ? null : TIER_CAP[outTier.toLowerCase()];
+      const genElec = usableFuel * outEff;
+
+      powerNum.textContent = netFuel > 0 ? fmtNum(genElec) : '0';
+      powerNum.style.color = netFuel > 0 ? 'var(--teal)' : 'var(--accent)';
+      const tierLabel = (outTier === 'custom') ? `Custom (${(outEff*100).toFixed(0)}%)` : `${outTier} (${(outEff*100).toFixed(0)}%)`;
+      powerLbl.textContent = `EU/t generated — ${GEN_DISPLAY[outType] || outType}, ${tierLabel}` +
+                             (netFuel <= 0 ? ' — no surplus fuel!' : '');
+
+      if (tierCap) {
+        const n = netFuel > 0 ? genElec / tierCap : 0;
+        cntNum.textContent = fmtNum(n);
+        cntLbl.textContent = `× ${outTier} generators (${tierCap} EU/t output each)`;
+      } else {
+        cntNum.textContent = '—';
+        cntLbl.textContent = 'pick a tier (not Custom) to count generators';
+      }
+      cntNum.style.color = netFuel > 0 ? 'var(--teal)' : 'var(--accent)';
     }
-
-    // Build the full per-tier breakdown table for the chosen type
-    const tbody = document.getElementById('calc-out-table-body');
-    const tiers = GEN_EFF[outType] || {};
-    tbody.innerHTML = Object.entries(tiers).map(([tier, effPct]) => {
-      const cap  = TIER_CAP[tier.toLowerCase()];
-      const elec = usableFuel * (effPct / 100);
-      const n    = netFuel > 0 ? elec / cap : 0;
-      const isSel = (tier === outTier);
-      return `<tr${isSel ? ' class="row-selected"' : ''}>` +
-             `<td>${tier}</td>` +
-             `<td class="dim">${effPct}%</td>` +
-             `<td class="num">${netFuel > 0 ? fmtNum(elec) : '0'}</td>` +
-             `<td class="num">${netFuel > 0 ? fmtNum(n) : '0'}</td></tr>`;
-    }).join('');
-
-    // Big highlighted stats for the chosen tier
-    const tierCap = (outTier === 'custom')
-      ? null
-      : TIER_CAP[outTier.toLowerCase()];
-    const genElec = usableFuel * outEff;
-
-    const powerNum = document.getElementById('out-genpower');
-    const powerLbl = document.getElementById('out-genpower-label');
-    powerNum.textContent = netFuel > 0 ? fmtNum(genElec) : '0';
-    powerNum.style.color = netFuel > 0 ? 'var(--teal)' : 'var(--accent)';
-    const tierLabel = (outTier === 'custom') ? `Custom (${(outEff*100).toFixed(0)}%)` : `${outTier} (${(outEff*100).toFixed(0)}%)`;
-    powerLbl.textContent = `EU/t generated — ${GEN_DISPLAY[outType] || outType}, ${tierLabel}` +
-                           (netFuel <= 0 ? ' — no surplus fuel!' : '');
-
-    const cntNum = document.getElementById('out-gencount');
-    const cntLbl = document.getElementById('out-genlabel');
-    if (tierCap) {
-      const n = netFuel > 0 ? genElec / tierCap : 0;
-      cntNum.textContent = fmtNum(n);
-      cntLbl.textContent = `× ${outTier} generators (${tierCap} EU/t output each)`;
-    } else {
-      // Custom efficiency has no fixed voltage tier, so we can't count units
-      cntNum.textContent = '—';
-      cntLbl.textContent = 'pick a tier (not Custom) to count generators';
-    }
-    cntNum.style.color = netFuel > 0 ? 'var(--teal)' : 'var(--accent)';
 
     saveCalc();
   }
