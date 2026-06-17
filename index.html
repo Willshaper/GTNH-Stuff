@@ -415,6 +415,92 @@
   }
   .cr.copied .cr-hint { opacity: 1; }
 
+  /* Laser-engraver "Open Notes" button + right-side cluster */
+  .cr-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .cr-search { display: none; }   /* hidden search terms, surfaced by the filter only */
+  .lens-notes-btn {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--today);
+    background: var(--note-bg);
+    border: 1px solid var(--note-border);
+    border-radius: 4px;
+    padding: 2px 7px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.12s, color 0.12s, border-color 0.12s;
+  }
+  .lens-notes-btn:hover { background: var(--today); border-color: var(--today); color: var(--bg); }
+
+  /* Lens notes modal (popup) */
+  .lens-modal {
+    position: fixed; inset: 0;
+    display: none;
+    align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.62);
+    z-index: 100;
+    padding: 20px;
+  }
+  .lens-modal.open { display: flex; }
+  .lens-modal-card {
+    position: relative;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    width: 100%; max-width: 420px;
+    max-height: 80vh; overflow-y: auto;
+    padding: 18px 20px 20px;
+    box-shadow: 0 14px 44px rgba(0,0,0,0.5);
+  }
+  .lens-modal-close {
+    position: absolute; top: 7px; right: 9px;
+    background: none; border: none;
+    color: var(--text-dim);
+    font-size: 21px; line-height: 1;
+    cursor: pointer; padding: 4px;
+  }
+  .lens-modal-close:hover { color: var(--accent); }
+  .lens-modal-title {
+    font-family: var(--display);
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--teal);
+    padding-right: 24px;
+    margin-bottom: 6px;
+  }
+  .lens-modal-sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--note-text);
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  .lens-modal-group { margin-top: 12px; }
+  .lens-modal-ch {
+    font-family: var(--display);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent2);
+    border-bottom: 1px solid var(--tint-teal-border);
+    padding-bottom: 3px; margin-bottom: 6px;
+  }
+  .lens-modal-list { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+  .lens-modal-list li {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text);
+    padding-left: 13px;
+    position: relative;
+    line-height: 1.4;
+  }
+  .lens-modal-list li::before {
+    content: '•';
+    position: absolute; left: 2px;
+    color: var(--teal);
+  }
+
   /* Assembler toggle link */
   .asm-toggle-link {
     display: inline-block;
@@ -1409,20 +1495,27 @@
             <div class="cr" data-copy="CAL - #3" onclick="copyRow(this)"><span class="cr-label">CAL - #3</span><span class="cr-hint">COPIED!</span></div>
           </div>
 
-          <!-- ── LASER ENGRAVER ── -->
+          <!-- ── LASER ENGRAVER ──
+               Rows are named by lens COLOUR. Clicking a row copies the label
+               (e.g. "Laser Engraver - Green"). The "Open Notes" button opens a
+               popup listing every lens of that colour — data lives in
+               LENS_COLORS / LENS_NOTES in the script. The hidden .cr-search span
+               holds the matching lens names so the filter still finds them.
+               Endereye and Enderpearl/Nether Star are "Unique" lenses with no
+               colour group, so they get no Open Notes button. -->
           <div class="circuit-group" data-aliases="Laser Engraver Precision Lens">
             <div class="cg-heading">Laser Engraver</div>
-            <div class="cg-note">⚠ This list is NOT 100% certain, double-check before relying on it.<br>Any lens sharing the listed lens's color will work in its place.</div>
-            <div class="cr" data-copy="Laser - Circuitless, Quite Certain Crystal Lens, Amethyst Lens, Olenite Lens, Fayalite Lens, Magneto Resonatic Lens, Spodumene Lens, Rock Salt Lens, Dragonstone Lens, Tanzanite Lens, Reinforced Glass Lens, Wood's Glass Lens, Firestone Lens, Force Lens" onclick="copyRow(this)"><span class="cr-label">Laser - Circuitless, Quite Certain Crystal Lens, Amethyst Lens, Olenite Lens, Fayalite Lens, Magneto Resonatic Lens, Spodumene Lens, Rock Salt Lens, Dragonstone Lens, Tanzanite Lens, Reinforced Glass Lens, Wood's Glass Lens, Firestone Lens, Force Lens</span><span class="cr-hint">COPIED!</span></div>
-            <div class="cr" data-copy="Laser - Orundum Lens, Ruby Lens" onclick="copyRow(this)"><span class="cr-label">Laser - Orundum Lens, Ruby Lens</span><span class="cr-hint">COPIED!</span></div>
-            <div class="cr" data-copy="Laser - Yellow Garnet Lens, Bismutite Lens" onclick="copyRow(this)"><span class="cr-label">Laser - Yellow Garnet Lens, Bismutite Lens</span><span class="cr-hint">COPIED!</span></div>
-            <div class="cr" data-copy="Laser - Endereye Lens" onclick="copyRow(this)"><span class="cr-label">Laser - Endereye Lens</span><span class="cr-hint">COPIED!</span></div>
-            <div class="cr" data-copy="Laser - Topaz Lens, Olivine Lens" onclick="copyRow(this)"><span class="cr-label">Laser - Topaz Lens, Olivine Lens</span><span class="cr-hint">COPIED!</span></div>
-            <div class="cr" data-copy="Laser - Sapphire Lens" onclick="copyRow(this)"><span class="cr-label">Laser - Sapphire Lens</span><span class="cr-hint">COPIED!</span></div>
-            <div class="cr" data-copy="Laser - Enderpearl Lens, Nether Star Lens" onclick="copyRow(this)"><span class="cr-label">Laser - Enderpearl Lens, Nether Star Lens</span><span class="cr-hint">COPIED!</span></div>
-            <div class="cr" data-copy="Laser - Salt Lens, Diamond Lens" onclick="copyRow(this)"><span class="cr-label">Laser - Salt Lens, Diamond Lens</span><span class="cr-hint">COPIED!</span></div>
-            <div class="cr" data-copy="Laser - Chromo-Alumino-Povondraite Lens, Green Sapphire Lens" onclick="copyRow(this)"><span class="cr-label">Laser - Chromo-Alumino-Povondraite Lens, Green Sapphire Lens</span><span class="cr-hint">COPIED!</span></div>
-            <div class="cr" data-copy="Laser - Emerald Lens, Cerium-doped Lutetium Aluminium Garnet (Ce:LuAG) Lens" onclick="copyRow(this)"><span class="cr-label">Laser - Emerald Lens, Cerium-doped Lutetium Aluminium Garnet (Ce:LuAG) Lens</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cg-note">⚠ This list is NOT 100% certain, double-check before relying on it.<br>Any lens of the listed color works — hit Open Notes on a row to see them all.</div>
+            <div class="cr" data-copy="Laser Engraver - Misc" onclick="copyRow(this)"><span class="cr-label">Laser Engraver - Misc</span><span class="cr-search" aria-hidden="true">Circuitless Quite Certain Crystal Lens Amethyst Lens Olenite Lens Fayalite Lens Magneto Resonatic Lens Spodumene Lens Rock Salt Lens Dragonstone Lens Tanzanite Lens Reinforced Glass Lens Wood's Glass Lens Firestone Lens Force Lens</span><span class="cr-right"><button type="button" class="lens-notes-btn" onclick="openLensNotes(event,'Misc')">Open Notes</button><span class="cr-hint">COPIED!</span></span></div>
+            <div class="cr" data-copy="Laser Engraver - Red" onclick="copyRow(this)"><span class="cr-label">Laser Engraver - Red</span><span class="cr-search" aria-hidden="true">Ruby Lens Jasper Lens Spinel Lens Red Garnet Lens Ignis Lens Red Zircon Lens Fluorspar Lens Orundum Lens Lanthanum Hexaboride Lens</span><span class="cr-right"><button type="button" class="lens-notes-btn" onclick="openLensNotes(event,'Red')">Open Notes</button><span class="cr-hint">COPIED!</span></span></div>
+            <div class="cr" data-copy="Laser Engraver - Yellow" onclick="copyRow(this)"><span class="cr-label">Laser Engraver - Yellow</span><span class="cr-search" aria-hidden="true">Yellow Garnet Lens Aer Lens Bismutite Lens Prasiolite Lens</span><span class="cr-right"><button type="button" class="lens-notes-btn" onclick="openLensNotes(event,'Yellow')">Open Notes</button><span class="cr-hint">COPIED!</span></span></div>
+            <div class="cr" data-copy="Laser Engraver - Endereye" onclick="copyRow(this)"><span class="cr-label">Laser Engraver - Endereye</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="Laser Engraver - Orange, Lime" onclick="copyRow(this)"><span class="cr-label">Laser Engraver - Orange, Lime</span><span class="cr-search" aria-hidden="true">Topaz Lens Amber Lens Olivine Lens</span><span class="cr-right"><button type="button" class="lens-notes-btn" onclick="openLensNotes(event,'Orange, Lime')">Open Notes</button><span class="cr-hint">COPIED!</span></span></div>
+            <div class="cr" data-copy="Laser Engraver - Blue" onclick="copyRow(this)"><span class="cr-label">Laser Engraver - Blue</span><span class="cr-search" aria-hidden="true">Sapphire Lens Opal Lens Blue Topaz Lens Aqua Lens</span><span class="cr-right"><button type="button" class="lens-notes-btn" onclick="openLensNotes(event,'Blue')">Open Notes</button><span class="cr-hint">COPIED!</span></span></div>
+            <div class="cr" data-copy="Laser Engraver - Enderpearl, Nether Star" onclick="copyRow(this)"><span class="cr-label">Laser Engraver - Enderpearl, Nether Star</span><span class="cr-hint">COPIED!</span></div>
+            <div class="cr" data-copy="Laser Engraver - White" onclick="copyRow(this)"><span class="cr-label">Laser Engraver - White</span><span class="cr-search" aria-hidden="true">Diamond Lens Dilithium Lens Ordo Lens Glass Lens Cubic Zirconia Lens Salt Lens Forsterite Lens</span><span class="cr-right"><button type="button" class="lens-notes-btn" onclick="openLensNotes(event,'White')">Open Notes</button><span class="cr-hint">COPIED!</span></span></div>
+            <div class="cr" data-copy="Laser Engraver - Cyan" onclick="copyRow(this)"><span class="cr-label">Laser Engraver - Cyan</span><span class="cr-search" aria-hidden="true">Green Sapphire Lens Chromo-Alumino-Povondraite Lens Vanadio-Oxy-Dravite Lens</span><span class="cr-right"><button type="button" class="lens-notes-btn" onclick="openLensNotes(event,'Cyan')">Open Notes</button><span class="cr-hint">COPIED!</span></span></div>
+            <div class="cr" data-copy="Laser Engraver - Green" onclick="copyRow(this)"><span class="cr-label">Laser Engraver - Green</span><span class="cr-search" aria-hidden="true">Emerald Lens Terra Lens Hedenbergite Lens BArTiMaEuSNeK Lens Tiberium Lens Cerium-doped Lutetium Aluminium Garnet (Ce:LuAG) Lens</span><span class="cr-right"><button type="button" class="lens-notes-btn" onclick="openLensNotes(event,'Green')">Open Notes</button><span class="cr-hint">COPIED!</span></span></div>
           </div>
 
         </div><!-- /.circuit-section -->
@@ -1855,6 +1948,15 @@
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13V4M4 7.5L8 3.5l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </button>
 
+<!-- Lens notes popup — filled + shown by openLensNotes() (Laser Engraver "Open Notes") -->
+<div class="lens-modal" id="lens-modal" onclick="closeLensNotes(event)">
+  <div class="lens-modal-card" onclick="event.stopPropagation()">
+    <button type="button" class="lens-modal-close" onclick="closeLensNotes(event)" aria-label="Close">&times;</button>
+    <div class="lens-modal-title" id="lens-modal-title"></div>
+    <div class="lens-modal-body" id="lens-modal-body"></div>
+  </div>
+</div>
+
 <script>
   // ═══════════════════════════════════════════════════════════════
   //  CONTENT DETECTION
@@ -1905,6 +2007,75 @@
   function flash(el) {
     el.classList.add('copied');
     setTimeout(() => el.classList.remove('copied'), 1200);
+  }
+
+  // ── Laser Engraver lens notes ──────────────────────────────────
+  // Master colour → lenses table (from the in-game lens list). Any lens
+  // sharing a colour is interchangeable. "Unique" lenses have no colour
+  // group and aren't listed here. Edit this table to update the popups.
+  const LENS_COLORS = {
+    Yellow:       ['Yellow Garnet Lens','Aer Lens','Bismutite Lens','Prasiolite Lens'],
+    White:        ['Diamond Lens','Dilithium Lens','Ordo Lens','Glass Lens','Cubic Zirconia Lens','Salt Lens','Forsterite Lens'],
+    Green:        ['Emerald Lens','Terra Lens','Hedenbergite Lens','BArTiMaEuSNeK Lens','Tiberium Lens','Cerium-doped Lutetium Aluminium Garnet (Ce:LuAG) Lens'],
+    Black:        ['Perditio Lens','Fluor-Buergerite Lens','Fayalite Lens'],
+    Cyan:         ['Green Sapphire Lens','Chromo-Alumino-Povondraite Lens','Vanadio-Oxy-Dravite Lens'],
+    'Light Gray': ['Olenite Lens'],
+    Red:          ['Ruby Lens','Jasper Lens','Spinel Lens','Red Garnet Lens','Ignis Lens','Red Zircon Lens','Fluorspar Lens','Orundum Lens','Lanthanum Hexaboride Lens'],
+    Brown:        ['Spodumene Lens'],
+    Blue:         ['Sapphire Lens','Opal Lens','Blue Topaz Lens','Aqua Lens'],
+    Lime:         ['Olivine Lens'],
+    Orange:       ['Topaz Lens','Amber Lens'],
+    Purple:       ['Tanzanite Lens'],
+    Pink:         ['Amethyst Lens','Rock Salt Lens','Magneto Resonatic Lens']
+  };
+
+  // Per-channel popup config, keyed by the row's colour name.
+  //   type:'color'   → list every lens of the given colour(s)
+  //   type:'literal' → list these exact lenses (the Misc grab-bag)
+  const LENS_NOTES = {
+    'Red':          { type: 'color', colors: ['Red'] },
+    'Yellow':       { type: 'color', colors: ['Yellow'] },
+    'Orange, Lime': { type: 'color', colors: ['Orange', 'Lime'] },
+    'Blue':         { type: 'color', colors: ['Blue'] },
+    'White':        { type: 'color', colors: ['White'] },
+    'Cyan':         { type: 'color', colors: ['Cyan'] },
+    'Green':        { type: 'color', colors: ['Green'] },
+    'Misc':         { type: 'literal', items: ['Circuitless','Quite Certain Crystal Lens','Amethyst Lens','Olenite Lens','Fayalite Lens','Magneto Resonatic Lens','Spodumene Lens','Rock Salt Lens','Dragonstone Lens','Tanzanite Lens','Reinforced Glass Lens',"Wood's Glass Lens",'Firestone Lens','Force Lens'] }
+  };
+
+  function escHtml(s) {
+    return s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  }
+  function lensListHtml(items) {
+    return '<ul class="lens-modal-list">' +
+           items.map(n => '<li>' + escHtml(n) + '</li>').join('') +
+           '</ul>';
+  }
+
+  function openLensNotes(ev, key) {
+    if (ev) ev.stopPropagation();           // don't trigger the row's copy
+    const def = LENS_NOTES[key];
+    if (!def) return;
+    document.getElementById('lens-modal-title').textContent = 'Laser Engraver - ' + key;
+    let html = '';
+    if (def.type === 'literal') {
+      html += '<div class="lens-modal-sub">Exact lenses loaded on this channel.</div>';
+      html += lensListHtml(def.items);
+    } else {
+      html += '<div class="lens-modal-sub">Any one of these works — they share the same color.</div>';
+      def.colors.forEach(c => {
+        const lenses = LENS_COLORS[c] || [];
+        html += def.colors.length > 1
+          ? '<div class="lens-modal-group"><div class="lens-modal-ch">' + escHtml(c) + '</div>' + lensListHtml(lenses) + '</div>'
+          : lensListHtml(lenses);
+      });
+    }
+    document.getElementById('lens-modal-body').innerHTML = html;
+    document.getElementById('lens-modal').classList.add('open');
+  }
+  function closeLensNotes(ev) {
+    if (ev) ev.stopPropagation();
+    document.getElementById('lens-modal').classList.remove('open');
   }
 
   // ── Copy a biome row ───────────────────────────────────────────
@@ -2907,9 +3078,11 @@
   window.addEventListener('resize', updateBackToTop, { passive: true });
   updateBackToTop();
 
-  // Keyboard: "/" focuses search, Escape clears it
+  // Keyboard: "/" focuses search, Escape closes the lens popup or clears search
   document.addEventListener('keydown', e => {
-    if (e.key === '/' && document.activeElement.id !== 'search-input') {
+    if (e.key === 'Escape' && document.getElementById('lens-modal').classList.contains('open')) {
+      closeLensNotes();
+    } else if (e.key === '/' && document.activeElement.id !== 'search-input') {
       e.preventDefault();
       document.getElementById('search-input').focus();
     } else if (e.key === 'Escape' && document.activeElement.id === 'search-input') {
