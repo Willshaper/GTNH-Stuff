@@ -273,7 +273,7 @@
     text-align: right;
   }
 
-  /* Info row — for Acclimatiser-style lists — displayed as inline pairs */
+  /* Info row - for Acclimatiser-style lists - displayed as inline pairs */
   .info-list {
     display: flex;
     flex-direction: column;
@@ -323,17 +323,17 @@
 
   /* ── Circuit copy rows ── */
   /*
-   * .circuit-group  — wraps one machine block (heading + rows)
-   *   data-aliases  — extra search terms for this group's rows. Searching any
+   * .circuit-group  - wraps one machine block (heading + rows)
+   *   data-aliases  - extra search terms for this group's rows. Searching any
    *                   word in here surfaces all rows in the group even if the
    *                   word isn't in the row text (e.g. "Reactor" finds LCR rows).
-   * .cg-heading     — machine name heading (e.g. "Large Chemical Reactor")
-   * .cg-note        — small italic note under a heading
-   * .cr             — one copyable row
-   *   data-copy     — the text that gets copied to clipboard (configure this independently of display)
+   * .cg-heading     - machine name heading (e.g. "Large Chemical Reactor")
+   * .cg-note        - small italic note under a heading
+   * .cr             - one copyable row
+   *   data-copy     - the text that gets copied to clipboard (configure this independently of display)
    *   The visible label text lives inside the <span> child
-   * .cr:hover       — highlights the row
-   * .cr.copied      — flash feedback after copy
+   * .cr:hover       - highlights the row
+   * .cr.copied      - flash feedback after copy
    *
    * Assembler toggle: two .assembler-block divs with ids "asm-dedicated" and "asm-original".
    * The toggle link swaps which one is visible.
@@ -395,7 +395,7 @@
     line-height: 1.4;
   }
   /* Machine prefix (LCR, Mixer, ABS, etc.) is split out and colored by JS
-     at load time — see colorizePrefix(). Edit colors here. */
+     at load time - see colorizePrefix(). Edit colors here. */
   .cr-prefix {
     color: var(--accent2);
     font-weight: 500;
@@ -1057,7 +1057,7 @@
   .ae2-table thead th:first-child { text-align: left; }
   .ae2-table thead th.ae2-dim { color: var(--text-dimmer); }
 
-  /* Column widths — tune here if content doesn't fit.
+  /* Column widths - tune here if content doesn't fit.
      .ae2-table-fluid gets wider number columns for the larger fluid values. */
   .ae2-table colgroup .col-cell  { width: 80px;  }
   .ae2-table colgroup .col-bpt   { width: 72px;  }
@@ -1213,7 +1213,7 @@
 
 
     <!-- ================================================================
-         SECTION 1 — USEFUL TIPS & ITEMS
+         SECTION 1 - USEFUL TIPS & ITEMS
          Each .tip-row: edit .tip-item (item/feature name) and .tip-desc (description).
          ================================================================ -->
     <div class="section" id="section-1">
@@ -1233,7 +1233,7 @@
 
         <div class="sub-heading">General / Items</div>
         <div class="tip-list">
-          <div class="tip-row"><span class="tip-item">Questbook</span><span class="tip-desc">Read. The. Questbook. It has a LOT of information, including many of the below tips.</span></div>
+          <div class="tip-row"><span class="tip-item">Questbook</span><span class="tip-desc">Read. The. Questbook. It has a LOT of information, including many of the tips below.</span></div>
           <div class="tip-row"><span class="tip-item">Traveller's Belt</span><span class="tip-desc">Gives you access to a 2nd Hotbar via a Hotkey. Useful for Misc GT Tools like Soft Mallet, Crowbar, etc.</span></div>
           <div class="tip-row"><span class="tip-item">Traveller's Gloves</span><span class="tip-desc">Can be enhanced with Redstone to give permanent Haste bonus to all Breaking actions.</span></div>
           <div class="tip-row"><span class="tip-item">Item Dislocator</span><span class="tip-desc">Fits in all Bauble Slots, and can be toggled via a Hotkey.</span></div>
@@ -1245,14 +1245,14 @@
           <div class="tip-row"><span class="tip-item">Healing Axe</span><span class="tip-desc">Fits in the Offhand Slot for permanent hunger regen.</span></div>
           <div class="tip-row"><span class="tip-item">Fast Block Placing</span><span class="tip-desc">A Hodgepodge mod feature that allows you to place blocks much faster. Activate via its hotkey.</span></div>
           <div class="tip-row"><span class="tip-item">Night Vision</span><span class="tip-desc">Enchantment can be toggled via the "Night Vision" hotkey in the Dark Steel Armor category.</span></div>
-          <div class="tip-row"><span class="tip-item">Voiding Drop Filter</span><span class="tip-desc">The first proper Inventory Void you get — auto deletes items like Cobblestone when picked up.</span></div>
+          <div class="tip-row"><span class="tip-item">Voiding Drop Filter</span><span class="tip-desc">The first proper Inventory Void you get; auto-deletes items like Cobblestone on pickup.</span></div>
           <div class="tip-row"><span class="tip-item">/home naming</span><span class="tip-desc">List too big? Prefix homes for easier navigation, e.g. <code>/home Dim_TF</code> or <code>/home Vein_Silver</code>. Type <code>/home Dim_</code> and press Tab to filter.</span></div>
         </div>
 
         <div class="sub-heading">Machines / Automation</div>
         <div class="tip-list">
           <div class="tip-row"><span class="tip-item">Wires / Cables</span><span class="tip-desc">Use a dedicated color for each different Voltage cable in your base. Lets you easily see the Tier and avoid accidents.</span></div>
-          <div class="tip-row"><span class="tip-item">RF Consumers</span><span class="tip-desc">EnderIO machines, Forestry, etc. can generally connect directly to any voltage GT cable — auto converts to RF.</span></div>
+          <div class="tip-row"><span class="tip-item">RF Consumers</span><span class="tip-desc">EnderIO machines, Forestry, etc. can connect directly to any voltage GT cable, which auto-converts to RF.</span></div>
           <div class="tip-row"><span class="tip-item">Screwdriver</span><span class="tip-desc">Right-click on a machine to allow item input via its Output side. Useful for automation.</span></div>
           <div class="tip-row"><span class="tip-item">Soldering Iron</span><span class="tip-desc">With Solder in inventory: allows multiple stacks of the same item to be input via automation (e.g. Buttons). Useful for automation.</span></div>
           <div class="tip-row"><span class="tip-item">Wire Cutter</span><span class="tip-desc">Can connect wires through a machine via Shift+Right Click on the Highlight Grid.</span></div>
@@ -1280,7 +1280,7 @@
 
         <!-- FLOWERS sub-section -->
         <!-- kv-grid: pairs of .kv-k + .kv-v. To add an entry, copy a pair and edit the text. -->
-        <div class="sub-heading">Flowers — Required Blocks</div>
+        <div class="sub-heading">Flowers - Required Blocks</div>
         <div class="kv-grid">
           <div class="kv-k">SEA</div>              <div class="kv-v">Water</div>
           <div class="kv-k">BOOKS</div>            <div class="kv-v">Bookshelves</div>
@@ -1303,12 +1303,12 @@
           <div class="kv-k">SNOW</div>             <div class="kv-v">Any Flower</div>
           <div class="kv-k">FLOWERS</div>          <div class="kv-v">Any Flower</div>
           <div class="kv-k">WHEAT</div>            <div class="kv-v">Wheat</div>
-          <div class="kv-k">NODE</div>             <div class="kv-v">Thaumcraft Node — cannot be inside a block such as a Silverwood's Node</div>
+          <div class="kv-k">NODE</div>             <div class="kv-v">Thaumcraft Node, which cannot be inside a block such as a Silverwood's Node</div>
           <div class="kv-k">THAUMIC FLOWERS</div>  <div class="kv-v">Cinderpearl / Shimmerleaf</div>
         </div>
 
         <!-- BIOMES sub-section -->
-        <div class="sub-heading">Biomes — Book of Biomes (Extended Edition)</div>
+        <div class="sub-heading">Biomes - Book of Biomes (Extended Edition)</div>
         <div class="circuit-tip">↓ Click any biome to copy its full description</div>
         <!-- tri-table rows are click-to-copy. The copied string is built from the
              three cells by copyBiome() in JS, so just edit the cell text.
@@ -1372,7 +1372,7 @@
 
 
     <!-- ================================================================
-         SECTION 2 — PROGRAMMABLE CIRCUIT SHARING
+         SECTION 2 - PROGRAMMABLE CIRCUIT SHARING
          Circuit rows: each .cr has a data-copy attribute (the text copied to clipboard)
          and a visible <span class="cr-label"> (what shows on screen).
          Edit data-copy and the label independently.
@@ -1498,14 +1498,14 @@
           <!-- ── LASER ENGRAVER ──
                Rows are named by lens COLOUR. Clicking a row copies the label
                (e.g. "Laser Engraver - Green"). The "Open Notes" button opens a
-               popup listing every lens of that colour — data lives in
+               popup listing every lens of that colour - data lives in
                LENS_COLORS / LENS_NOTES in the script. The hidden .cr-search span
                holds the matching lens names so the filter still finds them.
                Endereye and Enderpearl/Nether Star are "Unique" lenses with no
                colour group, so they get no Open Notes button. -->
           <div class="circuit-group" data-aliases="Laser Engraver Precision Lens">
             <div class="cg-heading">Laser Engraver</div>
-            <div class="cg-note">⚠ This list is NOT 100% certain, double-check before relying on it.<br>Any lens of the listed color works — hit Open Notes on a row to see them all.</div>
+            <div class="cg-note">⚠ This list is NOT 100% certain, double-check before relying on it.<br>Any lens of the listed color works. Use Open Notes on a row to see them all.</div>
             <div class="cr" data-copy="Laser Engraver - Misc" onclick="copyRow(this)"><span class="cr-label">Laser Engraver - Misc</span><span class="cr-search" aria-hidden="true">Circuitless Quite Certain Crystal Lens Amethyst Lens Olenite Lens Fayalite Lens Magneto Resonatic Lens Spodumene Lens Rock Salt Lens Dragonstone Lens Tanzanite Lens Reinforced Glass Lens Wood's Glass Lens Firestone Lens Force Lens</span><span class="cr-right"><button type="button" class="lens-notes-btn" onclick="openLensNotes(event,'Misc')">Open Notes</button><span class="cr-hint">COPIED!</span></span></div>
             <div class="cr" data-copy="Laser Engraver - Red" onclick="copyRow(this)"><span class="cr-label">Laser Engraver - Red</span><span class="cr-search" aria-hidden="true">Ruby Lens Jasper Lens Spinel Lens Red Garnet Lens Ignis Lens Red Zircon Lens Fluorspar Lens Orundum Lens Lanthanum Hexaboride Lens</span><span class="cr-right"><button type="button" class="lens-notes-btn" onclick="openLensNotes(event,'Red')">Open Notes</button><span class="cr-hint">COPIED!</span></span></div>
             <div class="cr" data-copy="Laser Engraver - Yellow" onclick="copyRow(this)"><span class="cr-label">Laser Engraver - Yellow</span><span class="cr-search" aria-hidden="true">Yellow Garnet Lens Aer Lens Bismutite Lens Prasiolite Lens</span><span class="cr-right"><button type="button" class="lens-notes-btn" onclick="openLensNotes(event,'Yellow')">Open Notes</button><span class="cr-hint">COPIED!</span></span></div>
@@ -1524,7 +1524,7 @@
 
 
     <!-- ================================================================
-         SECTION 3 — CABLE COLOR CODING
+         SECTION 3 - CABLE COLOR CODING
          tier-row: data-color = exact Minecraft dye hex, tier = voltage tier label,
          color-name = Minecraft color name displayed in the row.
          To edit: change the tier, color-name text, or data-color hex.
@@ -1568,7 +1568,7 @@
 
 
     <!-- ================================================================
-         SECTION 4 — UNUSED
+         SECTION 4 - UNUSED
          ================================================================ -->
     <div class="section" id="section-5">
       <button class="section-btn" onclick="toggle('section-5')">
@@ -1592,13 +1592,13 @@
 
           <label class="calc-checkbox">
             <input type="checkbox" id="calc-showall" onchange="onShowAllChange()">
-            <span>Show all fuels <span class="calc-sublabel">— when unchecked, only commonly used fuels appear in the dropdown. All fuels remain visible in the Fuel Value Reference below.</span></span>
+            <span>Show all fuels <span class="calc-sublabel">- when unchecked, only commonly used fuels appear in the dropdown. All fuels remain visible in the Fuel Value Reference below.</span></span>
           </label>
 
           <div class="calc-grid">
             <!-- Row 1: Generator Type | Fuel -->
             <label class="calc-field">
-              <span class="calc-label">Generator Type <span class="calc-sublabel">— the generator your fuel line uses</span></span>
+              <span class="calc-label">Generator Type <span class="calc-sublabel">- the generator your fuel line uses</span></span>
               <select id="calc-gentype" class="calc-input" onchange="onGenTypeChange()"></select>
             </label>
             <label class="calc-field">
@@ -1622,9 +1622,9 @@
               <input id="calc-cost" class="calc-input" type="number" min="0" step="any" value="0" oninput="recalc()">
             </label>
 
-            <!-- Row 3: Generator Tier (full width) — efficiency of the generator powering production -->
+            <!-- Row 3: Generator Tier (full width) - efficiency of the generator powering production -->
             <label class="calc-field calc-span2">
-              <span class="calc-label">Generator Tier <span class="calc-sublabel">— the tier of generator used in your fuel production setup. A lower-efficiency tier burns more raw fuel to supply the same processing cost, leaving less net surplus.</span></span>
+              <span class="calc-label">Generator Tier <span class="calc-sublabel">- the tier of generator used in your fuel production setup. A lower-efficiency tier burns more raw fuel to supply the same processing cost, leaving less net surplus.</span></span>
               <div class="calc-tier-row">
                 <select id="calc-gentier" class="calc-input" onchange="onGenChange()"></select>
                 <label class="calc-boost-label" id="calc-boost-wrap" style="display:none">
@@ -1641,14 +1641,14 @@
 
           <!-- ── PRODUCTION RESULT (fuel-denominated) ── -->
           <div class="calc-result">
-            <div class="cr-stat"><span class="cr-stat-label">Gross Fuel Output</span><span class="cr-stat-val" id="out-gross">—</span><span class="cr-stat-unit">EU/t of fuel</span></div>
-            <div class="cr-stat"><span class="cr-stat-label">Net Fuel (Surplus)</span><span class="cr-stat-val accent" id="out-net">—</span><span class="cr-stat-unit">EU/t of fuel</span></div>
-            <div class="cr-stat"><span class="cr-stat-label">Fuel Used On Production</span><span class="cr-stat-val" id="out-cost">—</span><span class="cr-stat-unit">of gross fuel</span></div>
+            <div class="cr-stat"><span class="cr-stat-label">Gross Fuel Output</span><span class="cr-stat-val" id="out-gross">-</span><span class="cr-stat-unit">EU/t of fuel</span></div>
+            <div class="cr-stat"><span class="cr-stat-label">Net Fuel (Surplus)</span><span class="cr-stat-val accent" id="out-net">-</span><span class="cr-stat-unit">EU/t of fuel</span></div>
+            <div class="cr-stat"><span class="cr-stat-label">Fuel Used On Production</span><span class="cr-stat-val" id="out-cost">-</span><span class="cr-stat-unit">of gross fuel</span></div>
           </div>
 
           <!-- ── POWER GEN FROM SURPLUS FUEL ── -->
           <div class="sub-heading">Power Generation From Surplus Fuel</div>
-          <div class="calc-tip">Your <b>net surplus fuel</b> is burned in the same generator type as your production setup (<span id="out-gentype-name">—</span>). Select a tier below to see how much EU/t you can generate and how many generators of that tier you could run simultaneously.</div>
+          <div class="calc-tip">Your <b>net surplus fuel</b> is burned in the same generator type as your production setup (<span id="out-gentype-name">-</span>). Select a tier below to see how much EU/t you can generate and how many generators of that tier you could run simultaneously.</div>
 
           <div class="calc-grid">
             <label class="calc-field calc-span2">
@@ -1662,16 +1662,16 @@
           </div>
 
           <div class="calc-bigstat">
-            <span class="calc-bigstat-num" id="out-genpower">—</span>
+            <span class="calc-bigstat-num" id="out-genpower">-</span>
             <span class="calc-bigstat-label" id="out-genpower-label">EU/t generated</span>
           </div>
           <div class="calc-bigstat">
-            <span class="calc-bigstat-num" id="out-gencount">—</span>
+            <span class="calc-bigstat-num" id="out-gencount">-</span>
             <span class="calc-bigstat-label" id="out-genlabel">generators</span>
           </div>
           <!-- Unused fuel: shown only for LCE/ECE (multiblock with fixed max EU/t) -->
           <div class="calc-bigstat calc-bigstat-dim" id="out-unused-wrap" style="display:none">
-            <span class="calc-bigstat-num calc-bigstat-dim-num" id="out-unused">—</span>
+            <span class="calc-bigstat-num calc-bigstat-dim-num" id="out-unused">-</span>
             <span class="calc-bigstat-label" id="out-unused-label">EU/t of fuel left over (not enough to run another full machine)</span>
           </div>
 
@@ -1701,7 +1701,7 @@
 
 
     <!-- ================================================================
-         SECTION 5 — UNUSED
+         SECTION 5 - UNUSED
          ================================================================ -->
     <div class="section" id="section-6">
       <button class="section-btn" onclick="toggle('section-6')">
@@ -1749,7 +1749,7 @@
             <tr><td class="ae2-kB">1024k</td>  <td class="ae2-bpt">8,192</td>   <td class="ae2-num" title="8,323,072">8,323,072</td>      <td class="ae2-num" title="4,259,840">4,259,840</td>     <td class="ae2-dim">67,617</td></tr>
             <tr><td class="ae2-kB">4096k</td>  <td class="ae2-bpt">32,768</td>  <td class="ae2-num" title="33,292,288">33,292,288</td>     <td class="ae2-num" title="17,039,360">17,039,360</td>    <td class="ae2-dim">270,466</td></tr>
             <tr><td class="ae2-kB">16384k</td> <td class="ae2-bpt">131,072</td> <td class="ae2-num" title="133,169,152">133,169,152</td>    <td class="ae2-num" title="68,157,440">68,157,440</td>    <td class="ae2-dim">1,081,864</td></tr>
-            <!-- Block Container ME Storage Cell — 1 type only, 65536 bytes (= 64 kB), bpt 512 -->
+            <!-- Block Container ME Storage Cell - 1 type only, 65536 bytes (= 64 kB), bpt 512 -->
             <tr class="ae2-special">
               <td class="ae2-kB" title="1 type only. Cheaper early-game option for bulk single-item storage. Same capacity as a 64 kB cell with 1 type.">Block Container ME Cell ★</td>
               <td class="ae2-bpt">512</td>
@@ -1797,7 +1797,7 @@
 
 
     <!-- ================================================================
-         SECTION 6 — UNUSED
+         SECTION 6 - UNUSED
          ================================================================ -->
     <div class="section" id="section-7">
       <button class="section-btn" onclick="toggle('section-7')">
@@ -1826,7 +1826,7 @@
 
 
     <!-- ================================================================
-         SECTION 7 — UNUSED
+         SECTION 7 - UNUSED
          ================================================================ -->
     <div class="section" id="section-8">
       <button class="section-btn" onclick="toggle('section-8')">
@@ -1855,7 +1855,7 @@
 
 
     <!-- ================================================================
-         SECTION 8 — UNUSED
+         SECTION 8 - UNUSED
          ================================================================ -->
     <div class="section" id="section-9">
       <button class="section-btn" onclick="toggle('section-9')">
@@ -1884,7 +1884,7 @@
 
 
     <!-- ================================================================
-         SECTION 9 — UNUSED
+         SECTION 9 - UNUSED
          ================================================================ -->
     <div class="section" id="section-10">
       <button class="section-btn" onclick="toggle('section-10')">
@@ -1913,7 +1913,7 @@
 
 
     <!-- ================================================================
-         SECTION 10 — UNUSED
+         SECTION 10 - UNUSED
          ================================================================ -->
     <div class="section" id="section-11">
       <button class="section-btn" onclick="toggle('section-11')">
@@ -1948,7 +1948,7 @@
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13V4M4 7.5L8 3.5l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </button>
 
-<!-- Lens notes popup — filled + shown by openLensNotes() (Laser Engraver "Open Notes") -->
+<!-- Lens notes popup - filled + shown by openLensNotes() (Laser Engraver "Open Notes") -->
 <div class="lens-modal" id="lens-modal" onclick="closeLensNotes(event)">
   <div class="lens-modal-card" onclick="event.stopPropagation()">
     <button type="button" class="lens-modal-close" onclick="closeLensNotes(event)" aria-label="Close">&times;</button>
@@ -2062,7 +2062,7 @@
       html += '<div class="lens-modal-sub">Exact lenses loaded on this channel.</div>';
       html += lensListHtml(def.items);
     } else {
-      html += '<div class="lens-modal-sub">Any one of these works — they share the same color.</div>';
+      html += '<div class="lens-modal-sub">Any one of these works; they share the same color.</div>';
       def.colors.forEach(c => {
         const lenses = LENS_COLORS[c] || [];
         html += def.colors.length > 1
@@ -2338,7 +2338,7 @@
   //  SAFE STORAGE
   //  localStorage can throw (sandboxed iframes, opaque origins, privacy
   //  modes). These wrappers never throw, so a storage failure can't abort
-  //  page init or break any feature — persistence just silently no-ops.
+  //  page init or break any feature - persistence just silently no-ops.
   // ═══════════════════════════════════════════════════════════════
   function lsGet(key) {
     try { return localStorage.getItem(key); } catch (e) { return null; }
@@ -2449,7 +2449,7 @@
   //  To edit fuels or efficiencies, change the data objects below.
   // ═══════════════════════════════════════════════════════════════
 
-  // Fuel reference tables — EU/L per generator type. Add/edit entries freely.
+  // Fuel reference tables - EU/L per generator type. Add/edit entries freely.
   const FUEL_TABLES = {
     'Turbine': {   // Gas Turbine fuels
       'Natural Gas':20,'Hydrogen':20,'Carbon Monoxide':24,'Wood Gas':24,'Sulfuric Gas':25,
@@ -2551,7 +2551,7 @@
   const TIER_BOOST = { LCE: 1.5, ECE: 1.5 };
 
   function fmtNum(n) {
-    if (!isFinite(n)) return '—';
+    if (!isFinite(n)) return '-';
     return n.toLocaleString('en-US', { maximumFractionDigits: 2 });
   }
 
@@ -2666,7 +2666,7 @@
       const rows = Object.entries(fuels).map(([name, eul]) =>
         `<div class="ft-name" onclick="pickFuel('${type}','${name.replace(/'/g, "\\'")}',${eul})">${name}</div><div class="ft-val">${eul}</div>`
       ).join('');
-      return `<div class="fueltable-group"><div class="fueltable-title">${GEN_DISPLAY[type]} — EU/L</div><div class="fueltable">${rows}</div></div>`;
+      return `<div class="fueltable-group"><div class="fueltable-title">${GEN_DISPLAY[type]} - EU/L</div><div class="fueltable">${rows}</div></div>`;
     }).join('');
 
     calcRestoring = false;     // loadCalc manages the flag itself
@@ -2699,7 +2699,7 @@
     const common = (COMMON_FUELS[type] || []).filter(n => names.includes(n));
     const rest   = names.filter(n => !common.includes(n)).sort();
 
-    const groupLabel = tierFilter ? `${tier} — Valid Fuels` : GEN_DISPLAY[type];
+    const groupLabel = tierFilter ? `${tier} - Valid Fuels` : GEN_DISPLAY[type];
 
     let opts = '<option value="custom">Custom (enter EU/L)</option>';
     if (common.length) {
@@ -2721,13 +2721,22 @@
     onFuelChange();
   }
 
+  // Tier <option> label. Boostable multiblocks (LCE/ECE) show a range, e.g.
+  // "LCE - 100–150% (boostable)", because the Boosted checkbox raises the base
+  // 100% to 150%. Non-boostable tiers show a single value.
+  function tierOptionLabel(tier, eff) {
+    return (tier in TIER_BOOST)
+      ? `${tier} - ${eff}–${eff * TIER_BOOST[tier]}% (boostable)`
+      : `${tier} - ${eff}%`;
+  }
+
   function onGenTypeRefreshTiers() {
     const type = document.getElementById('calc-gentype').value;
     const tierSel = document.getElementById('calc-gentier');
     const tiers = GEN_EFF[type] || {};
     let html = '<option value="custom">Custom (%)</option>';
     for (const [tier, eff] of Object.entries(tiers)) {
-      html += `<option value="${tier}">${tier} — ${eff}%</option>`;
+      html += `<option value="${tier}">${tierOptionLabel(tier, eff)}</option>`;
     }
     const prev = tierSel.value;
     tierSel.innerHTML = html;
@@ -2736,7 +2745,7 @@
 
   // updateTierUI: updates conditional UI elements that depend on the production tier
   // (boost checkbox visibility, custom efficiency field). Does NOT rebuild the fuel
-  // dropdown — call refreshFuelDropdown() separately when needed.
+  // dropdown - call refreshFuelDropdown() separately when needed.
   function updateTierUI() {
     const tier = document.getElementById('calc-gentier').value;
     document.getElementById('calc-eff-custom-wrap').style.display =
@@ -2762,7 +2771,7 @@
     onGenTypeRefreshTiers();
     onOutGenTypeRefreshTiers();
     updateTierUI();      // update boost/custom UI for the (now reset) tier
-    refreshFuelDropdown(); // single fuel rebuild — also calls recalc via onFuelChange
+    refreshFuelDropdown(); // single fuel rebuild - also calls recalc via onFuelChange
   }
 
   // "Show all Fuel Types" checkbox toggled → rebuild fuel list for current type.
@@ -2779,7 +2788,7 @@
     const tiers = GEN_EFF[type] || {};
     let html = '<option value="custom">Custom (%)</option>';
     for (const [tier, eff] of Object.entries(tiers)) {
-      html += `<option value="${tier}">${tier} — ${eff}%</option>`;
+      html += `<option value="${tier}">${tierOptionLabel(tier, eff)}</option>`;
     }
     const prev = tierSel.value;
     tierSel.innerHTML = html;
@@ -2896,7 +2905,7 @@
     document.getElementById('out-gross').textContent = fmtNum(grossFuel);
     document.getElementById('out-net').textContent   = fmtNum(netFuel);
     const costEl = document.getElementById('out-cost');
-    costEl.textContent = (grossFuel > 0 && isFinite(costPct)) ? (costPct * 100).toFixed(2) + '%' : '—';
+    costEl.textContent = (grossFuel > 0 && isFinite(costPct)) ? (costPct * 100).toFixed(2) + '%' : '-';
     // Color: teal if cost is a small share, amber mid, red if it eats most of the fuel
     costEl.style.color = costPct < 0.5 ? 'var(--teal)' : (costPct < 0.9 ? 'var(--accent2)' : 'var(--accent)');
 
@@ -2943,8 +2952,8 @@
 
       powerNum.textContent = netFuel > 0 ? fmtNum(totalElec) : '0';
       powerNum.style.color = netFuel > 0 ? 'var(--teal)' : 'var(--accent)';
-      powerLbl.textContent = `EU/t — ${numFull} × ${outTier} at ${machineCap} EU/t each (${modeLabel}, ${(machineEff*100).toFixed(0)}% eff)` +
-                             (netFuel <= 0 ? ' — no surplus fuel!' : '');
+      powerLbl.textContent = `EU/t - ${numFull} × ${outTier} at ${machineCap} EU/t each (${modeLabel}, ${(machineEff*100).toFixed(0)}% eff)` +
+                             (netFuel <= 0 ? ' - no surplus fuel!' : '');
 
       cntNum.textContent = netFuel > 0 ? String(numFull) : '0';
       cntNum.style.color = netFuel > 0 ? 'var(--teal)' : 'var(--accent)';
@@ -2952,7 +2961,7 @@
 
       unusedWrap.style.display = 'flex';
       unusedNum.textContent = fmtNum(leftover);
-      unusedLbl.textContent = `EU/t of raw fuel left over — not enough for another ${outTier} ` +
+      unusedLbl.textContent = `EU/t of raw fuel left over - not enough for another ${outTier} ` +
                               `(needs ${fmtNum(fuelPerMachine)})`;
 
       // Build breakdown table: one row per machine count (Default + Boosted for this tier)
@@ -3011,15 +3020,15 @@
       powerNum.textContent = netFuel > 0 ? fmtNum(genElec) : '0';
       powerNum.style.color = netFuel > 0 ? 'var(--teal)' : 'var(--accent)';
       const tierLabel = (outTier === 'custom') ? `Custom (${(outEff*100).toFixed(0)}%)` : `${outTier} (${(outEff*100).toFixed(0)}%)`;
-      powerLbl.textContent = `EU/t generated — ${GEN_DISPLAY[outType] || outType}, ${tierLabel}` +
-                             (netFuel <= 0 ? ' — no surplus fuel!' : '');
+      powerLbl.textContent = `EU/t generated - ${GEN_DISPLAY[outType] || outType}, ${tierLabel}` +
+                             (netFuel <= 0 ? ' - no surplus fuel!' : '');
 
       if (tierCap) {
         const n = netFuel > 0 ? genElec / tierCap : 0;
         cntNum.textContent = fmtNum(n);
         cntLbl.textContent = `× ${outTier} generators (${tierCap} EU/t output each)`;
       } else {
-        cntNum.textContent = '—';
+        cntNum.textContent = '-';
         cntLbl.textContent = 'pick a tier (not Custom) to count generators';
       }
       cntNum.style.color = netFuel > 0 ? 'var(--teal)' : 'var(--accent)';
