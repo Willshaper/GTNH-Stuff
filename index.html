@@ -1427,14 +1427,30 @@
             <div class="cr" data-copy="ABS - C5" onclick="copyRow(this)"><span class="cr-label">ABS - C5</span><span class="cr-hint">COPIED!</span></div>
           </div>
 
-          <!-- ── BLAST FURNACE ── -->
+          <!-- ── BLAST FURNACE (toggleable) ── -->
+          <!-- Toggle: clicking the link swaps which ebf-block is shown -->
           <div class="circuit-group" data-aliases="Electric Blast Furnace EBF">
             <div class="cg-heading">Electric Blast Furnace</div>
-            <div class="cr" data-copy="EBF - C0, C3, C13, C16, C17, C22, C24, Yttrium Oxide Dust" onclick="copyRow(this)"><span class="cr-label">EBF - C0, C3, C13, C16, C17, C22, C24, Yttrium Oxide Dust</span><span class="cr-hint">COPIED!</span></div>
-            <div class="cr" data-copy="EBF - C1, C12" onclick="copyRow(this)"><span class="cr-label">EBF - C1, C12</span><span class="cr-hint">COPIED!</span></div>
-            <div class="cr" data-copy="EBF - C2" onclick="copyRow(this)"><span class="cr-label">EBF - C2</span><span class="cr-hint">COPIED!</span></div>
-            <div class="cr" data-copy="EBF - C11" onclick="copyRow(this)"><span class="cr-label">EBF - C11</span><span class="cr-hint">COPIED!</span></div>
-          </div>
+
+            <!-- CUSTOM SETUP (shown by default) -->
+            <div class="assembler-block" id="ebf-custom">
+              <div class="cg-note">This setup merges C2 and C11 onto one bus, which causes a few recipe conflicts:<br>"Hot Silicon Solar Grade (Poly SI) Ingot" vs "Monocrystalline Silicon Boule"<br>"Gallium Arsenide Ingot" vs "Gallium Arsenide Crystal"<br>The rest are unlikely to come up in general EBF automation; check NEI in-game for the full list.</div>
+              <span class="asm-toggle-link" onclick="toggleEbf()">Click here to show the Original setup.</span>
+              <div class="cr" data-copy="EBF - C0, C3, C13, C16, C17, C22, C24, Yttrium Oxide Dust" onclick="copyRow(this)"><span class="cr-label">EBF - C0, C3, C13, C16, C17, C22, C24, Yttrium Oxide Dust</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="EBF - C1, C12" onclick="copyRow(this)"><span class="cr-label">EBF - C1, C12</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="EBF - C2, C11" onclick="copyRow(this)"><span class="cr-label">EBF - C2, C11</span><span class="cr-hint">COPIED!</span></div>
+            </div>
+
+            <!-- ORIGINAL SETUP (hidden by default) -->
+            <div class="assembler-block hidden" id="ebf-original">
+              <span class="asm-toggle-link" onclick="toggleEbf()">Click here to show the Custom setup.</span>
+              <div class="cr" data-copy="EBF - C0, C3, C13, C16, C17, C22, C24, Yttrium Oxide Dust" onclick="copyRow(this)"><span class="cr-label">EBF - C0, C3, C13, C16, C17, C22, C24, Yttrium Oxide Dust</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="EBF - C1, C12" onclick="copyRow(this)"><span class="cr-label">EBF - C1, C12</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="EBF - C2" onclick="copyRow(this)"><span class="cr-label">EBF - C2</span><span class="cr-hint">COPIED!</span></div>
+              <div class="cr" data-copy="EBF - C11" onclick="copyRow(this)"><span class="cr-label">EBF - C11</span><span class="cr-hint">COPIED!</span></div>
+            </div>
+
+          </div><!-- /ebf circuit-group -->
 
           <!-- ── CHEMICAL PLANT ── -->
           <div class="circuit-group" data-aliases="ExxonMobil Chemical Plant Exxon">
@@ -2108,6 +2124,12 @@
   function toggleAsm() {
     document.getElementById('asm-dedicated').classList.toggle('hidden');
     document.getElementById('asm-original').classList.toggle('hidden');
+  }
+
+  // ── EBF toggle (Custom <-> Original setup) ─────────────────────
+  function toggleEbf() {
+    document.getElementById('ebf-custom').classList.toggle('hidden');
+    document.getElementById('ebf-original').classList.toggle('hidden');
   }
 
   // ── Section expand/collapse ────────────────────────────────────
